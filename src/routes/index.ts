@@ -1,16 +1,13 @@
-import { Router } from 'express';
+import { Router, Request, Response } from "express";
 
-import { authenticationRouter } from './authentication.routes';
-import { usersRouter } from './users.routes';
-import { userProfileRouter } from './userProfile.routes';
-import { statementRouter } from './statements.routes';
+import { authenticationRouter } from "./authentication.routes";
+import { agentsRouter } from "./agents.routes";
 
 const router = Router();
 
-router.use('/', authenticationRouter);
-router.use('/users', usersRouter);
-router.use('/profile', userProfileRouter);
+router.get("/healthy", (req: Request, res: Response) => res.send("Ok"));
 
-router.use('/statements', statementRouter);
+router.use("/", authenticationRouter);
+router.use("/public/agents", agentsRouter);
 
 export { router };

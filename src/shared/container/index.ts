@@ -1,17 +1,9 @@
-import { container } from 'tsyringe';
+import { container } from "tsyringe";
 
-import { IUsersRepository } from '../../modules/users/repositories/IUsersRepository';
-import { UsersRepository } from '../../modules/users/repositories/UsersRepository';
+import { IAgentRepository } from "@modules/agent/repositories/IAgentRepository";
+import { AgentRepository } from "@modules/agent/repositories/AgentRepository";
 
-import { IStatementsRepository } from '../../modules/statements/repositories/IStatementsRepository';
-import { StatementsRepository } from '../../modules/statements/repositories/StatementsRepository';
-
-container.registerSingleton<IUsersRepository>(
-  'UsersRepository',
-  UsersRepository
-);
-
-container.registerSingleton<IStatementsRepository>(
-  'StatementsRepository',
-  StatementsRepository
+container.registerSingleton<IAgentRepository>(
+  "AgentRepository",
+  AgentRepository
 );
