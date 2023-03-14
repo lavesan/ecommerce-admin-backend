@@ -5,9 +5,9 @@ import { FindAllAgentsUseCase } from "./FindAllAgentsUseCase";
 
 export class FindAllAgentsController {
   async execute(request: Request, response: Response) {
-    const findAgent = container.resolve(FindAllAgentsUseCase);
+    const findAllAgents = container.resolve(FindAllAgentsUseCase);
 
-    const agents = await findAgent.execute();
+    const agents = await findAllAgents.execute();
 
     return response.status(200).json(agents);
   }

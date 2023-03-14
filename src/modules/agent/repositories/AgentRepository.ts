@@ -13,24 +13,18 @@ export class AgentRepository implements IAgentRepository {
     this.repository = Agent;
   }
 
-  async findById(agent_id: string): Promise<IAgent | undefined> {
-    const agent = await this.repository.findById(agent_id);
-    delete agent.password;
+  async findById(agent_id: string, select = ""): Promise<IAgent | undefined> {
+    const agent = await this.repository.findById(agent_id).select(select);
     return agent;
   }
 
-  async findByLogin(login: string): Promise<IAgent | undefined> {
-    const agent = await this.repository.findOne({ login });
-    if (agent) delete agent.password;
+  async findByLogin(login: string, select = ""): Promise<IAgent | undefined> {
+    const agent = await this.repository.findOne({ login }).select(select);
     return agent;
   }
 
-  async findAll(): Promise<IAgent[]> {
-    const data = await this.repository.find();
-    data.map((agent) => {
-      delete agent.password;
-      return agent;
-    });
+  async findAll(select = ""): Promise<IAgent[]> {
+    const data = await this.repository.find().select(select);
 
     return data;
   }
@@ -41,21 +35,19 @@ export class AgentRepository implements IAgentRepository {
     }
 
     const agent = await this.repository.create(body);
-
-    delete agent.password;
     return agent;
   }
 
-  async update(agent_id: string, body: ICreateAgentDTO): Promise<IAgent> {
+  async update(
+    agent_id: string,
+    body: ICreateAgentDTO,
+    select = ""
+  ): Promise<IAgent> {
     if (body.password) {
       body.password = await encryptPwd(body.password);
     }
 
-    const data = await this.repository.findByIdAndUpdate(agent_id, body);
-
-    delete data.password;
-
-    return data;
+    return this.findById(agent_id, select);
   }
 
   async deleteById(agent_id: string): Promise<string> {

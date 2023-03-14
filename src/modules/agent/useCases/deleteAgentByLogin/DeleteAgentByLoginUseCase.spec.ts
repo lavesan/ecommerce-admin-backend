@@ -1,42 +1,31 @@
 import "reflect-metadata";
 
-import { CreateAgentUseCase } from "./DeleteAgentByLoginUseCase";
+import { DeleteAgentByLoginUseCase } from "./DeleteAgentByLoginUseCase";
 import { InMemoryAgentRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
-import { CreateAgentError } from "./DeleteAgentByLoginError";
+import { DeleteAgentByLoginError } from "./DeleteAgentByLoginError";
+import { mockUser } from "@helpers/test.helper";
 
-let usersRepository: InMemoryAgentRepository;
-let createUserUseCase: CreateAgentUseCase;
+let agentRepository: InMemoryAgentRepository;
+let deleteAgentByLoginUseCase: DeleteAgentByLoginUseCase;
 
-describe("Create Agent", () => {
+describe("UseCase -> Delete Agent By Login", () => {
   beforeEach(() => {
-    usersRepository = new InMemoryAgentRepository();
-    createUserUseCase = new CreateAgentUseCase(usersRepository);
+    agentRepository = new InMemoryAgentRepository();
+    deleteAgentByLoginUseCase = new DeleteAgentByLoginUseCase(agentRepository);
   });
 
-  it("should create user", async () => {
-    const user = await createUserUseCase.execute({
-      email: "mock_email@email.com",
-      name: "mock-name",
-      password: "12345678",
-    });
+  it("should create delete agent", async () => {
+    const createdAgent = await agentRepository.create(mockUser);
+    const response = await deleteAgentByLoginUseCase.execute(
+      createdAgent.login
+    );
 
-    expect(user?.id).toBeTruthy();
+    expect(response).toBe("Ok");
   });
 
-  it("should throw error when user email already exists", async () => {
+  it("should throw error when agent is not found", async () => {
     expect(async () => {
-      const email = "email@email.com";
-
-      await createUserUseCase.execute({
-        email,
-        name: "name-mock-1",
-        password: "12345678",
-      });
-      await createUserUseCase.execute({
-        email,
-        name: "name-mock-2",
-        password: "12345678",
-      });
-    }).rejects.toBeInstanceOf(CreateAgentError);
+      await deleteAgentByLoginUseCase.execute("mock");
+    }).rejects.toBeInstanceOf(DeleteAgentByLoginError.AgentDontExist);
   });
 });

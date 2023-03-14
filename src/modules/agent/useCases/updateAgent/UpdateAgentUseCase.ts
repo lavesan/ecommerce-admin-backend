@@ -18,7 +18,7 @@ export class UpdateAgentUseCase {
       throw new UpdateAgentError.AgentDontExist();
     }
 
-    const user = await this.agentRepository.update(agent_id, body);
+    const user = await this.agentRepository.update(agent_id, body, "-password");
 
     return user;
   }

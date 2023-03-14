@@ -22,6 +22,10 @@ export class CreateAgentUseCase {
 
     const user = await this.agentRepository.create(body);
 
-    return user;
+    const userData = user.toObject();
+
+    delete userData.password;
+
+    return userData;
   }
 }

@@ -8,7 +8,7 @@ export namespace UpdateAgentError {
   }
   export class BodyIsInvalid extends AppError {
     constructor(fields: { [key: string]: any }) {
-      super("Campos obrigatórios", 400, fields);
+      super("Campos obrigatórios", 400, fields?.errors);
     }
   }
 }

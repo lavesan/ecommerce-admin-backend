@@ -3,40 +3,27 @@ import "reflect-metadata";
 import { CreateAgentUseCase } from "./CreateAgentUseCase";
 import { InMemoryAgentRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
 import { CreateAgentError } from "./CreateAgentError";
+import { mockUser } from "@helpers/test.helper";
 
-let usersRepository: InMemoryAgentRepository;
-let createUserUseCase: CreateAgentUseCase;
+let agentRepository: InMemoryAgentRepository;
+let createAgentUseCase: CreateAgentUseCase;
 
-describe("Create Agent", () => {
+describe("UseCase -> Create Agent", () => {
   beforeEach(() => {
-    usersRepository = new InMemoryAgentRepository();
-    createUserUseCase = new CreateAgentUseCase(usersRepository);
+    agentRepository = new InMemoryAgentRepository();
+    createAgentUseCase = new CreateAgentUseCase(agentRepository);
   });
 
-  it("should create user", async () => {
-    const user = await createUserUseCase.execute({
-      email: "mock_email@email.com",
-      name: "mock-name",
-      password: "12345678",
-    });
+  it("should create agent", async () => {
+    const user = await createAgentUseCase.execute(mockUser);
 
     expect(user?.id).toBeTruthy();
   });
 
-  it("should throw error when user email already exists", async () => {
-    expect(async () => {
-      const email = "email@email.com";
-
-      await createUserUseCase.execute({
-        email,
-        name: "name-mock-1",
-        password: "12345678",
-      });
-      await createUserUseCase.execute({
-        email,
-        name: "name-mock-2",
-        password: "12345678",
-      });
-    }).rejects.toBeInstanceOf(CreateAgentError);
+  it("should throw error when agent login already exists", async () => {
+    await expect(async () => {
+      await createAgentUseCase.execute(mockUser);
+      await createAgentUseCase.execute(mockUser);
+    }).rejects.toBeInstanceOf(CreateAgentError.AgentAlreadyExists);
   });
 });

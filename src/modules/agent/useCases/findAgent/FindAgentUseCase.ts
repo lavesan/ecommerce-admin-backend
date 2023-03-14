@@ -11,7 +11,7 @@ export class FindAgentUseCase {
   ) {}
 
   async execute(agent_id: string) {
-    const user = await this.agentRepository.findById(agent_id);
+    const user = await this.agentRepository.findById(agent_id, "-password");
 
     if (!user) {
       throw new AgentDontExist();

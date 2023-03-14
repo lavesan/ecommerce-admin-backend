@@ -3,7 +3,7 @@ import * as yup from "yup";
 
 export const validationSchema = yup.object({
   name: yup.string().required(),
-  login: yup.string().required(),
+  login: yup.string().required().email(),
   password: yup.string().required(),
   medias: yup.object({
     voice: yup.object({

@@ -3,12 +3,13 @@ export enum HandleMode {
   MANUAL = "MANUAL",
 }
 
-export interface IAgent {
+interface IAgentData {
   id: string;
   name: string;
   login: string;
   domain: string;
   password: string;
+  created_at: Date;
   medias: {
     voice: {
       min: number;
@@ -30,4 +31,8 @@ export interface IAgent {
       handleMode: HandleMode;
     };
   };
+}
+
+export interface IAgent extends IAgentData {
+  toObject: () => IAgentData;
 }

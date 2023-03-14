@@ -5,10 +5,14 @@ import { IUpdateAgentDTO } from "../useCases/updateAgent/IUpdateAgentDTO";
 
 export interface IAgentRepository {
   create: (data: ICreateAgentDTO) => Promise<IAgent>;
-  update: (agent_id: string, data: IUpdateAgentDTO) => Promise<IAgent>;
-  findById: (agent_id: string) => Promise<IAgent | undefined>;
-  findByLogin: (login: string) => Promise<IAgent | undefined>;
-  findAll: () => Promise<IAgent[]>;
+  update: (
+    agent_id: string,
+    data: IUpdateAgentDTO,
+    select?: string
+  ) => Promise<IAgent>;
+  findById: (agent_id: string, select?: string) => Promise<IAgent | undefined>;
+  findByLogin: (login: string, select?: string) => Promise<IAgent | undefined>;
+  findAll: (select?: string) => Promise<IAgent[]>;
   deleteById: (agent_id: string) => Promise<string>;
   deleteByLogin: (login: string) => Promise<string>;
 }

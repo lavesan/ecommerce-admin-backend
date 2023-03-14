@@ -7,7 +7,7 @@ import { validationSchema } from "./deleteAgentByLoginValitation";
 
 export class DeleteAgentByLoginController {
   async execute(request: Request, response: Response) {
-    const createAgent = container.resolve(DeleteAgentByLoginUseCase);
+    const deleteAgentByLogin = container.resolve(DeleteAgentByLoginUseCase);
 
     const { query } = request;
 
@@ -17,7 +17,7 @@ export class DeleteAgentByLoginController {
         throw new DeleteAgentByLoginError.BodyIsInvalid(err);
       });
 
-    const feedback = await createAgent.execute(query.login as string);
+    const feedback = await deleteAgentByLogin.execute(query.login as string);
 
     return response.status(200).json(feedback);
   }

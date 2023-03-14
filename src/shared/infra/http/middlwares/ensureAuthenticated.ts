@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
-import authConfig from "@config/auth";
 import { JWTInvalidTokenError } from "../../../errors/JWTInvalidTokenError";
 import { JWTTokenMissingError } from "../../../errors/JWTTokenMissingError";
 
@@ -26,7 +25,7 @@ export async function ensureAuthenticated(
   try {
     const { sub: user_id, domain } = verify(
       token,
-      authConfig.jwt.secret
+      process.env.JWT_SECRET
     ) as IPayload;
 
     request.user = {

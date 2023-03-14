@@ -1,29 +1,28 @@
 import "reflect-metadata";
-
-import { DeleteAgentByIdUseCase } from "./DeleteAgentByIdUseCase";
+import { FindAgentUseCase } from "./FindAgentUseCase";
 import { InMemoryAgentRepository } from "../../repositories/in-memory/InMemoryUsersRepository";
-import { AgentDontExist } from "./DeleteAgentByIdError";
+import { AgentDontExist } from "./FindAgentError";
 import { mockUser } from "@helpers/test.helper";
 
 let agentRepository: InMemoryAgentRepository;
-let deleteAgentByIdUseCase: DeleteAgentByIdUseCase;
+let findAgentUseCase: FindAgentUseCase;
 
 describe("UseCase -> Delete Agent By Id", () => {
   beforeEach(() => {
     agentRepository = new InMemoryAgentRepository();
-    deleteAgentByIdUseCase = new DeleteAgentByIdUseCase(agentRepository);
+    findAgentUseCase = new FindAgentUseCase(agentRepository);
   });
 
   it("should create delete agent", async () => {
     const createdAgent = await agentRepository.create(mockUser);
-    const response = await deleteAgentByIdUseCase.execute(createdAgent.id);
+    const response = await findAgentUseCase.execute(createdAgent.id);
 
-    expect(response).toBe("Ok");
+    expect(response).toHaveProperty("id");
   });
 
   it("should throw error when agent is not found", async () => {
     expect(async () => {
-      await deleteAgentByIdUseCase.execute("mock");
+      await findAgentUseCase.execute("mock");
     }).rejects.toBeInstanceOf(AgentDontExist);
   });
 });

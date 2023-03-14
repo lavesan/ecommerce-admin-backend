@@ -7,6 +7,7 @@ const agentSchema = new Schema({
     index: true,
     unique: true,
   },
+  name: String,
   password: String,
   domain: String,
   created_at: { type: Date, default: Date.now },

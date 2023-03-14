@@ -10,6 +10,6 @@ export class FindAllAgentsUseCase {
   ) {}
 
   async execute() {
-    return this.agentRepository.findAll();
+    return await this.agentRepository.findAll("-password");
   }
 }
