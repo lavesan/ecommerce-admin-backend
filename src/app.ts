@@ -4,15 +4,12 @@ import "express-async-errors";
 import express from "express";
 import cors from "cors";
 
-import "./database";
 import "./shared/container";
 import { router } from "./routes";
 import { AppError } from "./shared/errors/AppError";
-import { createConnection } from "./ormconfig";
+import { createConnection } from "@config/mongo";
 
 const app = express();
-
-console.log("createConnection: ", createConnection);
 
 createConnection();
 
@@ -28,6 +25,8 @@ app.use(
     response: express.Response,
     _next: express.NextFunction
   ) => {
+    console.log("Error: ", err);
+
     if (err instanceof AppError) {
       return response.status(err.statusCode).json({
         message: err.message,

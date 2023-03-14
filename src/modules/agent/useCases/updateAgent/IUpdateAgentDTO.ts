@@ -1,4 +1,4 @@
-import { HandleMode } from "@modules/agent/entities/Agent";
+import { HandleMode } from "@modules/agent/entities/IAgent";
 
 export interface IUpdateAgentDTO {
   name: string;

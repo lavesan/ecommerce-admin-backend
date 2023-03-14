@@ -1,31 +1,31 @@
 import { encryptPwd } from "helpers/password";
-import { Repository } from "typeorm";
-import AppDataSource from "../../../ormconfig";
+import { Model } from "mongoose";
 
 import { Agent } from "../entities/Agent";
+import { IAgent } from "../entities/IAgent";
 import { ICreateAgentDTO } from "../useCases/createAgent/ICreateAgentDTO";
 import { IAgentRepository as IAgentRepository } from "./IAgentRepository";
 
 export class AgentRepository implements IAgentRepository {
-  private repository: Repository<Agent>;
+  private repository: Model<IAgent>;
 
   constructor() {
-    this.repository = AppDataSource.getRepository(Agent);
+    this.repository = Agent;
   }
 
-  async findById(agent_id: string): Promise<Agent | undefined> {
-    const agent = await this.repository.findOne({ where: { id: agent_id } });
+  async findById(agent_id: string): Promise<IAgent | undefined> {
+    const agent = await this.repository.findById(agent_id);
     delete agent.password;
     return agent;
   }
 
-  async findByLogin(login: string): Promise<Agent | undefined> {
-    const agent = await this.repository.findOne({ where: { login } });
-    delete agent.password;
+  async findByLogin(login: string): Promise<IAgent | undefined> {
+    const agent = await this.repository.findOne({ login });
+    if (agent) delete agent.password;
     return agent;
   }
 
-  async findAll(): Promise<Agent[]> {
+  async findAll(): Promise<IAgent[]> {
     const data = await this.repository.find();
     data.map((agent) => {
       delete agent.password;
@@ -35,27 +35,23 @@ export class AgentRepository implements IAgentRepository {
     return data;
   }
 
-  async create(body: ICreateAgentDTO): Promise<Agent> {
+  async create(body: ICreateAgentDTO): Promise<IAgent> {
     if (body.password) {
       body.password = await encryptPwd(body.password);
     }
 
-    const agent = this.repository.create(body);
+    const agent = await this.repository.create(body);
 
-    const savedAgent = await this.repository.save(agent);
-    delete savedAgent.password;
-    return savedAgent;
+    delete agent.password;
+    return agent;
   }
 
-  async update(agent_id: string, body: ICreateAgentDTO): Promise<Agent> {
+  async update(agent_id: string, body: ICreateAgentDTO): Promise<IAgent> {
     if (body.password) {
       body.password = await encryptPwd(body.password);
     }
 
-    const data = await this.repository.save({
-      id: agent_id,
-      ...body,
-    });
+    const data = await this.repository.findByIdAndUpdate(agent_id, body);
 
     delete data.password;
 
@@ -63,12 +59,12 @@ export class AgentRepository implements IAgentRepository {
   }
 
   async delete(agent_id: string): Promise<string> {
-    await this.repository.delete(agent_id);
+    await this.repository.findByIdAndDelete(agent_id);
     return "Ok";
   }
 
   async deleteByLogin(login: string): Promise<string> {
-    await this.repository.delete({ login });
+    await this.repository.deleteOne({ login });
     return "Ok";
   }
 }

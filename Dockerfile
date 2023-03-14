@@ -4,10 +4,12 @@ WORKDIR /usr/app
 
 COPY package.json ./
 
-RUN npm install
+RUN npm install -g yarn; exit 0
+
+RUN yarn
 
 COPY . .
 
 EXPOSE 3333
 
-CMD ["npm", "run", "dev"]
+CMD ["yarn", "dev"]

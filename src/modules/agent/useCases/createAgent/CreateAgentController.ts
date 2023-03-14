@@ -9,11 +9,11 @@ export class CreateAgentController {
 
     const domain = request.get("host");
 
-    await createAgent.execute({
+    const agent = await createAgent.execute({
       ...request.body,
       domain,
     });
 
-    return response.status(201).send();
+    return response.status(201).json(agent);
   }
 }

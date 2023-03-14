@@ -1,6 +1,9 @@
-import { HandleMode } from "@modules/agent/entities/IAgent";
+export enum HandleMode {
+  AUTO = "AUTO",
+  MANUAL = "MANUAL",
+}
 
-export interface ICreateAgentDTO {
+export interface IAgent {
   name: string;
   login: string;
   domain: string;

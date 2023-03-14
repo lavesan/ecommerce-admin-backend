@@ -1,103 +1,44 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ObjectIdColumn,
-  PrimaryColumn,
-} from "typeorm";
+import mongoose, { Schema } from "mongoose";
+import { HandleMode } from "./IAgent";
 
-export enum HandleMode {
-  AUTO = "AUTO",
-  MANUAL = "MANUAL",
-}
+const agentSchema = new Schema({
+  login: {
+    type: String,
+    index: true,
+    unique: true,
+  },
+  password: String,
+  domain: String,
+  created_at: { type: Date, default: Date.now },
+  medias: {
+    voice: {
+      min: Number,
+      max: Number,
+      selected: Number,
+      handleMode: {
+        type: String,
+        enum: [HandleMode.AUTO, HandleMode.MANUAL],
+        default: HandleMode.AUTO,
+      },
+    },
+    email: {
+      min: Number,
+      max: Number,
+      selected: Number,
+    },
+    chat: {
+      min: Number,
+      max: Number,
+      selected: Number,
+      handleMode: {
+        type: String,
+        enum: [HandleMode.AUTO, HandleMode.MANUAL],
+        default: HandleMode.AUTO,
+      },
+    },
+  },
+});
 
-class Voice {
-  @Column()
-  min: number;
-
-  @Column()
-  max: number;
-
-  @Column()
-  selected: number;
-
-  @Column({
-    type: "enum",
-    enum: HandleMode,
-    default: HandleMode.AUTO,
-  })
-  handleMode: HandleMode;
-
-  @Column()
-  device: string;
-
-  @Column()
-  devicePassword: string;
-}
-
-class Email {
-  @Column()
-  min: number;
-
-  @Column()
-  max: number;
-
-  @Column()
-  selected: number;
-}
-
-class Chat {
-  @Column()
-  min: number;
-
-  @Column()
-  max: number;
-
-  @Column()
-  selected: number;
-
-  @Column({
-    type: "enum",
-    enum: HandleMode,
-    default: HandleMode.AUTO,
-  })
-  handleMode: HandleMode;
-}
-
-class Media {
-  @Column((type) => Voice)
-  voice: Voice;
-
-  @Column((type) => Email)
-  email: Email;
-
-  @Column((type) => Chat)
-  chat: Chat;
-}
-
-@Entity()
-class Agent {
-  @ObjectIdColumn()
-  _id: string;
-
-  @PrimaryColumn()
-  id: string;
-
-  @Column({ unique: true })
-  login: string;
-
-  @Column()
-  password: string;
-
-  @Column()
-  domain: string;
-
-  @Column((type) => Media)
-  medias: Media;
-
-  @CreateDateColumn()
-  created_at: Date;
-}
+const Agent = mongoose.model<IAgent>("Agent", agentSchema);
 
 export { Agent };
-export default Agent;
