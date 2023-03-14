@@ -4,6 +4,7 @@ export enum HandleMode {
 }
 
 export interface IAgent {
+  id: string;
   name: string;
   login: string;
   domain: string;

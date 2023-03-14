@@ -7,6 +7,7 @@ import { JWTTokenMissingError } from "../../../errors/JWTTokenMissingError";
 
 interface IPayload {
   sub: string;
+  domain: string;
 }
 
 export async function ensureAuthenticated(
@@ -23,10 +24,14 @@ export async function ensureAuthenticated(
   const [, token] = authHeader.split(" ");
 
   try {
-    const { sub: user_id } = verify(token, authConfig.jwt.secret) as IPayload;
+    const { sub: user_id, domain } = verify(
+      token,
+      authConfig.jwt.secret
+    ) as IPayload;
 
     request.user = {
       id: user_id,
+      domain,
     };
 
     next();

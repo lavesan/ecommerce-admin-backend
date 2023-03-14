@@ -1,9 +1,9 @@
 import { AppError } from "@shared/errors/AppError";
 
-export namespace CreateAgentError {
-  export class AgentAlreadyExists extends AppError {
+export namespace UpdateAgentError {
+  export class AgentDontExist extends AppError {
     constructor() {
-      super("Agente já existe.");
+      super("Agente não existe.");
     }
   }
   export class BodyIsInvalid extends AppError {

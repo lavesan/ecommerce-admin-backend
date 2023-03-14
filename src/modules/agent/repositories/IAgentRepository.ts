@@ -9,6 +9,6 @@ export interface IAgentRepository {
   findById: (agent_id: string) => Promise<IAgent | undefined>;
   findByLogin: (login: string) => Promise<IAgent | undefined>;
   findAll: () => Promise<IAgent[]>;
-  delete: (agent_id: string) => Promise<string>;
+  deleteById: (agent_id: string) => Promise<string>;
   deleteByLogin: (login: string) => Promise<string>;
 }

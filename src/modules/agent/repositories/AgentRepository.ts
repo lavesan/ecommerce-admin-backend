@@ -1,4 +1,4 @@
-import { encryptPwd } from "helpers/password";
+import { encryptPwd } from "helpers/password.helper";
 import { Model } from "mongoose";
 
 import { Agent } from "../entities/Agent";
@@ -58,7 +58,7 @@ export class AgentRepository implements IAgentRepository {
     return data;
   }
 
-  async delete(agent_id: string): Promise<string> {
+  async deleteById(agent_id: string): Promise<string> {
     await this.repository.findByIdAndDelete(agent_id);
     return "Ok";
   }

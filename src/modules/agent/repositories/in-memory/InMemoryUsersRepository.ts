@@ -1,33 +1,34 @@
 import { Agent } from "@modules/agent/entities/Agent";
+import { IAgent } from "@modules/agent/entities/IAgent";
 import { IUpdateAgentDTO } from "@modules/agent/useCases/updateAgent/IUpdateAgentDTO";
-import { encryptPwd } from "helpers/password";
+import { encryptPwd } from "helpers/password.helper";
 
 import { ICreateAgentDTO } from "../../useCases/createAgent/ICreateAgentDTO";
 import { IAgentRepository } from "../IAgentRepository";
 
 export class InMemoryAgentRepository implements IAgentRepository {
-  private agents: Agent[] = [];
+  private agents: IAgent[] = [];
 
-  async findByLogin(login: string): Promise<Agent | undefined> {
+  async findByLogin(login: string): Promise<IAgent | undefined> {
     return this.agents.find((agent) => agent.login === login);
   }
 
-  async findById(agent_id: string): Promise<Agent | undefined> {
+  async findById(agent_id: string): Promise<IAgent | undefined> {
     return this.agents.find((agent) => agent.id.toString() === agent_id);
   }
 
-  async findAll(): Promise<Agent[]> {
+  async findAll(): Promise<IAgent[]> {
     return this.agents;
   }
 
-  async create(data: ICreateAgentDTO): Promise<Agent> {
+  async create(data: ICreateAgentDTO): Promise<IAgent> {
     const agent = new Agent();
     Object.assign(agent, data);
     this.agents.push(agent);
     return agent;
   }
 
-  async update(agent_id: string, data: IUpdateAgentDTO): Promise<Agent> {
+  async update(agent_id: string, data: IUpdateAgentDTO): Promise<IAgent> {
     if (data.password) {
       data.password = await encryptPwd(data.password);
     }
@@ -42,7 +43,7 @@ export class InMemoryAgentRepository implements IAgentRepository {
     return this.agents.find((agent) => agent.id.toString() === agent_id);
   }
 
-  async delete(agent_id: string): Promise<string> {
+  async deleteById(agent_id: string): Promise<string> {
     this.agents = this.agents.filter(
       (agent) => agent.id.toString() !== agent_id
     );

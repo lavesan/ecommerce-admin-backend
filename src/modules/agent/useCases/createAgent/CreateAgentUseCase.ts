@@ -3,7 +3,6 @@ import { CreateAgentError } from "./CreateAgentError";
 
 import { IAgentRepository } from "../../repositories/IAgentRepository";
 import { ICreateAgentDTO } from "./ICreateAgentDTO";
-import { encryptPwd } from "helpers/password";
 
 @injectable()
 export class CreateAgentUseCase {
@@ -18,15 +17,10 @@ export class CreateAgentUseCase {
     );
 
     if (userAlreadyExists) {
-      throw new CreateAgentError();
+      throw new CreateAgentError.AgentAlreadyExists();
     }
 
-    const passwordHash = await encryptPwd(body.password);
-
-    const user = await this.agentRepository.create({
-      ...body,
-      password: passwordHash,
-    });
+    const user = await this.agentRepository.create(body);
 
     return user;
   }
