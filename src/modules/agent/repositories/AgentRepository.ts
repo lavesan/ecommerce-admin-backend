@@ -47,6 +47,8 @@ export class AgentRepository implements IAgentRepository {
       body.password = await encryptPwd(body.password);
     }
 
+    await this.repository.findByIdAndUpdate(agent_id, body);
+
     return this.findById(agent_id, select);
   }
 
