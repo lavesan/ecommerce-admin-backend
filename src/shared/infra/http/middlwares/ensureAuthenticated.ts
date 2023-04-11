@@ -5,8 +5,10 @@ import { JWTInvalidTokenError } from "../../../errors/JWTInvalidTokenError";
 import { JWTTokenMissingError } from "../../../errors/JWTTokenMissingError";
 
 interface IPayload {
-  sub: string;
-  domain: string;
+  id: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
 }
 
 export async function ensureAuthenticated(
@@ -23,14 +25,16 @@ export async function ensureAuthenticated(
   const [, token] = authHeader.split(" ");
 
   try {
-    const { sub: user_id, domain } = verify(
+    const { id, name, email, isAdmin } = verify(
       token,
       process.env.JWT_SECRET
     ) as IPayload;
 
     request.user = {
-      id: user_id,
-      domain,
+      id,
+      name,
+      email,
+      isAdmin,
     };
 
     next();

@@ -5,27 +5,36 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --poll --transpile-only --ignore-watch node_modules --respawn ./src/server.ts",
-    "test": "jest"
+    "test": "jest",
+    "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./ormconfig.ts",
+    "migration:create": "typeorm migration:create",
+    "migration:run": "npm run typeorm migration:run",
+    "migration:down": "npm run typeorm migration:revert",
+    "seed:admin": "ts-node-dev src/shared/infra/typeorm/seed/admin.ts"
   },
   "dependencies": {
     "babel-plugin-module-resolver": "^5.0.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "dinero.js": "^1.9.1",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^3.6.0",
     "mongoose": "^7.0.1",
+    "pg": "^8.10.0",
     "reflect-metadata": "^0.1.13",
     "supertest": "^6.3.3",
     "tsyringe": "^4.5.0",
+    "typeorm": "^0.3.14",
     "uuid": "^8.3.2",
     "yup": "^1.0.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.10",
+    "@types/dinero.js": "^1.9.0",
     "@types/express": "^4.17.11",
     "@types/jest": "^29.4.0",
     "@types/jsonwebtoken": "^8.5.1",

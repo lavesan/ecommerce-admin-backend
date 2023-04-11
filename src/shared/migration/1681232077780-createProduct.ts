@@ -1,0 +1,228 @@
+import { ProductAdditionalType } from "@modules/product/enums/ProductAdditionalType";
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from "typeorm";
+
+export class CreateProduct1681232077780 implements MigrationInterface {
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.createTable(
+      new Table({
+        name: "category",
+        columns: [
+          {
+            name: "id",
+            type: "uuid",
+            isPrimary: true,
+          },
+          {
+            name: "name",
+            type: "varchar",
+          },
+          {
+            name: "description",
+            type: "varchar",
+          },
+          {
+            name: "icon",
+            type: "varchar",
+          },
+          {
+            name: "imageUrl",
+            type: "varchar",
+          },
+          {
+            name: "isDisabled",
+            type: "boolean",
+            default: false,
+          },
+          {
+            name: "created_at",
+            type: "timestamp",
+            default: "now()",
+          },
+        ],
+      })
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: "product_additionals_category",
+        columns: [
+          {
+            name: "id",
+            type: "uuid",
+            isPrimary: true,
+          },
+          {
+            name: "name",
+            type: "varchar",
+          },
+          {
+            name: "description",
+            type: "varchar",
+          },
+          {
+            name: "limit",
+            type: "integer",
+          },
+          {
+            name: "type",
+            type: "enum",
+            enum: [
+              ProductAdditionalType.MORE_THAN_ONE_SELECT,
+              ProductAdditionalType.ONE_SELECT,
+            ],
+          },
+          {
+            name: "isOptional",
+            type: "boolean",
+          },
+          {
+            name: "isDisabled",
+            type: "boolean",
+            default: false,
+          },
+          {
+            name: "product_id",
+            type: "uuid",
+          },
+        ],
+      })
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: "product_additionals",
+        columns: [
+          {
+            name: "id",
+            type: "uuid",
+            isPrimary: true,
+          },
+          {
+            name: "name",
+            type: "varchar",
+          },
+          {
+            name: "imageUrl",
+            type: "varchar",
+          },
+          {
+            name: "value",
+            type: "integer",
+          },
+          {
+            name: "product_additionals_category_id",
+            type: "uuid",
+          },
+        ],
+      })
+    );
+
+    await queryRunner.createTable(
+      new Table({
+        name: "product",
+        columns: [
+          {
+            name: "id",
+            type: "uuid",
+            isPrimary: true,
+          },
+          {
+            name: "name",
+            type: "varchar",
+          },
+          {
+            name: "description",
+            type: "varchar",
+          },
+          {
+            name: "boldDescription",
+            type: "varchar",
+          },
+          {
+            name: "imageUrl",
+            type: "varchar",
+          },
+          {
+            name: "value",
+            type: "integer",
+          },
+          {
+            name: "givenPoints",
+            type: "integer",
+            comment: "points the product give when its bought",
+          },
+          {
+            name: "sellPoints",
+            type: "integer",
+            comment: "points the product can be selled",
+          },
+          {
+            name: "isDisabled",
+            type: "boolean",
+            default: false,
+          },
+          {
+            name: "created_at",
+            type: "timestamp",
+            default: "now()",
+          },
+          {
+            name: "product_category_id",
+            type: "uuid",
+          },
+        ],
+      })
+    );
+
+    await queryRunner.createForeignKey(
+      "product_additionals_category",
+      new TableForeignKey({
+        name: "ProductAdditionalsCateogryProductFK",
+        columnNames: ["product_id"],
+        referencedTableName: "product",
+        referencedColumnNames: ["id"],
+      })
+    );
+
+    await queryRunner.createForeignKey(
+      "product_additionals",
+      new TableForeignKey({
+        name: "ProductAdditionalsCategoryFK",
+        columnNames: ["product_additionals_category_id"],
+        referencedTableName: "product_additionals_category",
+        referencedColumnNames: ["id"],
+      })
+    );
+
+    await queryRunner.createForeignKey(
+      "product",
+      new TableForeignKey({
+        name: "ProductCategoryFK",
+        columnNames: ["product_category_id"],
+        referencedTableName: "category",
+        referencedColumnNames: ["id"],
+      })
+    );
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropForeignKey(
+      "product_additionals_category",
+      "ProductAdditionalsCateogryProductFK"
+    );
+    await queryRunner.dropForeignKey(
+      "product_additionals",
+      "ProductAdditionalsCategoryFK"
+    );
+    await queryRunner.dropForeignKey("product", "ProductCategoryFK");
+    await queryRunner.dropTable("category");
+    await queryRunner.dropTable("product");
+    await queryRunner.dropTable("product_additionals_category");
+    await queryRunner.dropTable("product_additionals");
+  }
+}

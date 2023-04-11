@@ -1,11 +1,13 @@
 import { Router, Request, Response } from "express";
 
-import { agentsRouter } from "./agents.routes";
+import { userRouter } from "./user.routes";
+import { productRouter } from "./product.routes";
 
 const router = Router();
 
 router.get("/healthy", (req: Request, res: Response) => res.send("Ok"));
 
-router.use("/public/agents", agentsRouter);
+router.use("/user", userRouter);
+router.use("/product", productRouter);
 
 export { router };
