@@ -1,9 +1,14 @@
+import "reflect-metadata";
 import { DataSource } from "typeorm";
+
 import { User } from "@modules/user/entities/User";
 import { Product } from "@modules/product/entities/Product";
 import { Category } from "@modules/product/entities/Category";
 import { ProductAdditional } from "@modules/product/entities/ProductAdditional";
 import { ProductAdditionalCategory } from "@modules/product/entities/ProductAdditionalCategory";
+import { Order } from "@modules/order/entities/Order";
+import { OrderProduct } from "@modules/order/entities/OrderProduct";
+import { OrderProductAdditional } from "@modules/order/entities/OrderProductAdditional";
 
 const AppDataSource = new DataSource({
   type: "postgres",
@@ -15,13 +20,16 @@ const AppDataSource = new DataSource({
   synchronize: true,
   logging: true,
   subscribers: [],
-  migrations: ["./src/shared/infra/migration/*.ts"],
+  migrations: [__dirname + "/shared/migration/*.ts"],
   entities: [
     User,
-    Product,
     Category,
+    Product,
     ProductAdditional,
     ProductAdditionalCategory,
+    Order,
+    OrderProduct,
+    OrderProductAdditional,
   ],
 });
 

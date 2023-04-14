@@ -7,6 +7,9 @@ const productController = new ProductController();
 
 const productRouter = Router();
 
-productRouter.get("/", ensureAuthenticated, productController.findProducts);
+productRouter.get("/", productController.paginate);
+productRouter.get("/:id", productController.findById);
+productRouter.post("/", productController.create);
+productRouter.put("/:id", productController.update);
 
 export { productRouter };

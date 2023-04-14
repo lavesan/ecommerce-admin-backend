@@ -36,7 +36,7 @@ class ProductAdditionalCategory {
   @Column()
   imageUrl: string;
 
-  @Column()
+  @Column({ default: false })
   isDisabled: boolean;
 
   @Column()
@@ -47,9 +47,10 @@ class ProductAdditionalCategory {
 
   @OneToMany(
     () => ProductAdditional,
-    (productAdditional) => productAdditional.productAdditionalCategory
+    (productAdditional) => productAdditional.productAdditionalCategory,
+    { cascade: ["insert", "update"] }
   )
-  productAdditional: ProductAdditional[];
+  productAdditionals: ProductAdditional[];
 
   @ManyToOne(() => Product, (product) => product.productAdditionalCategory)
   product: Product;

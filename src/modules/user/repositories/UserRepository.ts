@@ -1,7 +1,7 @@
 import { encryptPwd } from "helpers/password.helper";
 import { Model } from "mongoose";
 import { Repository } from "typeorm";
-import AppDataSource from "../../../../ormconfig";
+import AppDataSource from "../../../data-source";
 import { User } from "../entities/User";
 
 import { IUserRepository as IUserRepository } from "./IUserRepository";

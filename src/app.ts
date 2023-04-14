@@ -7,7 +7,7 @@ import cors from "cors";
 import "./shared/container";
 import { router } from "./routes";
 import { AppError } from "./shared/errors/AppError";
-import { createConnection } from "@config/mongo";
+import { createConnection } from "./data-source";
 
 const app = express();
 

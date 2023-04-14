@@ -4,14 +4,14 @@ export const getPageAndSize = (
   query: IPaginationRequest
 ): IPaginationRequest => {
   return {
-    page: query.page || 0,
-    size: query.size || 10,
+    page: Number(query.page) || 0,
+    size: Number(query.size) || 10,
   };
 };
 
 export const getSkipAndTake = ({ page, size }: IPaginationRequest) => {
   return {
     take: size,
-    skip: (page + 1) * size,
+    skip: page * size,
   };
 };

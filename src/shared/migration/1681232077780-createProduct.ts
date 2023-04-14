@@ -182,7 +182,7 @@ export class CreateProduct1681232077780 implements MigrationInterface {
     await queryRunner.createForeignKey(
       "product_additionals_category",
       new TableForeignKey({
-        name: "ProductAdditionalsCateogryProductFK",
+        name: "ProductAdditionalsCategoryProductFK",
         columnNames: ["product_id"],
         referencedTableName: "product",
         referencedColumnNames: ["id"],
@@ -192,7 +192,7 @@ export class CreateProduct1681232077780 implements MigrationInterface {
     await queryRunner.createForeignKey(
       "product_additionals",
       new TableForeignKey({
-        name: "ProductAdditionalsCategoryFK",
+        name: "ProductAdditionalsProductAdditionalsCategoryFK",
         columnNames: ["product_additionals_category_id"],
         referencedTableName: "product_additionals_category",
         referencedColumnNames: ["id"],
@@ -202,7 +202,7 @@ export class CreateProduct1681232077780 implements MigrationInterface {
     await queryRunner.createForeignKey(
       "product",
       new TableForeignKey({
-        name: "ProductCategoryFK",
+        name: "ProductProductCategoryFK",
         columnNames: ["product_category_id"],
         referencedTableName: "category",
         referencedColumnNames: ["id"],
@@ -211,15 +211,36 @@ export class CreateProduct1681232077780 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    const product_additionals_categoryTable = await queryRunner.getTable(
+      "product_additionals_category"
+    );
+    const product_additionals_categoryForeignKey =
+      product_additionals_categoryTable.foreignKeys.find(
+        (fk) => fk.columnNames.indexOf("product_id") !== -1
+      );
     await queryRunner.dropForeignKey(
       "product_additionals_category",
-      "ProductAdditionalsCateogryProductFK"
+      product_additionals_categoryForeignKey
     );
+
+    const product_additionalsTable = await queryRunner.getTable(
+      "product_additionals"
+    );
+    const product_additionalsForeignKey =
+      product_additionalsTable.foreignKeys.find(
+        (fk) => fk.columnNames.indexOf("product_additionals_category_id") !== -1
+      );
     await queryRunner.dropForeignKey(
       "product_additionals",
-      "ProductAdditionalsCategoryFK"
+      product_additionalsForeignKey
     );
-    await queryRunner.dropForeignKey("product", "ProductCategoryFK");
+
+    const productTable = await queryRunner.getTable("product");
+    const productForeignKey = productTable.foreignKeys.find(
+      (fk) => fk.columnNames.indexOf("product_category_id") !== -1
+    );
+    await queryRunner.dropForeignKey("product", productForeignKey);
+
     await queryRunner.dropTable("category");
     await queryRunner.dropTable("product");
     await queryRunner.dropTable("product_additionals_category");

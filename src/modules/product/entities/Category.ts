@@ -13,7 +13,7 @@ class Category {
   @PrimaryColumn()
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Column()
@@ -22,7 +22,7 @@ class Category {
   @Column()
   imageUrl: string;
 
-  @Column()
+  @Column({ default: false })
   isDisabled: boolean;
 
   @CreateDateColumn()

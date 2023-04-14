@@ -1,13 +1,14 @@
+import { OrderProductAdditional } from "@modules/order/entities/OrderProductAdditional";
 import {
   Entity,
   PrimaryColumn,
   Column,
   CreateDateColumn,
   ManyToOne,
+  OneToOne,
 } from "typeorm";
 import { v4 as uuidV4 } from "uuid";
 
-import { Category } from "./Category";
 import { ProductAdditionalCategory } from "./ProductAdditionalCategory";
 
 @Entity("product_additionals")
@@ -24,7 +25,7 @@ class ProductAdditional {
   @Column()
   value: number;
 
-  @Column()
+  @Column({ default: false })
   isDisabled: boolean;
 
   @CreateDateColumn()
@@ -32,9 +33,15 @@ class ProductAdditional {
 
   @ManyToOne(
     () => ProductAdditionalCategory,
-    (category) => category.productAdditional
+    (category) => category.productAdditionals
   )
   productAdditionalCategory: ProductAdditionalCategory;
+
+  @OneToOne(
+    () => OrderProductAdditional,
+    (productOrder) => productOrder.productAdditional
+  )
+  orderProductAdditional: OrderProductAdditional;
 
   constructor() {
     if (!this.id) this.id = uuidV4();

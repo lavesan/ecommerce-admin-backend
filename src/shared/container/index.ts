@@ -5,6 +5,8 @@ import { ProductRepository } from "@modules/product/repositories/ProductReposito
 
 import { IUserRepository } from "@modules/user/repositories/IUserRepository";
 import { UserRepository } from "@modules/user/repositories/UserRepository";
+import { CategoryRepository } from "@modules/product/repositories/CategoryRepository";
+import { ICategoryRepository } from "@modules/product/repositories/ICategoryRespository";
 
 // import { IProductRepository } from "@modules/user/repositories/";
 // import { ProductRepository } from "@modules/product/repositories/ProductRepository";
@@ -12,6 +14,11 @@ import { UserRepository } from "@modules/user/repositories/UserRepository";
 container.registerSingleton<IProductRepository>(
   "ProductRepository",
   ProductRepository
+);
+
+container.registerSingleton<ICategoryRepository>(
+  "CategoryRepository",
+  CategoryRepository
 );
 
 container.registerSingleton<IUserRepository>("UserRepository", UserRepository);
