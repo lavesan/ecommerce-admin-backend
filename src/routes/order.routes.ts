@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { ensureAuthenticated } from "@shared/infra/http/middlwares/ensureAuthenticated";
+import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
 import { OrderController } from "@modules/order/controller/OrderController";
 
 const orderController = new OrderController();

@@ -24,7 +24,7 @@ export const createOrderValidation = yup.object({
     .array()
     .of(
       yup.object({
-        id: yup.string().required(),
+        id: yup.string().uuid().required(),
         quantity: yup.number().required(),
         value: yup.number().required(),
         points: yup.number().required(),
@@ -32,7 +32,7 @@ export const createOrderValidation = yup.object({
           .array()
           .of(
             yup.object({
-              id: yup.string().required(),
+              id: yup.string().uuid().required(),
               value: yup.number().required(),
               quantity: yup.number().required(),
             })

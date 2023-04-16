@@ -8,6 +8,7 @@ import { clientRouter } from "./client.routes";
 import { enterpriseRouter } from "./enterprise.routes";
 import { promotionRouter } from "./promotion.routes";
 import { freightRouter } from "./freight.routes";
+import { imageRouter } from "./image.routes";
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.use("/client", clientRouter);
 router.use("/enterprise", enterpriseRouter);
 router.use("/promotion", promotionRouter);
 router.use("/freight", freightRouter);
+router.use("/image", imageRouter);
 
 export { router };

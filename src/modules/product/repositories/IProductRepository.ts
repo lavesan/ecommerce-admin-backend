@@ -5,6 +5,7 @@ import {
 import { Product } from "../entities/Product";
 import { ICreateProductRequest } from "../models/ICreateProductRequest";
 import { IFindProductsRequest } from "../models/IFindProductsRequest";
+import { IUpdateProductRequest } from "../models/IUpdateProductRequest";
 
 export interface IProductRepository {
   findById: (id: string) => Promise<Product>;
@@ -12,6 +13,9 @@ export interface IProductRepository {
     pagination: IPaginationRequest,
     filter: IFindProductsRequest
   ) => Promise<IPaginationResponse<Product>>;
-  update: (id: string, body: Partial<Product>) => Promise<boolean>;
+  update: (
+    id: string,
+    body: Partial<IUpdateProductRequest>
+  ) => Promise<boolean>;
   create: (body: ICreateProductRequest) => Promise<Product>;
 }

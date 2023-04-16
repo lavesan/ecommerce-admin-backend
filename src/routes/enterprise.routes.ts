@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { ensureAuthenticated } from "@shared/infra/http/middlwares/ensureAuthenticated";
+import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
 import { EnterpriseController } from "@modules/enterprise/controller/EnterpriseController";
 
 const enterpriseController = new EnterpriseController();

@@ -21,7 +21,7 @@ class Category {
   description: string;
 
   @Column()
-  imageUrl: string;
+  imageKey: string;
 
   @Column({ default: false })
   isDisabled: boolean;
@@ -32,7 +32,7 @@ class Category {
   @OneToMany(() => Product, (product) => product.category)
   products: Product[];
 
-  @ManyToOne(() => Enterprise, enterprise => enterprise.categories)
+  @ManyToOne(() => Enterprise, (enterprise) => enterprise.categories)
   enterprise: Enterprise;
 }
 

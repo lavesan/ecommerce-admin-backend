@@ -12,6 +12,6 @@ export const createEnterpriseValidation = yup.object({
   district: yup.string().required(),
   state: yup.string().required(),
   city: yup.string().required(),
-  imageUrl: yup.string().required(),
-  userId: yup.string().required(),
+  imageKey: yup.string().required(),
+  userId: yup.string().uuid().required(),
 });

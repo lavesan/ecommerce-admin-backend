@@ -4,6 +4,11 @@ import { container } from "tsyringe";
 import { ICreateProductRequest } from "../models/ICreateProductRequest";
 import { IFindProductsQuery } from "../models/IFindProductsRequest";
 import { ProductService } from "../services/ProductService";
+import { createProductValidation } from "../validations/createProductValidation";
+import { CreateProductError } from "../errors/CreateProductError";
+import { IUpdateProductRequest } from "../models/IUpdateProductRequest";
+import { updateProductValidation } from "../validations/updateProductValidation";
+import { UpdateProductError } from "../errors/UpdateProductError";
 // import { CreateAgentError } from "./CreateAgentError";
 
 // import { CreateAgentUseCase } from "./CreateAgentUseCase";
@@ -12,6 +17,12 @@ import { ProductService } from "../services/ProductService";
 export class ProductController {
   async create(req: Request, res: Response) {
     const service = container.resolve(ProductService);
+
+    await createProductValidation
+      .validate(req.body, { abortEarly: false })
+      .catch((err) => {
+        throw new CreateProductError.BodyIsInvalid(err);
+      });
 
     const body = req.body as ICreateProductRequest;
 
@@ -23,9 +34,18 @@ export class ProductController {
   async update(req: Request, res: Response) {
     const service = container.resolve(ProductService);
 
+    await updateProductValidation
+      .validate(req.body, { abortEarly: false })
+      .catch((err) => {
+        throw new UpdateProductError.BodyIsInvalid(err);
+      });
+
     const { id } = req.params;
 
-    const result = await service.update(id, req.body);
+    const result = await service.update(
+      id,
+      req.body as Partial<IUpdateProductRequest>
+    );
 
     return res.json(result);
   }

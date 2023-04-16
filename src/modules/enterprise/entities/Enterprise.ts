@@ -51,7 +51,7 @@ class Enterprise {
   city: string;
 
   @Column({ nullable: true })
-  imageUrl: string;
+  imageKey: string;
 
   @CreateDateColumn()
   created_at: Date;

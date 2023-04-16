@@ -1,5 +1,5 @@
 export interface ICreateProductAdditional {
   name: string;
-  imageUrl: string;
+  imageKey: string;
   value: number;
 }

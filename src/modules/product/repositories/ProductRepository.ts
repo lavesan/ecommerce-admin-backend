@@ -6,6 +6,7 @@ import { Product } from "../entities/Product";
 import { ICreateProductRequest } from "../models/ICreateProductRequest";
 import { IFindProductsRequest } from "../models/IFindProductsRequest";
 import { IProductRepository } from "./IProductRepository";
+import { IUpdateProductRequest } from "../models/IUpdateProductRequest";
 
 export class ProductRepository implements IProductRepository {
   private readonly repository: Repository<Product>;
@@ -14,11 +15,13 @@ export class ProductRepository implements IProductRepository {
     this.repository = AppDataSource.getRepository(Product);
   }
 
-  async create(body: ICreateProductRequest) {
-    const { categoryId, productAdditionalCategory, ...newProduct } = body;
-
+  async create({
+    categoryId,
+    productAdditionalCategory,
+    ...body
+  }: ICreateProductRequest) {
     const product = this.repository.create({
-      ...newProduct,
+      ...body,
       productAdditionalCategory,
       category: { id: categoryId },
     });
@@ -28,8 +31,20 @@ export class ProductRepository implements IProductRepository {
     return product;
   }
 
-  async update(id: string, body: Partial<Product>) {
-    await this.repository.update(id, body);
+  async update(
+    id: string,
+    {
+      categoryId,
+      productAdditionalCategory,
+      ...body
+    }: Partial<IUpdateProductRequest>
+  ) {
+    const parsedBody = {
+      ...body,
+      productAdditionalCategory,
+      category: { id: categoryId },
+    };
+    await this.repository.update(id, parsedBody);
     return true;
   }
 

@@ -1,6 +1,6 @@
 export interface ICreateCategory {
   name: string;
   description: string;
-  imageUrl: string;
+  imageKey: string;
   enterpriseId: string;
 }

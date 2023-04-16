@@ -10,6 +10,6 @@ export interface ICreateEnterprise {
   district: string;
   state: string;
   city: string;
-  imageUrl: string;
+  imageKey: string;
   userId: string;
 }

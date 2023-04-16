@@ -28,7 +28,7 @@ class Product {
   boldDescription: string;
 
   @Column()
-  imageUrl: string;
+  imageKey: string;
 
   @Column()
   value: number;

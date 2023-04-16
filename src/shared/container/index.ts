@@ -21,6 +21,8 @@ import { PromotionRepository } from "@modules/promotion/repositories/PromotionRe
 import { IPromotionRepository } from "@modules/promotion/repositories/IPromotionRepository";
 import { FreightRepository } from "@modules/freight/repositories/FreightRepository";
 import { IFreightRepository } from "@modules/freight/repositories/IFreightRepositorty";
+import { AWSS3Repository } from "@modules/fileStorage/repositories/AWSS3Repository";
+import { IFileStorageRepository } from "@modules/fileStorage/repositories/IFileStorageRepository";
 
 container.registerSingleton<IProductRepository>(
   "ProductRepository",
@@ -57,4 +59,9 @@ container.registerSingleton<IPromotionRepository>(
 container.registerSingleton<IFreightRepository>(
   "FreightRepository",
   FreightRepository
+);
+
+container.registerSingleton<IFileStorageRepository>(
+  "FileStorageRepository",
+  AWSS3Repository
 );

@@ -20,7 +20,7 @@ class ProductAdditional {
   name: string;
 
   @Column()
-  imageUrl: string;
+  imageKey: string;
 
   @Column()
   value: number;

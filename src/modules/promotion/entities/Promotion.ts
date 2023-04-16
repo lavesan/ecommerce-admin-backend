@@ -22,7 +22,7 @@ class Promotion {
   description: string;
 
   @Column()
-  imageUrl: string;
+  imageKey: string;
 
   @Column({
     type: "enum",
