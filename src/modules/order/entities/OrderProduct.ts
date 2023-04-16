@@ -36,7 +36,7 @@ class OrderProduct {
   @OneToMany(
     () => OrderProductAdditional,
     (productOrderAdditional) => productOrderAdditional.orderProduct,
-    { cascade: ["insert"] }
+    { cascade: true }
   )
   additionals: OrderProductAdditional[];
 }
