@@ -1,9 +1,16 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn } from "typeorm";
-import { v4 as uuidV4 } from "uuid";
+import { Enterprise } from "@modules/enterprise/entities/Enterprise";
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from "typeorm";
 
 @Entity("user")
 class User {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
@@ -21,9 +28,8 @@ class User {
   @CreateDateColumn()
   created_at: Date;
 
-  constructor() {
-    if (!this.id) this.id = uuidV4();
-  }
+  @OneToMany(() => Enterprise, (enterprise) => enterprise.user)
+  enterprises: Enterprise[];
 }
 
 export { User };

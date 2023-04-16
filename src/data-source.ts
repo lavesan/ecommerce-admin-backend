@@ -9,6 +9,12 @@ import { ProductAdditionalCategory } from "@modules/product/entities/ProductAddi
 import { Order } from "@modules/order/entities/Order";
 import { OrderProduct } from "@modules/order/entities/OrderProduct";
 import { OrderProductAdditional } from "@modules/order/entities/OrderProductAdditional";
+import { Address } from "@modules/client/entities/Address";
+import { Client } from "@modules/client/entities/Client";
+import { Enterprise } from "@modules/enterprise/entities/Enterprise";
+import { Freight } from "@modules/freight/entities/Freight";
+import { Promotion } from "@modules/promotion/entities/Promotion";
+import { PromotionProduct } from "@modules/promotion/entities/PromotionProduct";
 
 const AppDataSource = new DataSource({
   type: "postgres",
@@ -18,7 +24,7 @@ const AppDataSource = new DataSource({
   password: "postgres",
   database: "success_commerce",
   synchronize: true,
-  logging: true,
+  // logging: true,
   subscribers: [],
   migrations: [__dirname + "/shared/migration/*.ts"],
   entities: [
@@ -30,6 +36,12 @@ const AppDataSource = new DataSource({
     Order,
     OrderProduct,
     OrderProductAdditional,
+    Client,
+    Address,
+    Enterprise,
+    Freight,
+    Promotion,
+    PromotionProduct,
   ],
 });
 

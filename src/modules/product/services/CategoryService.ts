@@ -1,8 +1,9 @@
 import { IPaginationRequest } from "models/pagination.models";
 import { inject, injectable } from "tsyringe";
 import { Category } from "../entities/Category";
-import { CreateCategoryError } from "../errors/createCategoryErrors";
+import { CreateCategoryError } from "../errors/CreateCategoryErrors";
 import { UpdateCategoryError } from "../errors/UpdateCategoryError";
+import { ICreateCategory } from "../models/ICreateCategory";
 import { IPaginateCategoryRequest } from "../models/IPaginateCategoryRequest";
 import { ICategoryRepository } from "../repositories/ICategoryRespository";
 
@@ -13,7 +14,7 @@ export class CategoryService {
     private readonly categoryRepository: ICategoryRepository
   ) {}
 
-  async create(body: Partial<Category>) {
+  async create(body: ICreateCategory) {
     const category = await this.categoryRepository.findByName(body.name);
 
     if (category) {

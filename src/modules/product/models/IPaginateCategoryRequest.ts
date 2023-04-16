@@ -1,3 +1,4 @@
 export interface IPaginateCategoryRequest {
-  name: string;
+  name?: string;
+  enterpriseId?: string;
 }

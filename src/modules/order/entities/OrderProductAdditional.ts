@@ -1,19 +1,16 @@
 import { ProductAdditional } from "@modules/product/entities/ProductAdditional";
 import {
   Entity,
-  PrimaryColumn,
   Column,
   CreateDateColumn,
   ManyToOne,
-  OneToMany,
-  OneToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
-import { v4 as uuidV4 } from "uuid";
 import { OrderProduct } from "./OrderProduct";
 
 @Entity("product_order_additional")
 class OrderProductAdditional {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
@@ -25,21 +22,14 @@ class OrderProductAdditional {
   @CreateDateColumn()
   created_at: Date;
 
-  @OneToOne(
+  @ManyToOne(
     () => ProductAdditional,
     (productAdditional) => productAdditional.orderProductAdditional
   )
   productAdditional: ProductAdditional;
 
-  @ManyToOne(
-    () => OrderProduct,
-    (productOrder) => productOrder.OrderProductAdditionals
-  )
-  productOrder: OrderProduct;
-
-  constructor() {
-    if (!this.id) this.id = uuidV4();
-  }
+  @ManyToOne(() => OrderProduct, (productOrder) => productOrder.additionals)
+  orderProduct: OrderProduct;
 }
 
 export { OrderProductAdditional };

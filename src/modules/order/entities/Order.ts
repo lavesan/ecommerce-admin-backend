@@ -1,17 +1,24 @@
+import { Address } from "@modules/client/entities/Address";
+import { Client } from "@modules/client/entities/Client";
+import { Enterprise } from "@modules/enterprise/entities/Enterprise";
+import { Freight } from "@modules/freight/entities/Freight";
 import {
   Entity,
-  PrimaryColumn,
   Column,
   CreateDateColumn,
   OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
-import { v4 as uuidV4 } from "uuid";
 import { OrderStatus } from "../enums/OrderStatus";
+import { PaymentType } from "../enums/PaymentType";
 import { OrderProduct } from "./OrderProduct";
 
 @Entity("order")
 class Order {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
@@ -19,6 +26,18 @@ class Order {
 
   @Column()
   productsValue: number;
+
+  @Column({
+    type: "enum",
+    enum: PaymentType,
+  })
+  paymentType: PaymentType;
+
+  @Column({
+    type: "integer",
+    comment: "When the client selects a MONEY payment type",
+  })
+  moneyExchange: number;
 
   @Column({
     type: "enum",
@@ -30,12 +49,25 @@ class Order {
   @CreateDateColumn()
   created_at: Date;
 
-  @OneToMany(() => OrderProduct, (productOrder) => productOrder.order)
-  productsOrder: OrderProduct[];
+  @OneToMany(() => OrderProduct, (productOrder) => productOrder.order, {
+    cascade: true,
+  })
+  orderProducts: OrderProduct[];
 
-  constructor() {
-    if (!this.id) this.id = uuidV4();
-  }
+  @OneToOne(() => Address, (address) => address.order, {
+    cascade: ["insert", "update"],
+  })
+  @JoinColumn({ name: "address_id" })
+  address: Address;
+
+  @ManyToOne(() => Client, (client) => client.orders)
+  client: Client;
+
+  @ManyToOne(() => Enterprise, (enterprise) => enterprise.orders)
+  enterprise: Enterprise;
+
+  @ManyToOne(() => Freight, (freight) => freight.orders)
+  freight: Freight;
 }
 
 export { Order };

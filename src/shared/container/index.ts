@@ -5,11 +5,22 @@ import { ProductRepository } from "@modules/product/repositories/ProductReposito
 
 import { IUserRepository } from "@modules/user/repositories/IUserRepository";
 import { UserRepository } from "@modules/user/repositories/UserRepository";
+
 import { CategoryRepository } from "@modules/product/repositories/CategoryRepository";
 import { ICategoryRepository } from "@modules/product/repositories/ICategoryRespository";
 
-// import { IProductRepository } from "@modules/user/repositories/";
-// import { ProductRepository } from "@modules/product/repositories/ProductRepository";
+import { OrderRepository } from "@modules/order/repositories/OrderRepository";
+import { IOrderRepository } from "@modules/order/repositories/IOrderRepository";
+
+import { ClientRepository } from "@modules/client/repositories/ClientRepository";
+import { IClientRepository } from "@modules/client/repositories/IClientRepository";
+
+import { EnterpriseRepository } from "@modules/enterprise/repositories/EnterpriseRepository";
+import { IEnterpriseRepository } from "@modules/enterprise/repositories/IEnterpriseRepository";
+import { PromotionRepository } from "@modules/promotion/repositories/PromotionRepository";
+import { IPromotionRepository } from "@modules/promotion/repositories/IPromotionRepository";
+import { FreightRepository } from "@modules/freight/repositories/FreightRepository";
+import { IFreightRepository } from "@modules/freight/repositories/IFreightRepositorty";
 
 container.registerSingleton<IProductRepository>(
   "ProductRepository",
@@ -22,3 +33,28 @@ container.registerSingleton<ICategoryRepository>(
 );
 
 container.registerSingleton<IUserRepository>("UserRepository", UserRepository);
+
+container.registerSingleton<IOrderRepository>(
+  "OrderRepository",
+  OrderRepository
+);
+
+container.registerSingleton<IClientRepository>(
+  "ClientRepository",
+  ClientRepository
+);
+
+container.registerSingleton<IEnterpriseRepository>(
+  "EnterpriseRepository",
+  EnterpriseRepository
+);
+
+container.registerSingleton<IPromotionRepository>(
+  "PromotionRepository",
+  PromotionRepository
+);
+
+container.registerSingleton<IFreightRepository>(
+  "FreightRepository",
+  FreightRepository
+);

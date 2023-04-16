@@ -121,6 +121,7 @@ export class CreateOrderFlow1681420638255 implements MigrationInterface {
     await queryRunner.createForeignKey(
       "product_order",
       new TableForeignKey({
+        name: "ProductOrderProductFK",
         columnNames: ["product_id"],
         referencedTableName: "product",
         referencedColumnNames: ["id"],
@@ -130,6 +131,7 @@ export class CreateOrderFlow1681420638255 implements MigrationInterface {
     await queryRunner.createForeignKey(
       "product_order",
       new TableForeignKey({
+        name: "ProductOrderOrderFK",
         columnNames: ["order_id"],
         referencedTableName: "order",
         referencedColumnNames: ["id"],
@@ -139,6 +141,7 @@ export class CreateOrderFlow1681420638255 implements MigrationInterface {
     await queryRunner.createForeignKey(
       "product_order_additional",
       new TableForeignKey({
+        name: "ProductOrderAdditionalProductAdditionalFK",
         columnNames: ["product_additional_id"],
         referencedTableName: "product_additionals",
         referencedColumnNames: ["id"],
@@ -148,6 +151,7 @@ export class CreateOrderFlow1681420638255 implements MigrationInterface {
     await queryRunner.createForeignKey(
       "product_order_additional",
       new TableForeignKey({
+        name: "ProductOrderAdditionalProductOrderFK",
         columnNames: ["product_order_id"],
         referencedTableName: "product_order",
         referencedColumnNames: ["id"],
@@ -159,27 +163,28 @@ export class CreateOrderFlow1681420638255 implements MigrationInterface {
     const product_order_additionalTable = await queryRunner.getTable(
       "product_order_additional"
     );
-    const product_order_additionalAdditionalforeignKey =
+    const product_order_additionalAdditionalForeignKey =
       product_order_additionalTable.foreignKeys.find(
-        (fk) => fk.columnNames.indexOf("product_additional_id") !== -1
+        (fk) => fk.name === "ProductOrderAdditionalProductAdditionalFK"
       );
-    await queryRunner.dropForeignKey(
-      "product_order_additional",
-      product_order_additionalAdditionalforeignKey
-    );
 
-    const product_order_additionalOrderforeignKey =
+    const product_order_additionalOrderForeignKey =
       product_order_additionalTable.foreignKeys.find(
-        (fk) => fk.columnNames.indexOf("product_order_id") !== -1
+        (fk) => fk.name === "ProductOrderAdditionalProductOrderFK"
       );
+
     await queryRunner.dropForeignKey(
       "product_order_additional",
-      product_order_additionalOrderforeignKey
+      product_order_additionalAdditionalForeignKey
+    );
+    await queryRunner.dropForeignKey(
+      "product_order_additional",
+      product_order_additionalOrderForeignKey
     );
 
     const product_orderTable = await queryRunner.getTable("product_order");
     const product_orderProductForeignKey = product_orderTable.foreignKeys.find(
-      (fk) => fk.columnNames.indexOf("product_id") !== -1
+      (fk) => fk.name === "ProductOrderProductFK"
     );
     await queryRunner.dropForeignKey(
       "product_order",
@@ -187,15 +192,17 @@ export class CreateOrderFlow1681420638255 implements MigrationInterface {
     );
 
     const product_orderOrderForeignKey = product_orderTable.foreignKeys.find(
-      (fk) => fk.columnNames.indexOf("order_id") !== -1
+      (fk) => (fk.name = "ProductOrderOrderFK")
     );
     await queryRunner.dropForeignKey(
       "product_order",
       product_orderOrderForeignKey
     );
 
-    await queryRunner.dropTable("product_order_additional");
-    await queryRunner.dropTable("product_order");
-    await queryRunner.dropTable("order");
+    await Promise.all([
+      queryRunner.dropTable("product_order_additional"),
+      queryRunner.dropTable("product_order"),
+      queryRunner.dropTable("order"),
+    ]);
   }
 }

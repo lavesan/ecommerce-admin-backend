@@ -3,6 +3,7 @@ import {
   IPaginationResponse,
 } from "models/pagination.models";
 import { Category } from "../entities/Category";
+import { ICreateCategory } from "../models/ICreateCategory";
 import { IPaginateCategoryRequest } from "../models/IPaginateCategoryRequest";
 
 export interface ICategoryRepository {
@@ -13,5 +14,5 @@ export interface ICategoryRepository {
   findById: (id: string) => Promise<Category>;
   findByName: (name: string) => Promise<Category>;
   update: (id: string, body: Partial<Category>) => Promise<boolean>;
-  create: (body: Partial<Category>) => Promise<Category>;
+  create: (body: ICreateCategory) => Promise<Category>;
 }

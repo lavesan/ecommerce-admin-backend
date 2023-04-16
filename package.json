@@ -7,12 +7,13 @@
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --poll --transpile-only --ignore-watch node_modules --respawn ./src/server.ts",
     "test": "jest",
     "typeorm": "ts-node -r tsconfig-paths/register --project ./tsconfig.json ./node_modules/typeorm/cli.js -d ./src/data-source.ts",
-    "migration:create": "npm run typeorm migration:create",
+    "migration:create": "typeorm migration:create",
     "migration:run": "npm run typeorm migration:run",
     "migration:down": "npm run typeorm migration:revert",
     "seed:admin": "ts-node-dev src/shared/infra/typeorm/seed/admin.ts"
   },
   "dependencies": {
+    "@brazilian-utils/brazilian-utils": "^1.0.0-rc.12",
     "babel-plugin-module-resolver": "^5.0.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

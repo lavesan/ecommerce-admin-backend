@@ -1,6 +1,6 @@
 import { getSkipAndTake } from "@helpers/pagination.helper";
 import { IPaginationRequest } from "models/pagination.models";
-import { ILike, Repository } from "typeorm";
+import { FindOptionsWhere, ILike, Repository } from "typeorm";
 import AppDataSource from "../../../data-source";
 import { Product } from "../entities/Product";
 import { ICreateProductRequest } from "../models/ICreateProductRequest";
@@ -43,25 +43,26 @@ export class ProductRepository implements IProductRepository {
     });
   }
 
-  async paginate(pagination: IPaginationRequest, filter: IFindProductsRequest) {
+  async paginate(
+    pagination: IPaginationRequest,
+    { name, categoryId }: IFindProductsRequest
+  ) {
     const paginationData = getSkipAndTake(pagination);
 
-    let where: any = {};
+    let where: FindOptionsWhere<Product> = {};
 
-    if (filter.name) where.name = ILike(`%${filter.name}%`);
+    if (name) where.name = ILike(`%${name}%`);
 
-    if (filter.categoryId)
+    if (categoryId)
       where = {
         ...where,
-        category: { id: filter.categoryId },
+        category: { id: categoryId },
       };
 
     const [data, count] = await this.repository.findAndCount({
       order: {
         created_at: "DESC",
       },
-      skip: 0,
-      take: 20,
       ...paginationData,
       where,
     });

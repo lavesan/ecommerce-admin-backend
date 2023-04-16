@@ -1,12 +1,11 @@
 import {
   Entity,
-  PrimaryColumn,
   Column,
   CreateDateColumn,
   ManyToOne,
   OneToMany,
+  PrimaryGeneratedColumn,
 } from "typeorm";
-import { v4 as uuidV4 } from "uuid";
 import { ProductAdditionalType } from "../enums/ProductAdditionalType";
 
 import { Product } from "./Product";
@@ -14,7 +13,7 @@ import { ProductAdditional } from "./ProductAdditional";
 
 @Entity("product_additionals_category")
 class ProductAdditionalCategory {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
@@ -54,10 +53,6 @@ class ProductAdditionalCategory {
 
   @ManyToOne(() => Product, (product) => product.productAdditionalCategory)
   product: Product;
-
-  constructor() {
-    if (!this.id) this.id = uuidV4();
-  }
 }
 
 export { ProductAdditionalCategory };

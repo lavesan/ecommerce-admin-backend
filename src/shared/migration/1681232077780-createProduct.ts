@@ -28,6 +28,7 @@ export class CreateProduct1681232077780 implements MigrationInterface {
           {
             name: "icon",
             type: "varchar",
+            isNullable: true,
           },
           {
             name: "imageUrl",
@@ -186,6 +187,7 @@ export class CreateProduct1681232077780 implements MigrationInterface {
         columnNames: ["product_id"],
         referencedTableName: "product",
         referencedColumnNames: ["id"],
+        onDelete: "CASCADE",
       })
     );
 
@@ -196,16 +198,18 @@ export class CreateProduct1681232077780 implements MigrationInterface {
         columnNames: ["product_additionals_category_id"],
         referencedTableName: "product_additionals_category",
         referencedColumnNames: ["id"],
+        onDelete: "CASCADE",
       })
     );
 
     await queryRunner.createForeignKey(
       "product",
       new TableForeignKey({
-        name: "ProductProductCategoryFK",
+        name: "ProductCategoryFK",
         columnNames: ["product_category_id"],
         referencedTableName: "category",
         referencedColumnNames: ["id"],
+        onDelete: "CASCADE",
       })
     );
   }
@@ -216,7 +220,7 @@ export class CreateProduct1681232077780 implements MigrationInterface {
     );
     const product_additionals_categoryForeignKey =
       product_additionals_categoryTable.foreignKeys.find(
-        (fk) => fk.columnNames.indexOf("product_id") !== -1
+        (fk) => fk.name === "ProductAdditionalsCategoryProductFK"
       );
     await queryRunner.dropForeignKey(
       "product_additionals_category",
@@ -228,7 +232,7 @@ export class CreateProduct1681232077780 implements MigrationInterface {
     );
     const product_additionalsForeignKey =
       product_additionalsTable.foreignKeys.find(
-        (fk) => fk.columnNames.indexOf("product_additionals_category_id") !== -1
+        (fk) => fk.name === "ProductAdditionalsProductAdditionalsCategoryFK"
       );
     await queryRunner.dropForeignKey(
       "product_additionals",
@@ -236,10 +240,10 @@ export class CreateProduct1681232077780 implements MigrationInterface {
     );
 
     const productTable = await queryRunner.getTable("product");
-    const productForeignKey = productTable.foreignKeys.find(
-      (fk) => fk.columnNames.indexOf("product_category_id") !== -1
+    const productCategoryForeignKey = productTable.foreignKeys.find(
+      (fk) => fk.name === "ProductCategoryFK"
     );
-    await queryRunner.dropForeignKey("product", productForeignKey);
+    await queryRunner.dropForeignKey("product", productCategoryForeignKey);
 
     await queryRunner.dropTable("category");
     await queryRunner.dropTable("product");

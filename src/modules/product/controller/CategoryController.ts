@@ -2,7 +2,7 @@ import { getPageAndSize } from "@helpers/pagination.helper";
 import { Request, Response } from "express";
 import { IPaginationRequest } from "models/pagination.models";
 import { container } from "tsyringe";
-import { CreateCategoryError } from "../errors/createCategoryErrors";
+import { CreateCategoryError } from "../errors/CreateCategoryErrors";
 import { UpdateCategoryError } from "../errors/UpdateCategoryError";
 import { IPaginateCategoryRequest } from "../models/IPaginateCategoryRequest";
 import { CategoryService } from "../services/CategoryService";
@@ -46,9 +46,10 @@ export class CategoryController {
     const pagination = getPageAndSize(
       req.query as unknown as IPaginationRequest
     );
-    const { name } = req.query as unknown as IPaginateCategoryRequest;
+    const { name, enterpriseId } =
+      req.query as unknown as IPaginateCategoryRequest;
 
-    const result = await service.paginate(pagination, { name });
+    const result = await service.paginate(pagination, { name, enterpriseId });
 
     return res.json(result);
   }

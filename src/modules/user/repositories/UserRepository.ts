@@ -1,8 +1,14 @@
+import { getSkipAndTake } from "@helpers/pagination.helper";
 import { encryptPwd } from "helpers/password.helper";
+import {
+  IPaginationRequest,
+  IPaginationResponse,
+} from "models/pagination.models";
 import { Model } from "mongoose";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, ILike, Repository } from "typeorm";
 import AppDataSource from "../../../data-source";
 import { User } from "../entities/User";
+import { IPaginateUser } from "../models/IPaginateUser";
 
 import { IUserRepository as IUserRepository } from "./IUserRepository";
 
@@ -26,5 +32,38 @@ export class UserRepository implements IUserRepository {
 
   async findByEmail(email: string) {
     return this.repository.findOne({ where: { email } });
+  }
+
+  async findById(id: string) {
+    return this.repository.findOne({
+      where: { id },
+      relations: ["enterprises"],
+    });
+  }
+
+  async paginate(
+    pagination: IPaginationRequest,
+    { email, name }: IPaginateUser
+  ): Promise<IPaginationResponse<User>> {
+    const paginationData = getSkipAndTake(pagination);
+
+    let where: FindOptionsWhere<User> = {};
+
+    if (name) where.name = ILike(`%${name}%`);
+    if (email) where.email = ILike(`%${email}%`);
+
+    const [data, count] = await this.repository.findAndCount({
+      order: {
+        created_at: "DESC",
+      },
+      where,
+      ...paginationData,
+    });
+
+    return {
+      data,
+      count,
+      ...pagination,
+    };
   }
 }

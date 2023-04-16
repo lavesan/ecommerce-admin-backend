@@ -1,21 +1,21 @@
 import { OrderProduct } from "@modules/order/entities/OrderProduct";
+import { PromotionProduct } from "@modules/promotion/entities/PromotionProduct";
 import {
   Entity,
-  PrimaryColumn,
   Column,
   CreateDateColumn,
   ManyToOne,
   OneToMany,
-  ManyToMany,
+  PrimaryGeneratedColumn,
+  OneToOne,
 } from "typeorm";
-import { v4 as uuidV4 } from "uuid";
 
 import { Category } from "./Category";
 import { ProductAdditionalCategory } from "./ProductAdditionalCategory";
 
 @Entity("product")
 class Product {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
@@ -53,12 +53,14 @@ class Product {
   })
   productAdditionalCategory: ProductAdditionalCategory[];
 
-  @ManyToMany(() => OrderProduct, (productOrder) => productOrder.products)
+  @OneToMany(() => OrderProduct, (productOrder) => productOrder.product)
   orderProducts: OrderProduct[];
 
-  constructor() {
-    if (!this.id) this.id = uuidV4();
-  }
+  @OneToOne(
+    () => PromotionProduct,
+    (promotionProduct) => promotionProduct.product
+  )
+  promotionProduct: PromotionProduct;
 }
 
 export { Product };

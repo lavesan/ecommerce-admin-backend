@@ -1,16 +1,17 @@
+import { Enterprise } from "@modules/enterprise/entities/Enterprise";
 import {
   Entity,
-  PrimaryColumn,
   Column,
   CreateDateColumn,
   OneToMany,
+  PrimaryGeneratedColumn,
+  ManyToOne,
 } from "typeorm";
-import { v4 as uuidV4 } from "uuid";
 import { Product } from "./Product";
 
 @Entity("category")
 class Category {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column({ unique: true })
@@ -31,9 +32,8 @@ class Category {
   @OneToMany(() => Product, (product) => product.category)
   products: Product[];
 
-  constructor() {
-    if (!this.id) this.id = uuidV4();
-  }
+  @ManyToOne(() => Enterprise, enterprise => enterprise.categories)
+  enterprise: Enterprise;
 }
 
 export { Category };

@@ -1,0 +1,94 @@
+import { getSkipAndTake } from "@helpers/pagination.helper";
+import AppDataSource from "data-source";
+import {
+  IPaginationRequest,
+  IPaginationResponse,
+} from "models/pagination.models";
+import { Repository } from "typeorm";
+import { Order } from "../entities/Order";
+import { ICreateOrder } from "../models/ICreateOrder";
+import { IPaginateOrderRequest } from "../models/IPaginateOrderRequest";
+import { IUpdateOrder } from "../models/IUpdateOrder";
+import { IOrderRepository } from "./IOrderRepository";
+
+export class OrderRepository implements IOrderRepository {
+  private readonly repository: Repository<Order>;
+
+  constructor() {
+    this.repository = AppDataSource.getRepository(Order);
+  }
+
+  async create({
+    products,
+    address,
+    enterpriseId,
+    freightId,
+    clientId,
+    ...body
+  }: ICreateOrder): Promise<Order> {
+    const orderProducts = products.map(({ id, additionals, ...product }) => ({
+      ...product,
+      product: { id },
+      additionals: additionals.map(({ id: additionalId, ...additional }) => ({
+        ...additional,
+        productAdditional: { id: additionalId },
+      })),
+    }));
+
+    const order = this.repository.create({
+      ...body,
+      address,
+      orderProducts,
+      enterprise: { id: enterpriseId },
+      freight: { id: freightId },
+      client: { id: clientId },
+    });
+
+    const createdOrder = await this.repository.save(order);
+
+    return createdOrder;
+  }
+
+  async update(id: string, body: IUpdateOrder): Promise<boolean> {
+    await this.repository.update(id, body);
+    return true;
+  }
+
+  findById(id: string): Promise<Order> {
+    return this.repository.findOne({
+      where: { id },
+      relations: [
+        "orderProducts",
+        "orderProducts.product",
+        "orderProducts.additionals",
+        "orderProducts.additionals.productAdditional",
+        "address",
+      ],
+    });
+  }
+
+  async paginate(
+    pagination: IPaginationRequest,
+    filter: IPaginateOrderRequest
+  ): Promise<IPaginationResponse<Order>> {
+    const paginationData = getSkipAndTake(pagination);
+
+    let where: any = {};
+
+    // if (filter.clientId) where.name = ILike(`%${filter.name}%`);
+
+    const [data, count] = await this.repository.findAndCount({
+      order: {
+        created_at: "DESC",
+      },
+      ...paginationData,
+      where,
+    });
+
+    return {
+      data,
+      count,
+      ...pagination,
+    };
+  }
+}
