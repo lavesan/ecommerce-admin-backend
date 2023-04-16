@@ -1,5 +1,6 @@
 import aws, { S3 } from "aws-sdk";
 import fs from "fs";
+
 import { IFileStorageRepository } from "./IFileStorageRepository";
 import { IUploadImageRequest } from "../models/IUploadImageRequest";
 import { IUploadImageResponse } from "../models/IUploadImageResponse";
