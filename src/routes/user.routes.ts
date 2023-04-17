@@ -9,6 +9,7 @@ const userRouter = Router();
 
 userRouter.post("/login", userController.login);
 userRouter.post("/", userController.create);
+userRouter.put("/:id", userController.update);
 userRouter.get("/:id", userController.findById);
 userRouter.get("/", userController.paginate);
 

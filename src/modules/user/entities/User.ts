@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
   OneToMany,
+  Index,
 } from "typeorm";
 
 @Entity("user")
@@ -17,6 +18,7 @@ class User {
   name: string;
 
   @Column({ unique: true })
+  @Index("UserEmailIdx")
   email: string;
 
   @Column()

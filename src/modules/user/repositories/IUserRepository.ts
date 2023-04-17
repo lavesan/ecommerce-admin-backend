@@ -4,9 +4,12 @@ import {
 } from "models/pagination.models";
 import { User } from "../entities/User";
 import { IPaginateUser } from "../models/IPaginateUser";
+import { IUpdateUserRequest } from "../models/IUpdateUserRequest";
+import { ICreateUserRequest } from "../models/ICreateUserRequest";
 
 export interface IUserRepository {
-  create(user: Partial<User>): Promise<User>;
+  create(user: ICreateUserRequest): Promise<User>;
+  update(id: string, user: IUpdateUserRequest): Promise<boolean>;
   findByEmail(email: string): Promise<User>;
   findById(id: string): Promise<User>;
   paginate(

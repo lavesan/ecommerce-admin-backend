@@ -10,6 +10,8 @@ import { ICreateUserRequest } from "../models/ICreateUserRequest";
 import { CreateUserError } from "../errors/CreateUserError";
 import { IPaginationRequest } from "models/pagination.models";
 import { IPaginateUser } from "../models/IPaginateUser";
+import { IUpdateUserRequest } from "../models/IUpdateUserRequest";
+import { UpdateUserError } from "../errors/UpdateUserError";
 
 @injectable()
 export class UserService {
@@ -51,6 +53,16 @@ export class UserService {
     const createdUser = await this.userRepository.create(body);
     delete createdUser.password;
     return createdUser;
+  }
+
+  async update(id: string, body: IUpdateUserRequest) {
+    const user = await this.userRepository.findById(id);
+
+    if (!user) throw new UpdateUserError.DontExist();
+
+    const updatedUser = await this.userRepository.create(body);
+    delete updatedUser.password;
+    return updatedUser;
   }
 
   findById(id: string) {

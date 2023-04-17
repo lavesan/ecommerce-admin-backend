@@ -11,6 +11,8 @@ import { User } from "../entities/User";
 import { IPaginateUser } from "../models/IPaginateUser";
 
 import { IUserRepository as IUserRepository } from "./IUserRepository";
+import { ICreateUserRequest } from "../models/ICreateUserRequest";
+import { IUpdateUserRequest } from "../models/IUpdateUserRequest";
 
 export class UserRepository implements IUserRepository {
   private repository: Repository<User>;
@@ -19,7 +21,7 @@ export class UserRepository implements IUserRepository {
     this.repository = AppDataSource.getRepository(User);
   }
 
-  async create({ password, ...body }: Partial<User>) {
+  async create({ password, ...body }: ICreateUserRequest) {
     const user = this.repository.create({
       ...body,
       password: await encryptPwd(password),
@@ -28,6 +30,14 @@ export class UserRepository implements IUserRepository {
     await this.repository.save(user);
 
     return user;
+  }
+
+  async update(id: string, { password, ...body }: IUpdateUserRequest) {
+    let user: Partial<IUpdateUserRequest> = body;
+    if (password) user.password = await encryptPwd(password);
+
+    await this.repository.update(id, user);
+    return true;
   }
 
   async findByEmail(email: string) {

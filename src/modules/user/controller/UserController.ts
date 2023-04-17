@@ -9,6 +9,9 @@ import { IPaginateUser } from "../models/IPaginateUser";
 import { UserService } from "../service/UserService";
 import { createUserValidation } from "../validations/createUserValidation";
 import { loginUserValidation } from "../validations/loginUserValidation";
+import { updateUserValidation } from "../validations/updateUserValidation";
+import { UpdateUserError } from "../errors/UpdateUserError";
+import { IUpdateUserRequest } from "../models/IUpdateUserRequest";
 
 export class UserController {
   async login(req: Request, res: Response) {
@@ -23,6 +26,8 @@ export class UserController {
     const { email, password } = req.body;
 
     const data = await service.login({ email, password });
+
+    res.cookie("token", data.accessToken, { httpOnly: true });
 
     return res.json(data);
   }
@@ -39,6 +44,23 @@ export class UserController {
     const { email, isAdmin, name, password } = req.body as ICreateUserRequest;
 
     const data = await service.create({ email, isAdmin, name, password });
+
+    return res.json(data);
+  }
+
+  async update(req: Request, res: Response) {
+    const service = container.resolve(UserService);
+
+    await updateUserValidation
+      .validate(req.body, { abortEarly: false })
+      .catch((err) => {
+        throw new UpdateUserError.BodyIsInvalid(err);
+      });
+
+    const { id } = req.params;
+    const { email, isAdmin, name, password } = req.body as IUpdateUserRequest;
+
+    const data = await service.update(id, { email, isAdmin, name, password });
 
     return res.json(data);
   }

@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   OneToMany,
   PrimaryGeneratedColumn,
+  Index,
 } from "typeorm";
 import { Address } from "./Address";
 
@@ -17,6 +18,7 @@ class Client {
   name: string;
 
   @Column({ unique: true })
+  @Index("ClientEmailIdx")
   email: string;
 
   @Column()

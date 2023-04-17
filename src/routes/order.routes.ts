@@ -10,6 +10,6 @@ const orderRouter = Router();
 orderRouter.get("/", orderController.paginate);
 orderRouter.get("/:id", orderController.findById);
 orderRouter.post("/", orderController.create);
-orderRouter.put("/:id", orderController.update);
+orderRouter.patch("/:id", orderController.update);
 
 export { orderRouter };
