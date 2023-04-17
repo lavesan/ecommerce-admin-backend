@@ -14,4 +14,16 @@ export const createEnterpriseValidation = yup.object({
   city: yup.string().required(),
   imageKey: yup.string().required(),
   userId: yup.string().uuid().required(),
+  freights: yup
+    .array()
+    .of(
+      yup
+        .object({
+          addressKey: yup.string().required(),
+          addressValue: yup.string().required(),
+          value: yup.number().required(),
+        })
+        .required()
+    )
+    .required(),
 });

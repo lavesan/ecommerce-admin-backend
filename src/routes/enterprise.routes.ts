@@ -8,6 +8,10 @@ const enterpriseController = new EnterpriseController();
 const enterpriseRouter = Router();
 
 enterpriseRouter.get("/", enterpriseController.paginate);
+enterpriseRouter.get("/:id", enterpriseController.findById);
+enterpriseRouter.get("/menu/:id", enterpriseController.findAllMenuById);
 enterpriseRouter.post("/", enterpriseController.create);
+enterpriseRouter.put("/:id", enterpriseController.update);
+enterpriseRouter.delete("/:id", enterpriseController.delete);
 
 export { enterpriseRouter };

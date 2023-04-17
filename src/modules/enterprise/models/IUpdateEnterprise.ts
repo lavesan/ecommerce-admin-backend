@@ -1,4 +1,4 @@
-export interface ICreateEnterprise {
+export interface IUpdateEnterprise {
   name: string;
   email: string;
   description: string;
@@ -13,6 +13,7 @@ export interface ICreateEnterprise {
   imageKey: string;
   userId: string;
   freights: {
+    id?: string;
     addressKey: string;
     addressValue: string;
     value: number;

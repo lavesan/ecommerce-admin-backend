@@ -5,6 +5,8 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 import { ProductAdditionalType } from "../enums/ProductAdditionalType";
 
@@ -43,6 +45,12 @@ class ProductAdditionalCategory {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 
   @OneToMany(
     () => ProductAdditional,

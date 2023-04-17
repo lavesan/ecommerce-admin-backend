@@ -7,6 +7,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   ManyToOne,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 
 @Entity("freight")
@@ -25,6 +27,12 @@ class Freight {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 
   @ManyToOne(() => Enterprise, (enterprise) => enterprise.freights)
   enterprise: Enterprise;

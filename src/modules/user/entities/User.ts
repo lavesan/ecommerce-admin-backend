@@ -7,6 +7,8 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   Index,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 
 @Entity("user")
@@ -29,6 +31,12 @@ class User {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 
   @OneToMany(() => Enterprise, (enterprise) => enterprise.user)
   enterprises: Enterprise[];

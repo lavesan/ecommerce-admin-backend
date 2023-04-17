@@ -6,6 +6,8 @@ import {
   ManyToOne,
   OneToMany,
   CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 import { WeekDay } from "../enums/WeekDay";
 import { PromotionProduct } from "./PromotionProduct";
@@ -32,6 +34,12 @@ class Promotion {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 
   @ManyToOne(() => Enterprise, (enterprise) => enterprise.promotions)
   enterprise: Enterprise;

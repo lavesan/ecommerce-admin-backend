@@ -10,6 +10,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   ManyToOne,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 
 @Entity("enterprise")
@@ -56,6 +58,12 @@ class Enterprise {
   @CreateDateColumn()
   created_at: Date;
 
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
+
   @OneToMany(() => Category, (category) => category.enterprise, {
     cascade: ["insert", "update", "remove"],
   })
@@ -66,7 +74,7 @@ class Enterprise {
   })
   orders: Order[];
 
-  @OneToMany(() => Freight, (freight) => freight.enterprise)
+  @OneToMany(() => Freight, (freight) => freight.enterprise, { cascade: true })
   freights: Freight[];
 
   @OneToMany(() => Promotion, (promotion) => promotion.enterprise)

@@ -6,6 +6,8 @@ import {
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 import { Client } from "./Client";
 
@@ -41,10 +43,16 @@ class Address {
   @CreateDateColumn()
   created_at: Date;
 
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
+
   @ManyToOne(() => Client, (client) => client.addresses)
   client?: Client;
 
-  @OneToOne(() => Order, (order) => order.address, { cascade: ["insert"] })
+  @OneToOne(() => Order, (order) => order.address)
   order?: Order;
 }
 

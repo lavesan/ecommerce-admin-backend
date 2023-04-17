@@ -11,6 +11,8 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 import { OrderStatus } from "../enums/OrderStatus";
 import { PaymentType } from "../enums/PaymentType";
@@ -49,13 +51,19 @@ class Order {
   @CreateDateColumn()
   created_at: Date;
 
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
+
   @OneToMany(() => OrderProduct, (productOrder) => productOrder.order, {
     cascade: true,
   })
   orderProducts: OrderProduct[];
 
   @OneToOne(() => Address, (address) => address.order, {
-    cascade: ["insert", "update"],
+    cascade: true,
   })
   @JoinColumn({ name: "address_id" })
   address: Address;

@@ -6,6 +6,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   Index,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 import { Address } from "./Address";
 
@@ -33,8 +35,14 @@ class Client {
   @CreateDateColumn()
   created_at: Date;
 
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
+
   @OneToMany(() => Address, (address) => address.client, {
-    cascade: ["insert", "update", "remove"],
+    cascade: true,
   })
   addresses: Address[];
 

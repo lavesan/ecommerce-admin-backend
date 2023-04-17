@@ -6,6 +6,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   ManyToOne,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 import { Product } from "./Product";
 
@@ -29,7 +31,13 @@ class Category {
   @CreateDateColumn()
   created_at: Date;
 
-  @OneToMany(() => Product, (product) => product.category)
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
+
+  @OneToMany(() => Product, (product) => product.category, { cascade: true })
   products: Product[];
 
   @ManyToOne(() => Enterprise, (enterprise) => enterprise.categories)

@@ -6,6 +6,8 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 import { Order } from "./Order";
 import { OrderProductAdditional } from "./OrderProductAdditional";
@@ -26,6 +28,12 @@ class OrderProduct {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 
   @ManyToOne(() => Order, (order) => order.orderProducts)
   order: Order;

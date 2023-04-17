@@ -4,9 +4,10 @@ import {
   Column,
   CreateDateColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   OneToMany,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 
 import { ProductAdditionalCategory } from "./ProductAdditionalCategory";
@@ -30,6 +31,12 @@ class ProductAdditional {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 
   @ManyToOne(
     () => ProductAdditionalCategory,

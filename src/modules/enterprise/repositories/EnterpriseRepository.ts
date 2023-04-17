@@ -9,6 +9,7 @@ import { Enterprise } from "../entities/Enterprise";
 import { ICreateEnterprise } from "../models/ICreateEnterprise";
 import { IPaginateEnterpriseRequest } from "../models/IPaginateEnterpriseRequest";
 import { IEnterpriseRepository } from "./IEnterpriseRepository";
+import { IUpdateEnterprise } from "../models/IUpdateEnterprise";
 
 export class EnterpriseRepository implements IEnterpriseRepository {
   private readonly repository: Repository<Enterprise>;
@@ -17,14 +18,47 @@ export class EnterpriseRepository implements IEnterpriseRepository {
     this.repository = AppDataSource.getRepository(Enterprise);
   }
 
-  async create(body: ICreateEnterprise): Promise<Enterprise> {
-    const { userId, ...newEnterprise } = body;
+  async create({ userId, ...body }: ICreateEnterprise): Promise<Enterprise> {
     const enterprise = this.repository.create({
-      ...newEnterprise,
+      ...body,
       user: { id: userId },
     });
     await this.repository.save(enterprise);
     return enterprise;
+  }
+
+  async update(
+    id: string,
+    { userId, ...body }: IUpdateEnterprise
+  ): Promise<boolean> {
+    await this.repository.update(id, {
+      ...body,
+      user: { id: userId },
+    });
+    return true;
+  }
+
+  async delete(id: string): Promise<boolean> {
+    await this.repository.softDelete(id);
+    return true;
+  }
+
+  findById(id: string): Promise<Enterprise> {
+    return this.repository.findOne({ where: { id } });
+  }
+
+  findAllMenuById(id: string): Promise<Enterprise> {
+    return this.repository.findOne({
+      where: { id },
+      relations: [
+        "categories",
+        "categories.products",
+        "categories.products.productAdditionalCategory",
+        "categories.products.productAdditionalCategory.productAdditionals",
+        "promotions",
+        "freights",
+      ],
+    });
   }
 
   async paginate(
@@ -37,7 +71,7 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 
     if (name) where.name = ILike(`%${name}%`);
 
-    if (cnpj) where.cnpj = ILike(`%${name}%`);
+    if (cnpj) where.cnpj = ILike(`%${cnpj}%`);
 
     const [data, count] = await this.repository.findAndCount({
       order: {

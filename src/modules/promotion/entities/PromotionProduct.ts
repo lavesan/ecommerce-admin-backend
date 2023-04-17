@@ -1,4 +1,3 @@
-import { Enterprise } from "@modules/enterprise/entities/Enterprise";
 import { Product } from "@modules/product/entities/Product";
 import {
   Entity,
@@ -7,6 +6,8 @@ import {
   ManyToOne,
   OneToOne,
   CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 import { Promotion } from "./Promotion";
 
@@ -20,6 +21,12 @@ class PromotionProduct {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 
   @OneToOne(() => Product, (product) => product.promotionProduct)
   product: Product;

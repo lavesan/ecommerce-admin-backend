@@ -8,6 +8,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   OneToOne,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 
 import { Category } from "./Category";
@@ -45,11 +47,17 @@ class Product {
   @CreateDateColumn()
   created_at: Date;
 
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
+
   @ManyToOne(() => Category, (category) => category.products)
   category: Category;
 
   @OneToMany(() => ProductAdditionalCategory, (category) => category.product, {
-    cascade: ["insert", "update"],
+    cascade: true,
   })
   productAdditionalCategory: ProductAdditionalCategory[];
 
