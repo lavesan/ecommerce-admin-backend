@@ -1,3 +1,4 @@
 export interface IPaginateClientRequest {
-  name: string;
+  name?: string;
+  email?: string;
 }

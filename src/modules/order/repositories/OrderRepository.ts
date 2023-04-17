@@ -4,7 +4,7 @@ import {
   IPaginationRequest,
   IPaginationResponse,
 } from "models/pagination.models";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import { Order } from "../entities/Order";
 import { ICreateOrder } from "../models/ICreateOrder";
 import { IPaginateOrderRequest } from "../models/IPaginateOrderRequest";
@@ -69,13 +69,24 @@ export class OrderRepository implements IOrderRepository {
 
   async paginate(
     pagination: IPaginationRequest,
-    filter: IPaginateOrderRequest
+    {
+      paymentType,
+      status,
+      finalDate,
+      initialDate,
+      clientId,
+      enterpriseId,
+    }: IPaginateOrderRequest
   ): Promise<IPaginationResponse<Order>> {
     const paginationData = getSkipAndTake(pagination);
 
-    let where: any = {};
+    let where: FindOptionsWhere<Order> = {};
 
-    // if (filter.clientId) where.name = ILike(`%${filter.name}%`);
+    if (paymentType) where.paymentType = paymentType;
+    if (status) where.status = status;
+    if (clientId) where.client = { id: clientId };
+    if (enterpriseId) where.enterprise = { id: enterpriseId };
+    // if (initialDate && finalDate)
 
     const [data, count] = await this.repository.findAndCount({
       order: {
@@ -83,6 +94,7 @@ export class OrderRepository implements IOrderRepository {
       },
       ...paginationData,
       where,
+      relations: ["client"],
     });
 
     return {

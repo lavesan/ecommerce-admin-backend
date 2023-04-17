@@ -46,9 +46,23 @@ export class OrderController {
     const pagination = getPageAndSize(
       req.query as unknown as IPaginationRequest
     );
-    const { clientId } = req.query as unknown as IPaginateOrderRequest;
+    const {
+      finalDate,
+      initialDate,
+      paymentType,
+      status,
+      clientId,
+      enterpriseId,
+    } = req.query as unknown as IPaginateOrderRequest;
 
-    const result = await service.paginate(pagination, { clientId });
+    const result = await service.paginate(pagination, {
+      finalDate,
+      initialDate,
+      paymentType,
+      status,
+      clientId,
+      enterpriseId,
+    });
 
     return res.json(result);
   }

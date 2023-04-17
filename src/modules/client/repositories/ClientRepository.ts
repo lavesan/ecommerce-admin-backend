@@ -47,13 +47,14 @@ export class ClientRepository implements IClientRepository {
 
   async paginate(
     pagination: IPaginationRequest,
-    filter: IPaginateClientRequest
+    { name, email }: IPaginateClientRequest
   ): Promise<IPaginationResponse<Client>> {
     const paginationData = getSkipAndTake(pagination);
 
     let where: any = {};
 
-    if (filter.name) where.name = ILike(`%${filter.name}%`);
+    if (name) where.name = ILike(`%${name}%`);
+    if (email) where.email = ILike(`%${email}%`);
 
     const [data, count] = await this.repository.findAndCount({
       order: {

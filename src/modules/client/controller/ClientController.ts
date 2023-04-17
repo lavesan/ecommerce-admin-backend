@@ -46,9 +46,9 @@ export class ClientController {
     const pagination = getPageAndSize(
       req.query as unknown as IPaginationRequest
     );
-    const { name } = req.query as unknown as IPaginateClientRequest;
+    const { name, email } = req.query as unknown as IPaginateClientRequest;
 
-    const result = await service.paginate(pagination, { name });
+    const result = await service.paginate(pagination, { name, email });
 
     return res.json(result);
   }
