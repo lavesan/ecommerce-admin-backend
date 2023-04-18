@@ -31,6 +31,7 @@ export class EnterpriseRepository implements IEnterpriseRepository {
     id: string,
     { userId, ...body }: IUpdateEnterprise
   ): Promise<boolean> {
+    // @ts-ignore
     await this.repository.save({
       id,
       ...body,
@@ -47,7 +48,7 @@ export class EnterpriseRepository implements IEnterpriseRepository {
   findById(id: string): Promise<Enterprise> {
     return this.repository.findOne({
       where: { id },
-      relations: ["user", "freights"],
+      relations: ["user", "freights", "schedules"],
     });
   }
 

@@ -1,4 +1,6 @@
 import * as yup from "yup";
+import { ScheduleRelation } from "../enums/ScheduleRelation";
+import { WeekDay } from "@modules/promotion/enums/WeekDay";
 
 export const updateEnterpriseValidation = yup.object({
   name: yup.string().notRequired(),
@@ -23,6 +25,34 @@ export const updateEnterpriseValidation = yup.object({
           addressKey: yup.string().required(),
           addressValue: yup.string().required(),
           value: yup.number().required(),
+        })
+        .notRequired()
+    )
+    .notRequired(),
+  schedules: yup
+    .array()
+    .of(
+      yup
+        .object({
+          id: yup.string().uuid().notRequired(),
+          scheduleId: yup.string().uuid().notRequired(),
+          time: yup.string().required(),
+          relation: yup
+            .mixed()
+            .oneOf([ScheduleRelation.FROM, ScheduleRelation.TO])
+            .required(),
+          weekDay: yup
+            .mixed()
+            .oneOf([
+              WeekDay.DOM,
+              WeekDay.QUA,
+              WeekDay.QUI,
+              WeekDay.SAB,
+              WeekDay.SEG,
+              WeekDay.SEX,
+              WeekDay.TER,
+            ])
+            .required(),
         })
         .notRequired()
     )

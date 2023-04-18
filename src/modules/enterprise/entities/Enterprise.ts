@@ -13,6 +13,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
 } from "typeorm";
+import { Schedule } from "./Schedule";
 
 @Entity("enterprise")
 class Enterprise {
@@ -70,21 +71,26 @@ class Enterprise {
   @OneToMany(() => Category, (category) => category.enterprise, {
     cascade: true,
   })
-  categories: Category[];
+  categories?: Category[];
 
   @OneToMany(() => Order, (order) => order.enterprise, {
     cascade: true,
   })
-  orders: Order[];
+  orders?: Order[];
 
   @OneToMany(() => Freight, (freight) => freight.enterprise, { cascade: true })
-  freights: Freight[];
+  freights?: Freight[];
 
   @OneToMany(() => Promotion, (promotion) => promotion.enterprise)
-  promotions: Promotion[];
+  promotions?: Promotion[];
 
   @ManyToOne(() => User, (user) => user.enterprises)
-  user: User;
+  user?: User;
+
+  @OneToMany(() => Schedule, (schedule) => schedule.enterprise, {
+    cascade: true,
+  })
+  schedules?: Schedule[];
 }
 
 export { Enterprise };

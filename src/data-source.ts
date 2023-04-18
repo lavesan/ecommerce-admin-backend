@@ -15,6 +15,7 @@ import { Enterprise } from "@modules/enterprise/entities/Enterprise";
 import { Freight } from "@modules/freight/entities/Freight";
 import { Promotion } from "@modules/promotion/entities/Promotion";
 import { PromotionProduct } from "@modules/promotion/entities/PromotionProduct";
+import { Schedule } from "@modules/enterprise/entities/Schedule";
 
 const AppDataSource = new DataSource({
   type: "postgres",
@@ -42,6 +43,7 @@ const AppDataSource = new DataSource({
     Freight,
     Promotion,
     PromotionProduct,
+    Schedule,
   ],
 });
 

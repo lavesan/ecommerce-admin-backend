@@ -1,3 +1,6 @@
+import { WeekDay } from "aws-sdk/clients/ec2";
+import { ScheduleRelation } from "../enums/ScheduleRelation";
+
 export interface IUpdateEnterprise {
   name: string;
   email: string;
@@ -17,5 +20,11 @@ export interface IUpdateEnterprise {
     addressKey: string;
     addressValue: string;
     value: number;
+  }[];
+  schedules: {
+    id?: string;
+    time: Date;
+    relation: ScheduleRelation;
+    weekDay: WeekDay;
   }[];
 }

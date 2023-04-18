@@ -1,3 +1,6 @@
+import { WeekDay } from "@modules/promotion/enums/WeekDay";
+import { ScheduleRelation } from "../enums/ScheduleRelation";
+
 export interface ICreateEnterprise {
   name: string;
   email: string;
@@ -17,5 +20,10 @@ export interface ICreateEnterprise {
     addressKey: string;
     addressValue: string;
     value: number;
+  }[];
+  schedules: {
+    time: Date;
+    relation: ScheduleRelation;
+    weekDay: WeekDay;
   }[];
 }

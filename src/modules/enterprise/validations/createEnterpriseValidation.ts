@@ -1,5 +1,7 @@
 import { phoneReg } from "@helpers/validation.helper";
 import * as yup from "yup";
+import { ScheduleRelation } from "../enums/ScheduleRelation";
+import { WeekDay } from "@modules/promotion/enums/WeekDay";
 
 export const createEnterpriseValidation = yup.object({
   name: yup.string().required(),
@@ -28,4 +30,31 @@ export const createEnterpriseValidation = yup.object({
         .required()
     )
     .required(),
+  schedules: yup
+    .array()
+    .of(
+      yup
+        .object({
+          scheduleId: yup.string().uuid().notRequired(),
+          time: yup.string().required(),
+          relation: yup
+            .mixed()
+            .oneOf([ScheduleRelation.FROM, ScheduleRelation.TO])
+            .required(),
+          weekDay: yup
+            .mixed()
+            .oneOf([
+              WeekDay.DOM,
+              WeekDay.QUA,
+              WeekDay.QUI,
+              WeekDay.SAB,
+              WeekDay.SEG,
+              WeekDay.SEX,
+              WeekDay.TER,
+            ])
+            .required(),
+        })
+        .notRequired()
+    )
+    .notRequired(),
 });
