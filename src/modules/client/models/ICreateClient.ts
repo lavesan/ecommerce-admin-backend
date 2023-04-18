@@ -3,4 +3,5 @@ export interface ICreateClient {
   email: string;
   password: string;
   cpf: string;
+  phone: string;
 }

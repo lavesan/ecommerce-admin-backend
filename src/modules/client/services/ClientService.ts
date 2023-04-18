@@ -17,8 +17,6 @@ export class ClientService {
   async create(body: ICreateClient) {
     const client = await this.clientRepository.findByEmail(body.email);
 
-    console.log("client: ", client);
-
     if (client) throw new CreateClientError.AlreadyExists();
 
     return this.clientRepository.create(body);

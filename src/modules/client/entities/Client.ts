@@ -29,6 +29,9 @@ class Client {
   @Column()
   cpf: string;
 
+  @Column({ nullable: true })
+  phone: string;
+
   @Column({ default: 0 })
   points: number;
 

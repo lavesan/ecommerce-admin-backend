@@ -31,7 +31,8 @@ export class EnterpriseRepository implements IEnterpriseRepository {
     id: string,
     { userId, ...body }: IUpdateEnterprise
   ): Promise<boolean> {
-    await this.repository.update(id, {
+    await this.repository.save({
+      id,
       ...body,
       user: { id: userId },
     });
@@ -44,7 +45,10 @@ export class EnterpriseRepository implements IEnterpriseRepository {
   }
 
   findById(id: string): Promise<Enterprise> {
-    return this.repository.findOne({ where: { id } });
+    return this.repository.findOne({
+      where: { id },
+      relations: ["user", "freights"],
+    });
   }
 
   findAllMenuById(id: string): Promise<Enterprise> {
@@ -70,7 +74,6 @@ export class EnterpriseRepository implements IEnterpriseRepository {
     let where: FindOptionsWhere<Enterprise> = {};
 
     if (name) where.name = ILike(`%${name}%`);
-
     if (cnpj) where.cnpj = ILike(`%${cnpj}%`);
 
     const [data, count] = await this.repository.findAndCount({

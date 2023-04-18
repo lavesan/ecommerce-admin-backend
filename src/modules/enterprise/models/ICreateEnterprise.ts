@@ -3,6 +3,7 @@ export interface ICreateEnterprise {
   email: string;
   description: string;
   cnpj: string;
+  phone: string;
   cep: string;
   street: string;
   complement: string;

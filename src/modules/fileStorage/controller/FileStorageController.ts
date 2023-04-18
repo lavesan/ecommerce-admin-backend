@@ -20,7 +20,9 @@ export class FileStorageController {
 
     const result = await service.find(key);
 
-    return res.json(result);
+    res.writeHead(200, { "Content-Type": "image/jpeg" });
+    res.write(result, "binary");
+    return res.end(null, "binary");
   }
 
   async deleteByKey(req: Request, res: Response) {

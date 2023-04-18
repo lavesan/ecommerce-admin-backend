@@ -1,3 +1,4 @@
+import { phoneReg } from "@helpers/validation.helper";
 import * as yup from "yup";
 
 export const createEnterpriseValidation = yup.object({
@@ -5,6 +6,7 @@ export const createEnterpriseValidation = yup.object({
   email: yup.string().email().required(),
   description: yup.string().required(),
   cnpj: yup.string().required(),
+  phone: yup.string().matches(phoneReg).required(),
   cep: yup.string().required(),
   street: yup.string().required(),
   complement: yup.string().notRequired(),

@@ -53,6 +53,9 @@ class Enterprise {
   city: string;
 
   @Column({ nullable: true })
+  phone: string;
+
+  @Column({ nullable: true })
   imageKey: string;
 
   @CreateDateColumn()
@@ -65,12 +68,12 @@ class Enterprise {
   deleted_at: Date;
 
   @OneToMany(() => Category, (category) => category.enterprise, {
-    cascade: ["insert", "update", "remove"],
+    cascade: true,
   })
   categories: Category[];
 
   @OneToMany(() => Order, (order) => order.enterprise, {
-    cascade: ["insert", "update", "remove"],
+    cascade: true,
   })
   orders: Order[];
 
