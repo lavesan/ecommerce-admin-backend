@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
+import dotenv from "dotenv";
 
 import { User } from "@modules/user/entities/User";
 import { Product } from "@modules/product/entities/Product";
@@ -17,13 +18,15 @@ import { Promotion } from "@modules/promotion/entities/Promotion";
 import { PromotionProduct } from "@modules/promotion/entities/PromotionProduct";
 import { Schedule } from "@modules/enterprise/entities/Schedule";
 
+dotenv.config();
+
 const AppDataSource = new DataSource({
   type: "postgres",
-  host: "localhost",
+  host: process.env.POSTGRES_HOST || "localhost",
   port: 5432,
-  username: "postgres",
-  password: "postgres",
-  database: "success_commerce",
+  username: process.env.POSTGRES_USER || "postgres",
+  password: process.env.POSTGRES_PASSWORD || "postgres",
+  database: process.env.POSTGRES_DATABASE || "success_commerce",
   synchronize: true,
   // logging: true,
   subscribers: [],
