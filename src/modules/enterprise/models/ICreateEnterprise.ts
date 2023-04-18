@@ -10,6 +10,8 @@ export interface ICreateEnterprise {
   cep: string;
   street: string;
   complement: string;
+  estimatedTime: string;
+  isDisabled: boolean;
   number: string;
   district: string;
   state: string;

@@ -26,6 +26,12 @@ class Enterprise {
   @Column()
   name: string;
 
+  @Column({ nullable: true })
+  estimatedTime: string;
+
+  @Column({ nullable: true })
+  isDisabled: boolean;
+
   @Column()
   description: string;
 

@@ -8,6 +8,8 @@ export const updateEnterpriseValidation = yup.object({
   description: yup.string().notRequired(),
   cnpj: yup.string().notRequired(),
   cep: yup.string().notRequired(),
+  estimatedTime: yup.string().notRequired(),
+  isDisabled: yup.boolean().notRequired(),
   street: yup.string().notRequired(),
   complement: yup.string().notRequired(),
   number: yup.string().notRequired(),

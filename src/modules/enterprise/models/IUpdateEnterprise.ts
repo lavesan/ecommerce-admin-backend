@@ -11,6 +11,8 @@ export interface IUpdateEnterprise {
   complement: string;
   number: string;
   district: string;
+  estimatedTime: string;
+  isDisabled: boolean;
   state: string;
   city: string;
   imageKey: string;

@@ -10,6 +10,8 @@ export const createEnterpriseValidation = yup.object({
   cnpj: yup.string().required(),
   phone: yup.string().matches(phoneReg).required(),
   cep: yup.string().required(),
+  estimatedTime: yup.string().required(),
+  isDisabled: yup.boolean().notRequired(),
   street: yup.string().required(),
   complement: yup.string().notRequired(),
   number: yup.string().required(),
