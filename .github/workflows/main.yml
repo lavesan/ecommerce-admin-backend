@@ -32,6 +32,7 @@ jobs:
           password: ${{ secrets.EC2_PASSWORD }}
           port: ${{ secrets.EC2_PORT }}
           key: ${{ secrets.EC2_KEY }}
+          debug: true
           timeout: 1m
           source: "."
           target: "~/app/ecommerce"
