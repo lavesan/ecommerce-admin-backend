@@ -18,6 +18,14 @@ jobs:
         with:
           node-version: 16.x
           
+      - name: Log secrets
+        run: |
+          echo User ${{ secrets.EC2_USER }}
+          echo Password ${{ secrets.EC2_PASSWORD }}
+          echo Key ${{ secrets.EC2_KEY }}
+          echo Host ${{ secrets.EC2_IP }}
+          echo Port ${{ secrets.EC2_PORT }}
+          
       - name: Install Dependencies
         run: yarn
         
