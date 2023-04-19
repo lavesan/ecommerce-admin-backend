@@ -32,5 +32,5 @@ jobs:
           password: ${{ secrets.EC2_PASSWORD }}
           port: ${{ secrets.EC2_PORT }}
           key: ${{ secrets.EC2_KEY }}
-          source: "., !node_modules"
+          source: "dist/*"
           target: "test"
