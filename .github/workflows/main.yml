@@ -24,12 +24,6 @@ jobs:
       - name: Build
         run: yarn build
         
-      - name: Create tar
-        run: |
-          mkdir ../build
-          cp -TR . ../build
-          tar -cvf deploy.tar ../build/
-        
       - name: Copy files
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -39,5 +33,5 @@ jobs:
           port: ${{ secrets.EC2_PORT }}
           key: ${{ secrets.EC2_KEY }}
           timeout: 1m
-          source: "deploy.tar"
-          target: "/home/test"
+          source: "."
+          target: "~/app/ecommerce"
