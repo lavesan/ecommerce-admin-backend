@@ -32,6 +32,6 @@ jobs:
           password: ${{ secrets.EC2_PASSWORD }}
           port: ${{ secrets.EC2_PORT }}
           key: ${{ secrets.EC2_KEY }}
-          timeout: 2m
-          source: "dist/*"
-          target: "test"
+          timeout: 1m
+          source: "."
+          target: "/home/test"
