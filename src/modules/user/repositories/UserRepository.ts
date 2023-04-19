@@ -1,12 +1,11 @@
 import { getSkipAndTake } from "@helpers/pagination.helper";
-import { encryptPwd } from "helpers/password.helper";
+import { encryptPwd } from "@helpers/password.helper";
 import {
   IPaginationRequest,
   IPaginationResponse,
-} from "models/pagination.models";
-import { Model } from "mongoose";
+} from "@models/pagination.models";
 import { FindOptionsWhere, ILike, Repository } from "typeorm";
-import AppDataSource from "../../../data-source";
+import AppDataSource from "@data-source";
 import { User } from "../entities/User";
 import { IPaginateUser } from "../models/IPaginateUser";
 

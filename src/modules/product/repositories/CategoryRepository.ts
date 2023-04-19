@@ -1,6 +1,6 @@
 import { getSkipAndTake } from "@helpers/pagination.helper";
-import AppDataSource from "data-source";
-import { IPaginationRequest } from "models/pagination.models";
+import AppDataSource from "@data-source";
+import { IPaginationRequest } from "@models/pagination.models";
 import { FindOptionsWhere, ILike, Repository } from "typeorm";
 import { Category } from "../entities/Category";
 import { ICreateCategory } from "../models/ICreateCategory";

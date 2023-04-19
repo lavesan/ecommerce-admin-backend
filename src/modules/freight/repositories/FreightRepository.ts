@@ -1,4 +1,4 @@
-import AppDataSource from "data-source";
+import AppDataSource from "@data-source";
 import { Repository } from "typeorm";
 import { Freight } from "../entities/Freight";
 import { ICreateFreight } from "../models/ICreateFreight";

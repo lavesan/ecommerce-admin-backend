@@ -1,10 +1,10 @@
 import { getSkipAndTake } from "@helpers/pagination.helper";
 import { encryptPwd } from "@helpers/password.helper";
-import AppDataSource from "data-source";
+import AppDataSource from "@data-source";
 import {
   IPaginationRequest,
   IPaginationResponse,
-} from "models/pagination.models";
+} from "@models/pagination.models";
 import { ILike, Repository } from "typeorm";
 import { Client } from "../entities/Client";
 import { ICreateClient } from "../models/ICreateClient";

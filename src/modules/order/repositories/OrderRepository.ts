@@ -1,9 +1,9 @@
 import { getSkipAndTake } from "@helpers/pagination.helper";
-import AppDataSource from "data-source";
+import AppDataSource from "@data-source";
 import {
   IPaginationRequest,
   IPaginationResponse,
-} from "models/pagination.models";
+} from "@models/pagination.models";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { Order } from "../entities/Order";
 import { ICreateOrder } from "../models/ICreateOrder";

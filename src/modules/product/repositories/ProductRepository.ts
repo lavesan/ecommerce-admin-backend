@@ -1,7 +1,7 @@
 import { getSkipAndTake } from "@helpers/pagination.helper";
-import { IPaginationRequest } from "models/pagination.models";
+import { IPaginationRequest } from "@models/pagination.models";
 import { FindOptionsWhere, ILike, Repository } from "typeorm";
-import AppDataSource from "../../../data-source";
+import AppDataSource from "@data-source";
 import { Product } from "../entities/Product";
 import { ICreateProductRequest } from "../models/ICreateProductRequest";
 import { IFindProductsRequest } from "../models/IFindProductsRequest";

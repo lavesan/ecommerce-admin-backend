@@ -11,7 +11,9 @@
       "@config/*": ["config/*"],
       "@shared/*": ["shared/*"],
       "@errors/*": ["errors/*"],
-      "@helpers/*": ["helpers/*"]
+      "@helpers/*": ["helpers/*"],
+      "@models/*": ["models/*"],
+      "@data-source": ["data-source"]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true,
