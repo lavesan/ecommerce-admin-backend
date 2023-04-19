@@ -1,0 +1,35 @@
+version: 0.2
+
+env:
+  parameter-store:
+    JWT_SECRET: /Production/JwtSecret
+    S3_BUCKET: /Production/S3Bucket
+    S3_ACCESS_KEY_ID: /Production/S3AccessKey
+    S3_SECRET_KEY: /Production/S3SecretKey
+    POSTGRES_HOST: /Production/PostgresHost
+    POSTGRES_USER: /Production/PostgresUser
+    POSTGRES_PASSWORD: /Production/PosgressPassword
+    POSTGRES_DATABASE: /Production/PostgresDatabase
+
+phases:
+    install:
+        runtime-versions:
+            nodejs: 18
+        commands:
+            - echo "📦 installing packages..."
+            - npm install
+            - echo "✅ Packages installed successfully."
+    pre_build:
+        commands:
+            - echo "⚙️ Running migrations..."
+            - npm run migration:run
+            - echo "✅ Migrations passed successfully."
+            - echo $PASSWORD
+    build:
+        commands:
+            - echo "🚧 Starting compiling packages..."
+            - echo "✅ Build passed successfully."
+    post_build:
+        commands:
+            - echo "🚚 Performing post-build packing and operations..."
+            - echo "✅ Post build successful"

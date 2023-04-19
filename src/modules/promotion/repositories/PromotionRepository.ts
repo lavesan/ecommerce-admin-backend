@@ -18,11 +18,13 @@ export class PromotionRepository implements IPromotionRepository {
     this.repository = AppDataSource.getRepository(Promotion);
   }
 
-  async create(body: ICreatePromotion): Promise<Promotion> {
-    const { base64Banner, enterpriseId, products, ...newPromotion } = body;
-
+  async create({
+    enterpriseId,
+    products,
+    ...body
+  }: ICreatePromotion): Promise<Promotion> {
     const promotion = this.repository.create({
-      ...newPromotion,
+      ...body,
       enterprise: { id: enterpriseId },
       promotionProducts: products.map(({ id, value }) => ({
         product: { id },
