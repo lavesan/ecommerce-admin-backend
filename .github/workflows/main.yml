@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+    
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup Nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          
+      - name: Install Dependencies
+        run: yarn
+        
+      - name: Build
+        run: yarn build
+        
+      - name: Copy files
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_IP }}
+          username: ${{ secrets.EC2_USER }}
+          password: ${{ secrets.EC2_PASSWORD }}
+          port: ${{ secrets.EC2_PORT }}
+          key: ${{ secrets.EC2_KEY }}
+          source: "., !node_modules"
+          target: "test"
