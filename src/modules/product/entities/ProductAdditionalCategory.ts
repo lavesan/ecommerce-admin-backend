@@ -34,9 +34,6 @@ class ProductAdditionalCategory {
   })
   type: ProductAdditionalType;
 
-  @Column()
-  imageKey: string;
-
   @Column({ default: false })
   isDisabled: boolean;
 

@@ -8,11 +8,6 @@ export class UpdateImageColumnsToKey1681662188900
       queryRunner.renameColumn("enterprise", "imageUrl", "imageKey"),
       queryRunner.renameColumn("category", "imageUrl", "imageKey"),
       queryRunner.renameColumn("product", "imageUrl", "imageKey"),
-      queryRunner.renameColumn(
-        "product_additionals_category",
-        "imageUrl",
-        "imageKey"
-      ),
       queryRunner.renameColumn("product_additionals", "imageUrl", "imageKey"),
       queryRunner.renameColumn("promotion", "imageUrl", "imageKey"),
     ]);
@@ -23,11 +18,6 @@ export class UpdateImageColumnsToKey1681662188900
       queryRunner.renameColumn("enterprise", "imageKey", "imageUrl"),
       queryRunner.renameColumn("category", "imageKey", "imageUrl"),
       queryRunner.renameColumn("product", "imageKey", "imageUrl"),
-      queryRunner.renameColumn(
-        "product_additionals_category",
-        "imageKey",
-        "imageUrl"
-      ),
       queryRunner.renameColumn("product_additionals", "imageKey", "imageUrl"),
       queryRunner.renameColumn("promotion", "imageKey", "imageUrl"),
     ]);
