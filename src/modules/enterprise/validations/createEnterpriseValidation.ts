@@ -37,12 +37,8 @@ export const createEnterpriseValidation = yup.object({
     .of(
       yup
         .object({
-          scheduleId: yup.string().uuid().notRequired(),
-          time: yup.string().required(),
-          relation: yup
-            .mixed()
-            .oneOf([ScheduleRelation.FROM, ScheduleRelation.TO])
-            .required(),
+          from: yup.string().required(),
+          to: yup.string().required(),
           weekDay: yup
             .mixed()
             .oneOf([

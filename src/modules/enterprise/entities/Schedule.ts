@@ -8,7 +8,6 @@ import {
   DeleteDateColumn,
   Index,
 } from "typeorm";
-import { ScheduleRelation } from "../enums/ScheduleRelation";
 import { WeekDay } from "@modules/promotion/enums/WeekDay";
 import { Enterprise } from "./Enterprise";
 
@@ -18,13 +17,10 @@ class Schedule {
   id: string;
 
   @Column()
-  time: Date;
+  from: Date;
 
-  @Column({
-    type: "enum",
-    enum: ScheduleRelation,
-  })
-  relation: ScheduleRelation;
+  @Column({ nullable: true })
+  to: Date;
 
   @Column({
     type: "enum",

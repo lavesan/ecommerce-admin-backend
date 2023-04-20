@@ -25,8 +25,8 @@ export interface IUpdateEnterprise {
   }[];
   schedules: {
     id?: string;
-    time: Date;
-    relation: ScheduleRelation;
+    from: Date;
+    to: Date;
     weekDay: WeekDay;
   }[];
 }

@@ -24,8 +24,8 @@ export interface ICreateEnterprise {
     value: number;
   }[];
   schedules: {
-    time: Date;
-    relation: ScheduleRelation;
+    from: Date;
+    to: Date;
     weekDay: WeekDay;
   }[];
 }

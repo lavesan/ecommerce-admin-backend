@@ -52,7 +52,7 @@ class ProductAdditionalCategory {
   @OneToMany(
     () => ProductAdditional,
     (productAdditional) => productAdditional.productAdditionalCategory,
-    { cascade: ["insert", "update"] }
+    { cascade: true }
   )
   productAdditionals: ProductAdditional[];
 

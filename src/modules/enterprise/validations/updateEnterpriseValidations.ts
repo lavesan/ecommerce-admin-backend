@@ -37,12 +37,8 @@ export const updateEnterpriseValidation = yup.object({
       yup
         .object({
           id: yup.string().uuid().notRequired(),
-          scheduleId: yup.string().uuid().notRequired(),
-          time: yup.string().required(),
-          relation: yup
-            .mixed()
-            .oneOf([ScheduleRelation.FROM, ScheduleRelation.TO])
-            .required(),
+          from: yup.string().notRequired(),
+          to: yup.string().notRequired(),
           weekDay: yup
             .mixed()
             .oneOf([
@@ -54,7 +50,7 @@ export const updateEnterpriseValidation = yup.object({
               WeekDay.SEX,
               WeekDay.TER,
             ])
-            .required(),
+            .notRequired(),
         })
         .notRequired()
     )

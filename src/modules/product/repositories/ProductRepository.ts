@@ -44,7 +44,7 @@ export class ProductRepository implements IProductRepository {
       productAdditionalCategory,
       category: { id: categoryId },
     };
-    await this.repository.update(id, parsedBody);
+    await this.repository.save({ id, ...parsedBody });
     return true;
   }
 
