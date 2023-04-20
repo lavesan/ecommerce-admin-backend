@@ -6,6 +6,7 @@ import { Category } from "../entities/Category";
 import { ICreateCategory } from "../models/ICreateCategory";
 import { IPaginateCategoryRequest } from "../models/IPaginateCategoryRequest";
 import { ICategoryRepository } from "./ICategoryRespository";
+import { IUpdateCategory } from "../models/IUpdateCategory";
 
 export class CategoryRepository implements ICategoryRepository {
   private readonly repository: Repository<Category>;
@@ -24,8 +25,8 @@ export class CategoryRepository implements ICategoryRepository {
     return category;
   }
 
-  async update(id: string, body: Partial<Category>) {
-    await this.repository.update(id, body);
+  async update(id: string, body: IUpdateCategory) {
+    await this.repository.save({ id, ...body });
     return true;
   }
 

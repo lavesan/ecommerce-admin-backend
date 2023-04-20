@@ -8,6 +8,7 @@ export const createProductValidation = yup.object({
   boldDescription: yup.string().required(),
   imageKey: yup.string().required(),
   value: yup.number().required(),
+  isDisabled: yup.boolean().required(),
   givenPoints: yup.number().required(),
   sellPoints: yup.number().required(),
   productAdditionalCategory: yup.array().of(
@@ -25,12 +26,14 @@ export const createProductValidation = yup.object({
           .required(),
         imageKey: yup.string().required(),
         isOptional: yup.boolean().required(),
+        isDisabled: yup.boolean().required(),
         productAdditionals: yup.array().of(
           yup
             .object({
               name: yup.string().required(),
               imageKey: yup.string().required(),
               value: yup.number().required(),
+              isDisabled: yup.boolean().required(),
             })
             .notRequired()
         ),

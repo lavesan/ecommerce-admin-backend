@@ -11,6 +11,7 @@ export interface ICreateProductRequest {
   name: string;
   description: string;
   boldDescription: string;
+  isDisabled: boolean;
   imageKey: string;
   value: number;
   givenPoints: number;

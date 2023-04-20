@@ -8,11 +8,13 @@ interface IUpdateProductAdditionalCategory {
   type: ProductAdditionalType;
   imageKey: string;
   isOptional: boolean;
+  isDisabled?: boolean;
   productAdditionals: {
     id?: string;
     name: string;
     imageKey: string;
     value: number;
+    isDisabled?: boolean;
   }[];
 }
 
@@ -25,5 +27,6 @@ export interface IUpdateProductRequest {
   value: number;
   givenPoints: number;
   sellPoints: number;
+  isDisabled?: boolean;
   productAdditionalCategory: IUpdateProductAdditionalCategory[];
 }

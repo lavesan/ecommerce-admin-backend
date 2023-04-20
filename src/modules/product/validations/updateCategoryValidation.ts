@@ -5,4 +5,5 @@ export const updateCategoryValidation = yup.object({
   description: yup.string().notRequired(),
   imageKey: yup.string().notRequired(),
   isDisabled: yup.boolean().notRequired(),
+  enterpriseId: yup.string().uuid().notRequired(),
 });

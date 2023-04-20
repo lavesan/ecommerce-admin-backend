@@ -6,6 +6,7 @@ import { UpdateCategoryError } from "../errors/UpdateCategoryError";
 import { ICreateCategory } from "../models/ICreateCategory";
 import { IPaginateCategoryRequest } from "../models/IPaginateCategoryRequest";
 import { ICategoryRepository } from "../repositories/ICategoryRespository";
+import { IUpdateCategory } from "../models/IUpdateCategory";
 
 @injectable()
 export class CategoryService {
@@ -24,7 +25,7 @@ export class CategoryService {
     return this.categoryRepository.create(body);
   }
 
-  async update(id: string, body: Partial<Category>) {
+  async update(id: string, body: IUpdateCategory) {
     const category = await this.categoryRepository.findById(id);
 
     if (!category) {

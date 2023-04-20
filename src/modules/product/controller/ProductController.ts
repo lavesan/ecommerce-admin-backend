@@ -9,10 +9,6 @@ import { CreateProductError } from "../errors/CreateProductError";
 import { IUpdateProductRequest } from "../models/IUpdateProductRequest";
 import { updateProductValidation } from "../validations/updateProductValidation";
 import { UpdateProductError } from "../errors/UpdateProductError";
-// import { CreateAgentError } from "./CreateAgentError";
-
-// import { CreateAgentUseCase } from "./CreateAgentUseCase";
-// import { validationSchema } from "./createAgentValitation";
 
 export class ProductController {
   async create(req: Request, res: Response) {
