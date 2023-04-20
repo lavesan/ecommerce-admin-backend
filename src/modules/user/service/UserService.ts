@@ -60,8 +60,7 @@ export class UserService {
 
     if (!user) throw new UpdateUserError.DontExist();
 
-    const updatedUser = await this.userRepository.create(body);
-    delete updatedUser.password;
+    const updatedUser = await this.userRepository.update(id, body);
     return updatedUser;
   }
 

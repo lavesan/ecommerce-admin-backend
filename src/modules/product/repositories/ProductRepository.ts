@@ -58,6 +58,12 @@ export class ProductRepository implements IProductRepository {
     });
   }
 
+  findManyByEnterpriseID(enterpriseId: string) {
+    return this.repository.find({
+      where: { category: { enterprise: { id: enterpriseId } } },
+    });
+  }
+
   async paginate(
     pagination: IPaginationRequest,
     { name, categoryId }: IFindProductsRequest

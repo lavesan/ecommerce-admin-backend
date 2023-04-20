@@ -7,7 +7,6 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  OneToOne,
   UpdateDateColumn,
   DeleteDateColumn,
 } from "typeorm";
@@ -64,11 +63,11 @@ class Product {
   @OneToMany(() => OrderProduct, (productOrder) => productOrder.product)
   orderProducts: OrderProduct[];
 
-  @OneToOne(
+  @OneToMany(
     () => PromotionProduct,
     (promotionProduct) => promotionProduct.product
   )
-  promotionProduct: PromotionProduct;
+  promotionProducts: PromotionProduct[];
 }
 
 export { Product };

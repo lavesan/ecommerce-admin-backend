@@ -7,9 +7,10 @@ const orderController = new OrderController();
 
 const orderRouter = Router();
 
-orderRouter.get("/", orderController.paginate);
-orderRouter.get("/:id", orderController.findById);
+orderRouter.get("/", ensureAuthenticated, orderController.paginate);
+orderRouter.get("/:id", ensureAuthenticated, orderController.findById);
+orderRouter.patch("/:id", ensureAuthenticated, orderController.update);
+
 orderRouter.post("/", orderController.create);
-orderRouter.patch("/:id", orderController.update);
 
 export { orderRouter };

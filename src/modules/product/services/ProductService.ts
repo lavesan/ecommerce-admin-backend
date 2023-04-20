@@ -27,4 +27,8 @@ export class ProductService {
   findById(id: string) {
     return this.productRepository.findById(id);
   }
+
+  findManyByEnterpriseId(enterpriseId: string) {
+    return this.productRepository.findManyByEnterpriseID(enterpriseId);
+  }
 }

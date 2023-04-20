@@ -8,9 +8,9 @@ const userController = new UserController();
 const userRouter = Router();
 
 userRouter.post("/login", userController.login);
-userRouter.post("/", userController.create);
-userRouter.put("/:id", userController.update);
-userRouter.get("/:id", userController.findById);
-userRouter.get("/", userController.paginate);
+userRouter.post("/", ensureAuthenticated, userController.create);
+userRouter.put("/:id", ensureAuthenticated, userController.update);
+userRouter.get("/:id", ensureAuthenticated, userController.findById);
+userRouter.get("/", ensureAuthenticated, userController.paginate);
 
 export { userRouter };

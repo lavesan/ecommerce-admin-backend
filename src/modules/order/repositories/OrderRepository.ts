@@ -63,6 +63,7 @@ export class OrderRepository implements IOrderRepository {
         "orderProducts.additionals",
         "orderProducts.additionals.productAdditional",
         "address",
+        "client",
       ],
     });
   }

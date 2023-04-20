@@ -7,9 +7,9 @@ const categoryController = new CategoryController();
 
 const categoryRouter = Router();
 
-categoryRouter.get("/", categoryController.paginate);
-categoryRouter.get("/:id", categoryController.findById);
-categoryRouter.post("/", categoryController.create);
-categoryRouter.put("/:id", categoryController.update);
+categoryRouter.get("/", ensureAuthenticated, categoryController.paginate);
+categoryRouter.get("/:id", ensureAuthenticated, categoryController.findById);
+categoryRouter.post("/", ensureAuthenticated, categoryController.create);
+categoryRouter.put("/:id", ensureAuthenticated, categoryController.update);
 
 export { categoryRouter };

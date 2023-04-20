@@ -6,6 +6,8 @@ import { CreatePromotionError } from "../errors/CreatePromotionError";
 import { IPaginatePromotion } from "../models/IPaginatePromotion";
 import { PromotionService } from "../services/PromotionService";
 import { createPromotionValidation } from "../validations/createPromotionValidation";
+import { updatePromotionValidation } from "../validations/updatePromotionValidation";
+import { UpdatePromotionError } from "../errors/UpdatePromotionError";
 
 export class PromotionController {
   async create(req: Request, res: Response): Promise<Response> {
@@ -20,6 +22,22 @@ export class PromotionController {
     const result = await service.create(req.body);
 
     return res.status(201).json(result);
+  }
+
+  async update(req: Request, res: Response): Promise<Response> {
+    const service = container.resolve(PromotionService);
+
+    await updatePromotionValidation
+      .validate(req.body, { abortEarly: false })
+      .catch((err) => {
+        throw new UpdatePromotionError.BodyIsInvalid(err);
+      });
+
+    const { id } = req.params;
+
+    const result = await service.update(id, req.body);
+
+    return res.json(result);
   }
 
   async paginate(req: Request, res: Response): Promise<Response> {

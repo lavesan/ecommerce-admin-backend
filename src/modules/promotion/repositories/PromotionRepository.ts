@@ -6,10 +6,10 @@ import {
 } from "@models/pagination.models";
 import { FindOptionsWhere, ILike, Repository } from "typeorm";
 import { Promotion } from "../entities/Promotion";
-import { WeekDay } from "../enums/WeekDay";
 import { ICreatePromotion } from "../models/ICreatePromotion";
 import { IPaginatePromotion } from "../models/IPaginatePromotion";
 import { IPromotionRepository } from "./IPromotionRepository";
+import { IUpdatePromotion } from "../models/IUpdatePromotion";
 
 export class PromotionRepository implements IPromotionRepository {
   private readonly repository: Repository<Promotion>;
@@ -26,13 +26,30 @@ export class PromotionRepository implements IPromotionRepository {
     const promotion = this.repository.create({
       ...body,
       enterprise: { id: enterpriseId },
-      promotionProducts: products.map(({ id, value }) => ({
-        product: { id },
+      promotionProducts: products.map(({ productId, value }) => ({
+        product: { id: productId },
         value,
       })),
     });
     await this.repository.save(promotion);
     return promotion;
+  }
+
+  async update(
+    id: string,
+    { enterpriseId, products, ...body }: IUpdatePromotion
+  ): Promise<boolean> {
+    await this.repository.save({
+      ...body,
+      id,
+      enterprise: { id: enterpriseId },
+      promotionProducts: products.map(({ productId, ...product }) => ({
+        ...product,
+        product: { id: productId },
+      })),
+    });
+
+    return true;
   }
 
   async paginate(
@@ -67,15 +84,6 @@ export class PromotionRepository implements IPromotionRepository {
     return this.repository.findOne({
       where: { id },
       relations: ["promotionProducts", "promotionProducts.product"],
-    });
-  }
-
-  findByWeekDayAndEnterpriseId(
-    weekDay: WeekDay,
-    enterpriseId: string
-  ): Promise<Promotion> {
-    return this.repository.findOne({
-      where: { weekDay, enterprise: { id: enterpriseId } },
     });
   }
 }

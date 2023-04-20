@@ -7,8 +7,9 @@ const promotionController = new PromotionController();
 
 const promotionRouter = Router();
 
-promotionRouter.get("/", promotionController.paginate);
-promotionRouter.get("/:id", promotionController.findById);
-promotionRouter.post("/", promotionController.create);
+promotionRouter.get("/", ensureAuthenticated, promotionController.paginate);
+promotionRouter.get("/:id", ensureAuthenticated, promotionController.findById);
+promotionRouter.post("/", ensureAuthenticated, promotionController.create);
+promotionRouter.put("/:id", ensureAuthenticated, promotionController.update);
 
 export { promotionRouter };

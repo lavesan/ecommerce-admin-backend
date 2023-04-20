@@ -23,6 +23,9 @@ class Promotion {
   @Column()
   description: string;
 
+  @Column({ default: false })
+  isDisabled: boolean;
+
   @Column()
   imageKey: string;
 

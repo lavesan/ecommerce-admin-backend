@@ -8,14 +8,12 @@ import { IFindProductsRequest } from "../models/IFindProductsRequest";
 import { IUpdateProductRequest } from "../models/IUpdateProductRequest";
 
 export interface IProductRepository {
-  findById: (id: string) => Promise<Product>;
-  paginate: (
+  findById(id: string): Promise<Product>;
+  findManyByEnterpriseID(enterpriseId: string): Promise<Product[]>;
+  paginate(
     pagination: IPaginationRequest,
     filter: IFindProductsRequest
-  ) => Promise<IPaginationResponse<Product>>;
-  update: (
-    id: string,
-    body: Partial<IUpdateProductRequest>
-  ) => Promise<boolean>;
-  create: (body: ICreateProductRequest) => Promise<Product>;
+  ): Promise<IPaginationResponse<Product>>;
+  update(id: string, body: Partial<IUpdateProductRequest>): Promise<boolean>;
+  create(body: ICreateProductRequest): Promise<Product>;
 }

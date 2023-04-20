@@ -7,11 +7,20 @@ const enterpriseController = new EnterpriseController();
 
 const enterpriseRouter = Router();
 
-enterpriseRouter.get("/", enterpriseController.paginate);
-enterpriseRouter.get("/:id", enterpriseController.findById);
+enterpriseRouter.get("/", ensureAuthenticated, enterpriseController.paginate);
+enterpriseRouter.get(
+  "/:id",
+  ensureAuthenticated,
+  enterpriseController.findById
+);
+enterpriseRouter.post("/", ensureAuthenticated, enterpriseController.create);
+enterpriseRouter.put("/:id", ensureAuthenticated, enterpriseController.update);
+enterpriseRouter.delete(
+  "/:id",
+  ensureAuthenticated,
+  enterpriseController.delete
+);
+
 enterpriseRouter.get("/menu/:id", enterpriseController.findAllMenuById);
-enterpriseRouter.post("/", enterpriseController.create);
-enterpriseRouter.put("/:id", enterpriseController.update);
-enterpriseRouter.delete("/:id", enterpriseController.delete);
 
 export { enterpriseRouter };

@@ -7,9 +7,10 @@ const clientController = new ClientController();
 
 const clientRouter = Router();
 
-clientRouter.get("/", clientController.paginate);
-clientRouter.get("/:id", clientController.findById);
+clientRouter.get("/", ensureAuthenticated, clientController.paginate);
+
 clientRouter.post("/", clientController.create);
 clientRouter.put("/:id", clientController.update);
+clientRouter.get("/:id", clientController.findById);
 
 export { clientRouter };

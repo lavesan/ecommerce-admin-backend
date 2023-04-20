@@ -35,7 +35,7 @@ export class UserRepository implements IUserRepository {
     let user: Partial<IUpdateUserRequest> = body;
     if (password) user.password = await encryptPwd(password);
 
-    await this.repository.update(id, user);
+    await this.repository.save({ id, ...user });
     return true;
   }
 

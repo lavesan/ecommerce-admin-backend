@@ -4,7 +4,6 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  OneToOne,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
@@ -28,7 +27,7 @@ class PromotionProduct {
   @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
 
-  @OneToOne(() => Product, (product) => product.promotionProduct)
+  @ManyToOne(() => Product, (product) => product.promotionProducts)
   product: Product;
 
   @ManyToOne(() => Promotion, (promotion) => promotion.promotionProducts)

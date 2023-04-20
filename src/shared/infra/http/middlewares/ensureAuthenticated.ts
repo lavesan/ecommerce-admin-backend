@@ -16,7 +16,6 @@ export async function ensureAuthenticated(
   response: Response,
   next: NextFunction
 ) {
-  console.log("cookie token: ", request.cookies.token);
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {

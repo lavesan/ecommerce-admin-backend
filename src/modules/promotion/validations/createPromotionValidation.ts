@@ -5,6 +5,7 @@ export const createPromotionValidation = yup.object({
   name: yup.string().required(),
   description: yup.string().required(),
   imageKey: yup.string().required(),
+  isDisabled: yup.boolean().notRequired(),
   weekDay: yup
     .mixed()
     .oneOf([
@@ -20,7 +21,7 @@ export const createPromotionValidation = yup.object({
   enterpriseId: yup.string().uuid().required(),
   products: yup.array().of(
     yup.object({
-      id: yup.string().uuid().required(),
+      productId: yup.string().uuid().required(),
       value: yup.number().required(),
     })
   ),

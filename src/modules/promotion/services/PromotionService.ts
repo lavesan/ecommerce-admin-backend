@@ -4,6 +4,7 @@ import { CreatePromotionError } from "../errors/CreatePromotionError";
 import { ICreatePromotion } from "../models/ICreatePromotion";
 import { IPaginatePromotion } from "../models/IPaginatePromotion";
 import { PromotionRepository } from "../repositories/PromotionRepository";
+import { IUpdatePromotion } from "../models/IUpdatePromotion";
 
 @injectable()
 export class PromotionService {
@@ -12,16 +13,12 @@ export class PromotionService {
     private readonly promotionRepository: PromotionRepository
   ) {}
 
-  async create(body: ICreatePromotion) {
-    const promotion =
-      await this.promotionRepository.findByWeekDayAndEnterpriseId(
-        body.weekDay,
-        body.enterpriseId
-      );
-
-    if (promotion) throw new CreatePromotionError.AlreadyExists();
-
+  create(body: ICreatePromotion) {
     return this.promotionRepository.create(body);
+  }
+
+  update(id: string, body: IUpdatePromotion) {
+    return this.promotionRepository.update(id, body);
   }
 
   findById(id: string) {

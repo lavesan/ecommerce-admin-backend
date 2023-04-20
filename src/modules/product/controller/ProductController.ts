@@ -68,4 +68,14 @@ export class ProductController {
 
     return res.json(result);
   }
+
+  async findManyByEnterpriseId(req: Request, res: Response) {
+    const service = container.resolve(ProductService);
+
+    const { enterpriseId } = req.params;
+
+    const result = await service.findManyByEnterpriseId(enterpriseId);
+
+    return res.json(result);
+  }
 }

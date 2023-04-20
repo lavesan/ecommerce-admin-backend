@@ -12,8 +12,18 @@ const upload = multer({
   dest: "public/uploads",
 });
 
-imageRouter.post("/", upload.single("file"), fileStorageController.upload);
+imageRouter.post(
+  "/",
+  ensureAuthenticated,
+  upload.single("file"),
+  fileStorageController.upload
+);
+imageRouter.delete(
+  "/:key",
+  ensureAuthenticated,
+  fileStorageController.deleteByKey
+);
+
 imageRouter.get("/:key", fileStorageController.findByKey);
-imageRouter.delete("/:key", fileStorageController.deleteByKey);
 
 export { imageRouter };

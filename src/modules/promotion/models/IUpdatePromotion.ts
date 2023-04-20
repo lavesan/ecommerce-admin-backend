@@ -1,6 +1,6 @@
 import { WeekDay } from "../enums/WeekDay";
 
-export interface ICreatePromotion {
+export interface IUpdatePromotion {
   name: string;
   description: string;
   imageKey: string;
@@ -8,6 +8,7 @@ export interface ICreatePromotion {
   enterpriseId: string;
   isDisabled: boolean;
   products: {
+    id?: string;
     value: number;
     productId: string;
   }[];
