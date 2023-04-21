@@ -31,12 +31,13 @@ export class EnterpriseRepository implements IEnterpriseRepository {
     id: string,
     { userId, ...body }: IUpdateEnterprise
   ): Promise<boolean> {
-    // @ts-ignore
-    await this.repository.save({
+    const parsedBody = {
       id,
       ...body,
       user: { id: userId },
-    });
+    };
+    //@ts-ignore
+    await this.repository.save(parsedBody);
     return true;
   }
 

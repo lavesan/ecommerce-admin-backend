@@ -1,5 +1,4 @@
 import { WeekDay } from "aws-sdk/clients/ec2";
-import { ScheduleRelation } from "../enums/ScheduleRelation";
 
 export interface IUpdateEnterprise {
   name: string;

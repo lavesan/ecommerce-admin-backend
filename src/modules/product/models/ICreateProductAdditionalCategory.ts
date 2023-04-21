@@ -5,7 +5,6 @@ export interface ICreateProductAdditionalCategory {
   description: string;
   limit: number;
   type: ProductAdditionalType;
-  imageKey: string;
   isOptional: boolean;
   isDisabled: boolean;
 }
