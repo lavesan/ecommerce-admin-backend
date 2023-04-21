@@ -25,7 +25,6 @@ export const updateProductValidation = yup.object({
             ProductAdditionalType.ONE_SELECT,
           ])
           .notRequired(),
-        imageKey: yup.string().notRequired(),
         isOptional: yup.boolean().notRequired(),
         isDisabled: yup.boolean().notRequired(),
         productAdditionals: yup.array().of(

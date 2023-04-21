@@ -24,7 +24,6 @@ export const createProductValidation = yup.object({
             ProductAdditionalType.ONE_SELECT,
           ])
           .required(),
-        imageKey: yup.string().required(),
         isOptional: yup.boolean().required(),
         isDisabled: yup.boolean().notRequired(),
         productAdditionals: yup.array().of(
