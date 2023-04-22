@@ -30,6 +30,20 @@ export class CategoryRepository implements ICategoryRepository {
     return true;
   }
 
+  async delete(id: string): Promise<boolean> {
+    const category = await this.repository.findOneOrFail({
+      where: { id },
+      relations: [
+        "products",
+        "products.productAdditionalCategory",
+        "products.productAdditionalCategory.productAdditionals",
+      ],
+    });
+
+    await this.repository.softDelete(category);
+    return true;
+  }
+
   async paginate(
     pagination: IPaginationRequest,
     { enterpriseId, name }: IPaginateCategoryRequest

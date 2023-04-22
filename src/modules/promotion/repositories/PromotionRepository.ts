@@ -52,6 +52,16 @@ export class PromotionRepository implements IPromotionRepository {
     return true;
   }
 
+  async delete(id: string): Promise<boolean> {
+    const promotion = await this.repository.findOneOrFail({
+      where: { id },
+      relations: ["promotionProducts", "promotionProducts.product"],
+    });
+
+    await this.repository.softDelete(promotion);
+    return true;
+  }
+
   async paginate(
     pagination: IPaginationRequest,
     { enterpriseId, name, weekDay }: IPaginatePromotion

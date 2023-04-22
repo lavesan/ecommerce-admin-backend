@@ -16,4 +16,5 @@ export interface IProductRepository {
   ): Promise<IPaginationResponse<Product>>;
   update(id: string, body: Partial<IUpdateProductRequest>): Promise<boolean>;
   create(body: ICreateProductRequest): Promise<Product>;
+  delete(id: string): Promise<boolean>;
 }

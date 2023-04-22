@@ -10,6 +10,7 @@ import { ICreateEnterprise } from "../models/ICreateEnterprise";
 import { IPaginateEnterpriseRequest } from "../models/IPaginateEnterpriseRequest";
 import { IEnterpriseRepository } from "./IEnterpriseRepository";
 import { IUpdateEnterprise } from "../models/IUpdateEnterprise";
+import { getWeekDay } from "@helpers/date.helper";
 
 export class EnterpriseRepository implements IEnterpriseRepository {
   private readonly repository: Repository<Enterprise>;
@@ -42,7 +43,19 @@ export class EnterpriseRepository implements IEnterpriseRepository {
   }
 
   async delete(id: string): Promise<boolean> {
-    await this.repository.softDelete(id);
+    const enterprise = await this.repository.findOneOrFail({
+      where: { id },
+      relations: [
+        "categories",
+        "categories.products",
+        "categories.products.productAdditionalCategory",
+        "categories.products.productAdditionalCategory.productAdditionals",
+        "promotions",
+        "freights",
+      ],
+    });
+
+    await this.repository.softDelete(enterprise);
     return true;
   }
 
@@ -54,14 +67,35 @@ export class EnterpriseRepository implements IEnterpriseRepository {
   }
 
   findAllMenuById(id: string): Promise<Enterprise> {
+    const weekDay = getWeekDay();
+
     return this.repository.findOne({
-      where: { id },
+      where: {
+        id,
+        categories: {
+          isDisabled: false,
+          products: {
+            isDisabled: false,
+            productAdditionalCategory: {
+              isDisabled: false,
+              productAdditionals: { isDisabled: false },
+            },
+          },
+        },
+        promotions: {
+          weekDay,
+          isDisabled: false,
+          promotionProducts: { product: { isDisabled: false } },
+        },
+      },
       relations: [
         "categories",
         "categories.products",
         "categories.products.productAdditionalCategory",
         "categories.products.productAdditionalCategory.productAdditionals",
         "promotions",
+        "promotions.promotionProducts",
+        "promotions.promotionProducts.product",
         "freights",
       ],
     });

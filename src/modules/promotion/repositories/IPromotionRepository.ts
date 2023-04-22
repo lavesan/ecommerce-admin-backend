@@ -9,6 +9,7 @@ import { IUpdatePromotion } from "../models/IUpdatePromotion";
 
 export interface IPromotionRepository {
   create(body: ICreatePromotion): Promise<Promotion>;
+  delete(id: string): Promise<boolean>;
   update(id: string, body: IUpdatePromotion): Promise<boolean>;
   paginate(
     pagination: IPaginationRequest,

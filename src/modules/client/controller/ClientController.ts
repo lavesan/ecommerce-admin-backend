@@ -8,8 +8,28 @@ import { IPaginateClientRequest } from "../models/IPaginateClientRequest";
 import { ClientService } from "../services/ClientService";
 import { createClientValidation } from "../validations/createClientValidation";
 import { updateClientValidation } from "../validations/updateClientValidation";
+import { loginUserValidation } from "@modules/user/validations/loginUserValidation";
+import { LoginUserError } from "@modules/user/errors/LoginUserError";
 
 export class ClientController {
+  async login(req: Request, res: Response) {
+    const service = container.resolve(ClientService);
+
+    await loginUserValidation
+      .validate(req.body, { abortEarly: false })
+      .catch((err) => {
+        throw new LoginUserError.BodyIsInvalid(err);
+      });
+
+    const { email, password } = req.body;
+
+    const data = await service.login({ email, password });
+
+    res.cookie("token", data.accessToken, { httpOnly: true });
+
+    return res.json(data);
+  }
+
   async create(req: Request, res: Response) {
     const service = container.resolve(ClientService);
 

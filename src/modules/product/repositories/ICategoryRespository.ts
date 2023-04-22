@@ -16,4 +16,5 @@ export interface ICategoryRepository {
   findByName: (name: string) => Promise<Category>;
   update: (id: string, body: IUpdateCategory) => Promise<boolean>;
   create: (body: ICreateCategory) => Promise<Category>;
+  delete(id: string): Promise<boolean>;
 }

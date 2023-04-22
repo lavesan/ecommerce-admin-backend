@@ -9,6 +9,7 @@ const clientRouter = Router();
 
 clientRouter.get("/", ensureAuthenticated, clientController.paginate);
 
+clientRouter.post("/login", clientController.login);
 clientRouter.post("/", clientController.create);
 clientRouter.put("/:id", clientController.update);
 clientRouter.get("/:id", clientController.findById);

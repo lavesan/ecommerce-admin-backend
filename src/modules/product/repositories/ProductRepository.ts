@@ -48,6 +48,19 @@ export class ProductRepository implements IProductRepository {
     return true;
   }
 
+  async delete(id: string): Promise<boolean> {
+    const product = await this.repository.findOneOrFail({
+      where: { id },
+      relations: [
+        "productAdditionalCategory",
+        "productAdditionalCategory.productAdditionals",
+      ],
+    });
+
+    await this.repository.softDelete(product);
+    return true;
+  }
+
   findById(id: string) {
     return this.repository.findOne({
       where: { id },
