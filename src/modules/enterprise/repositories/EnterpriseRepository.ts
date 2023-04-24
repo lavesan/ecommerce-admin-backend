@@ -66,27 +66,28 @@ export class EnterpriseRepository implements IEnterpriseRepository {
     });
   }
 
-  findAllMenuById(id: string): Promise<Enterprise> {
+  findMenuById(id: string): Promise<Enterprise> {
+    console.log("id: ", id);
     const weekDay = getWeekDay();
 
     return this.repository.findOne({
       where: {
         id,
-        categories: {
-          isDisabled: false,
-          products: {
-            isDisabled: false,
-            productAdditionalCategory: {
-              isDisabled: false,
-              productAdditionals: { isDisabled: false },
-            },
-          },
-        },
-        promotions: {
-          weekDay,
-          isDisabled: false,
-          promotionProducts: { product: { isDisabled: false } },
-        },
+        // categories: {
+        //   isDisabled: false,
+        //   products: {
+        //     isDisabled: false,
+        //     productAdditionalCategory: {
+        //       isDisabled: false,
+        //       productAdditionals: { isDisabled: false },
+        //     },
+        //   },
+        // },
+        // promotions: {
+        //   weekDay,
+        //   isDisabled: false,
+        //   promotionProducts: { product: { isDisabled: false } },
+        // },
       },
       relations: [
         "categories",
@@ -125,5 +126,19 @@ export class EnterpriseRepository implements IEnterpriseRepository {
       count,
       ...pagination,
     };
+  }
+
+  findAll({ name, cnpj }: IPaginateEnterpriseRequest): Promise<Enterprise[]> {
+    let where: FindOptionsWhere<Enterprise> = {};
+
+    if (name) where.name = ILike(`%${name}%`);
+    if (cnpj) where.cnpj = ILike(`%${cnpj}%`);
+
+    return this.repository.find({
+      order: {
+        created_at: "DESC",
+      },
+      where,
+    });
   }
 }

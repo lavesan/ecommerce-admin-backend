@@ -12,9 +12,10 @@ export interface IEnterpriseRepository {
   update(id: string, body: IUpdateEnterprise): Promise<boolean>;
   delete(id: string): Promise<boolean>;
   findById(id: string): Promise<Enterprise>;
-  findAllMenuById(id: string): Promise<Enterprise>;
+  findMenuById(id: string): Promise<Enterprise>;
   paginate(
     pagination: IPaginationRequest,
     filter: IPaginateEnterpriseRequest
   ): Promise<IPaginationResponse<Enterprise>>;
+  findAll(filter: IPaginateEnterpriseRequest): Promise<Enterprise[]>;
 }

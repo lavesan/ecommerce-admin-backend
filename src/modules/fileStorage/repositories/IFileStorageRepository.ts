@@ -7,4 +7,5 @@ export interface IFileStorageRepository {
   upload(body: IUploadImageRequest): Promise<IUploadImageResponse>;
   delete(key: string): Promise<IDeleteImageResponse>;
   find(key: string): Promise<IFindImageResponse>;
+  findBase64(key: string): Promise<string>;
 }

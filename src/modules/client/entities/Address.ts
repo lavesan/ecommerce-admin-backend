@@ -40,6 +40,9 @@ class Address {
   @Column({ nullable: true })
   shortName: string;
 
+  @Column({ default: false })
+  isDefault: string;
+
   @CreateDateColumn()
   created_at: Date;
 

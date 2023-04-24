@@ -28,11 +28,15 @@ export class EnterpriseService {
     return this.enterpriseRepository.findById(id);
   }
 
-  findAllMenuById(id: string) {
-    return this.enterpriseRepository.findAllMenuById(id);
+  findMenuById(id: string) {
+    return this.enterpriseRepository.findMenuById(id);
   }
 
   paginate(pagination: IPaginationRequest, filter: IPaginateEnterpriseRequest) {
     return this.enterpriseRepository.paginate(pagination, filter);
+  }
+
+  findAll(filter: IPaginateEnterpriseRequest) {
+    return this.enterpriseRepository.findAll(filter);
   }
 }

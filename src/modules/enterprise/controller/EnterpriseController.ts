@@ -73,12 +73,22 @@ export class EnterpriseController {
     return res.json(result);
   }
 
-  async findAllMenuById(req: Request, res: Response) {
+  async findMenuById(req: Request, res: Response) {
     const service = container.resolve(EnterpriseService);
 
     const { id } = req.params;
 
-    const result = await service.findAllMenuById(id);
+    const result = await service.findMenuById(id);
+
+    return res.json(result);
+  }
+
+  async findAll(req: Request, res: Response): Promise<Response> {
+    const service = container.resolve(EnterpriseService);
+
+    const { name, cnpj } = req.query as unknown as IPaginateEnterpriseRequest;
+
+    const result = await service.findAll({ name, cnpj });
 
     return res.json(result);
   }

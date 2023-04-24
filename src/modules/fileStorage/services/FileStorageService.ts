@@ -17,6 +17,10 @@ export class FileStorageService {
     return this.fileStorageRepository.find(key);
   }
 
+  findBase64(key: string) {
+    return this.fileStorageRepository.findBase64(key);
+  }
+
   delete(key: string) {
     return this.fileStorageRepository.delete(key);
   }

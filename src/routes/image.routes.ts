@@ -12,6 +12,8 @@ const upload = multer({
   dest: "public/uploads",
 });
 
+imageRouter.get("/base64/:key", fileStorageController.findBase64ByKey);
+
 imageRouter.post(
   "/",
   ensureAuthenticated,
@@ -23,7 +25,6 @@ imageRouter.delete(
   ensureAuthenticated,
   fileStorageController.deleteByKey
 );
-
 imageRouter.get("/:key", fileStorageController.findByKey);
 
 export { imageRouter };

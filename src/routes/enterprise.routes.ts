@@ -7,6 +7,9 @@ const enterpriseController = new EnterpriseController();
 
 const enterpriseRouter = Router();
 
+enterpriseRouter.get("/all", enterpriseController.findAll);
+enterpriseRouter.get("/menu/:id", enterpriseController.findMenuById);
+
 enterpriseRouter.get("/", ensureAuthenticated, enterpriseController.paginate);
 enterpriseRouter.get(
   "/:id",
@@ -20,7 +23,5 @@ enterpriseRouter.delete(
   ensureAuthenticated,
   enterpriseController.delete
 );
-
-enterpriseRouter.get("/menu/:id", enterpriseController.findAllMenuById);
 
 export { enterpriseRouter };

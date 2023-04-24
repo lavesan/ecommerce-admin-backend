@@ -25,6 +25,16 @@ export class FileStorageController {
     return res.end(null, "binary");
   }
 
+  async findBase64ByKey(req: Request, res: Response) {
+    const service = container.resolve(FileStorageService);
+
+    const { key } = req.params;
+
+    const result = await service.findBase64(key);
+
+    return res.json({ base64: result });
+  }
+
   async deleteByKey(req: Request, res: Response) {
     const service = container.resolve(FileStorageService);
 

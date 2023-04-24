@@ -49,6 +49,13 @@ export class AWSS3Repository implements IFileStorageRepository {
     return s3Response.Body;
   }
 
+  async findBase64(key: string): Promise<string> {
+    const s3Response = await this.s3
+      .getObject({ Bucket: this.bucket, Key: key })
+      .promise();
+    return `data:image/jpeg;base64,${s3Response.Body.toString("base64")}`;
+  }
+
   async delete(key: string): Promise<IDeleteImageResponse> {
     await this.s3.deleteObject({ Bucket: this.bucket, Key: key }).promise();
 
