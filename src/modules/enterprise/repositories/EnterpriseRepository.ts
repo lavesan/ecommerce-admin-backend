@@ -67,7 +67,6 @@ export class EnterpriseRepository implements IEnterpriseRepository {
   }
 
   findMenuById(id: string): Promise<Enterprise> {
-    console.log("id: ", id);
     const weekDay = getWeekDay();
 
     return this.repository.findOne({

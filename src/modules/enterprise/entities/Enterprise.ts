@@ -65,6 +65,9 @@ class Enterprise {
   @Column({ nullable: true })
   imageKey: string;
 
+  @Column({ nullable: true })
+  bannerKey: string;
+
   @CreateDateColumn()
   created_at: Date;
 

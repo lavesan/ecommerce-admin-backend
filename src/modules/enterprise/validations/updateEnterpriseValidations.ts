@@ -17,6 +17,7 @@ export const updateEnterpriseValidation = yup.object({
   state: yup.string().notRequired(),
   city: yup.string().notRequired(),
   imageKey: yup.string().notRequired(),
+  bannerKey: yup.string().notRequired(),
   userId: yup.string().uuid().notRequired(),
   freights: yup
     .array()

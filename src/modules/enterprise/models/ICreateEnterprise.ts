@@ -17,6 +17,7 @@ export interface ICreateEnterprise {
   state: string;
   city: string;
   imageKey: string;
+  bannerKey: string;
   userId: string;
   freights: {
     addressKey: string;
