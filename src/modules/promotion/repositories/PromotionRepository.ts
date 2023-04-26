@@ -10,6 +10,7 @@ import { ICreatePromotion } from "../models/ICreatePromotion";
 import { IPaginatePromotion } from "../models/IPaginatePromotion";
 import { IPromotionRepository } from "./IPromotionRepository";
 import { IUpdatePromotion } from "../models/IUpdatePromotion";
+import { WeekDay } from "../enums/WeekDay";
 
 export class PromotionRepository implements IPromotionRepository {
   private readonly repository: Repository<Promotion>;
@@ -95,5 +96,9 @@ export class PromotionRepository implements IPromotionRepository {
       where: { id },
       relations: ["promotionProducts", "promotionProducts.product"],
     });
+  }
+
+  findAllByWeekDay(weekDay: WeekDay): Promise<Promotion[]> {
+    return this.repository.find({ where: { weekDay } });
   }
 }

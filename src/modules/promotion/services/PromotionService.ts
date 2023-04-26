@@ -5,6 +5,7 @@ import { ICreatePromotion } from "../models/ICreatePromotion";
 import { IPaginatePromotion } from "../models/IPaginatePromotion";
 import { PromotionRepository } from "../repositories/PromotionRepository";
 import { IUpdatePromotion } from "../models/IUpdatePromotion";
+import { WeekDay } from "../enums/WeekDay";
 
 @injectable()
 export class PromotionService {
@@ -23,6 +24,10 @@ export class PromotionService {
 
   findById(id: string) {
     return this.promotionRepository.findById(id);
+  }
+
+  findAllByWeekDay(weekDay: WeekDay) {
+    return this.promotionRepository.findAllByWeekDay(weekDay);
   }
 
   paginate(pagination: IPaginationRequest, filter: IPaginatePromotion) {

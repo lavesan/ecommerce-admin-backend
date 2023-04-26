@@ -8,6 +8,7 @@ import { PromotionService } from "../services/PromotionService";
 import { createPromotionValidation } from "../validations/createPromotionValidation";
 import { updatePromotionValidation } from "../validations/updatePromotionValidation";
 import { UpdatePromotionError } from "../errors/UpdatePromotionError";
+import { WeekDay } from "../enums/WeekDay";
 
 export class PromotionController {
   async create(req: Request, res: Response): Promise<Response> {
@@ -64,6 +65,16 @@ export class PromotionController {
     const { id } = req.params;
 
     const result = await service.findById(id);
+
+    return res.json(result);
+  }
+
+  async findAllByWeekDay(req: Request, res: Response): Promise<Response> {
+    const service = container.resolve(PromotionService);
+
+    const { weekDay } = req.params;
+
+    const result = await service.findAllByWeekDay(weekDay as WeekDay);
 
     return res.json(result);
   }
