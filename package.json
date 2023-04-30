@@ -10,7 +10,7 @@
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --poll --transpile-only --ignore-watch node_modules --respawn ./src/server.ts",
     "test": "jest",
     "start": "node dist/server.js",
-    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
+    "build": "npm run migration:run & babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "typeorm": "ts-node -r tsconfig-paths/register --project ./tsconfig.json ./node_modules/typeorm/cli.js -d ./src/data-source.ts",
     "migration:create": "typeorm migration:create",
     "migration:run": "npm run typeorm migration:run",
