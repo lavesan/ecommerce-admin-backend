@@ -1,7 +1,6 @@
 import { Enterprise } from "@modules/enterprise/entities/Enterprise";
 import {
   Entity,
-  PrimaryColumn,
   Column,
   CreateDateColumn,
   PrimaryGeneratedColumn,
