@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
-import fs from "fs";
 
 import { User } from "@modules/user/entities/User";
 import { Product } from "@modules/product/entities/Product";
@@ -21,24 +20,20 @@ import { Schedule } from "@modules/enterprise/entities/Schedule";
 
 dotenv.config();
 
-const caCertificate = fs.readFileSync("global-bundle.pem", "utf-8");
-
 const AppDataSource = new DataSource({
   type: "postgres",
-  host: process.env.POSTGRES_HOST || "localhost",
-  port: 5432,
-  username: process.env.POSTGRES_USER || "postgres",
-  password: process.env.POSTGRES_PASSWORD || "postgres",
-  database: process.env.POSTGRES_DATABASE || "success_commerce",
+  // host: process.env.POSTGRES_HOST || "localhost",
+  // port: 5432,
+  // username: process.env.POSTGRES_USER || "postgres",
+  // password: process.env.POSTGRES_PASSWORD || "postgres",
+  // database: process.env.POSTGRES_DATABASE || "success_commerce",
+  url: process.env.DATABASE_URL,
   synchronize: true,
   // logging: true,
   subscribers: [],
-  ssl:
-    process.env.NODE_ENV !== "dev"
-      ? {
-          ca: caCertificate,
-        }
-      : null,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   migrations: [__dirname + "/shared/migration/*.ts"],
   entities: [
     User,
