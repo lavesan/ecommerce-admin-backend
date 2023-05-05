@@ -11,6 +11,7 @@ import { ILoginRequest } from "@modules/user/models/ILoginRequest";
 import { LoginUserError } from "@modules/user/errors/LoginUserError";
 import { comparePwd } from "@helpers/password.helper";
 import { createToken } from "@helpers/auth.helper";
+import { LoginByEmailError } from "../errors/LoginByEmailError";
 
 @injectable()
 export class ClientService {
@@ -24,13 +25,13 @@ export class ClientService {
 
     if (client) throw new CreateClientError.AlreadyExists();
 
-    const createdClient = this.clientRepository.create(body);
+    const createdClient = await this.clientRepository.create(body);
 
     const accessToken = createToken(
       {
-        id: client.id,
-        name: client.name,
-        email: client.email,
+        id: createdClient.id,
+        name: createdClient.name,
+        email: createdClient.email,
       },
       process.env.CLIENT_JWT_SECRET
     );
@@ -71,6 +72,8 @@ export class ClientService {
 
     if (!passwordMatch) throw new LoginUserError.EmailOrPwdWrong();
 
+    delete client.password;
+
     const accessToken = createToken(
       {
         id: client.id,
@@ -81,8 +84,39 @@ export class ClientService {
     );
 
     return {
-      accessToken,
-      refreshToken: "",
+      credentials: {
+        accessToken,
+        refreshToken: "",
+      },
+      ...client,
+    };
+  }
+
+  async googleLogin(
+    email: string,
+    googleInfo: { email: string; name: string }
+  ) {
+    const client = await this.clientRepository.findByEmail(email);
+
+    if (!client) throw new LoginByEmailError.DontExist(googleInfo);
+
+    delete client.password;
+
+    const accessToken = createToken(
+      {
+        id: client.id,
+        name: client.name,
+        email: client.email,
+      },
+      process.env.CLIENT_JWT_SECRET
+    );
+
+    return {
+      credentials: {
+        accessToken,
+        refreshToken: "",
+      },
+      ...client,
     };
   }
 }

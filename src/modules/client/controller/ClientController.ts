@@ -25,7 +25,7 @@ export class ClientController {
 
     const data = await service.login({ email, password });
 
-    res.cookie("token", data.accessToken, { httpOnly: true });
+    res.cookie("token", data.credentials.accessToken, { httpOnly: true });
 
     return res.json(data);
   }
@@ -86,9 +86,19 @@ export class ClientController {
   async findMe(req: Request, res: Response) {
     const service = container.resolve(ClientService);
 
-    const { id } = req.user;
+    const { id } = req.client;
 
     const result = await service.findById(id);
+
+    return res.json(result);
+  }
+
+  async loginByGoogle(req: Request, res: Response) {
+    const service = container.resolve(ClientService);
+
+    const { email } = req.client;
+
+    const result = await service.googleLogin(email, req.client);
 
     return res.json(result);
   }
