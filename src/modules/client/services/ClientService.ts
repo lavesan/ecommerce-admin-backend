@@ -1,6 +1,5 @@
 import { IPaginationRequest } from "models/pagination.models";
 import { inject, injectable } from "tsyringe";
-import jwt from "jsonwebtoken";
 
 import { CreateClientError } from "../errors/CreateClientError";
 import { UpdateClientError } from "../errors/UpdateClientError";
@@ -11,6 +10,7 @@ import { IClientRepository } from "../repositories/IClientRepository";
 import { ILoginRequest } from "@modules/user/models/ILoginRequest";
 import { LoginUserError } from "@modules/user/errors/LoginUserError";
 import { comparePwd } from "@helpers/password.helper";
+import { createToken } from "@helpers/auth.helper";
 
 @injectable()
 export class ClientService {
@@ -24,7 +24,24 @@ export class ClientService {
 
     if (client) throw new CreateClientError.AlreadyExists();
 
-    return this.clientRepository.create(body);
+    const createdClient = this.clientRepository.create(body);
+
+    const accessToken = createToken(
+      {
+        id: client.id,
+        name: client.name,
+        email: client.email,
+      },
+      process.env.CLIENT_JWT_SECRET
+    );
+
+    return {
+      credentials: {
+        accessToken,
+        refreshToken: "",
+      },
+      ...createdClient,
+    };
   }
 
   async update(id: string, body: IUpdateClient) {
@@ -54,7 +71,7 @@ export class ClientService {
 
     if (!passwordMatch) throw new LoginUserError.EmailOrPwdWrong();
 
-    const accessToken = jwt.sign(
+    const accessToken = createToken(
       {
         id: client.id,
         name: client.name,

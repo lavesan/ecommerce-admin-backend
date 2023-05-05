@@ -8,10 +8,11 @@ const clientController = new ClientController();
 const clientRouter = Router();
 
 clientRouter.get("/", ensureAuthenticated, clientController.paginate);
+clientRouter.get("/me", ensureAuthenticated, clientController.findMe);
+clientRouter.get("/:id", ensureAuthenticated, clientController.findById);
 
 clientRouter.post("/login", clientController.login);
 clientRouter.post("/", clientController.create);
 clientRouter.put("/:id", clientController.update);
-clientRouter.get("/:id", clientController.findById);
 
 export { clientRouter };

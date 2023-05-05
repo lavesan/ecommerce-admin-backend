@@ -20,20 +20,28 @@ import { Schedule } from "@modules/enterprise/entities/Schedule";
 
 dotenv.config();
 
+let dbConnection =
+  process.env.NODE_ENV === "dev"
+    ? {
+        host: process.env.POSTGRES_HOST || "localhost",
+        port: 5432,
+        username: process.env.POSTGRES_USER || "postgres",
+        password: process.env.POSTGRES_PASSWORD || "postgres",
+        database: process.env.POSTGRES_DATABASE || "success_commerce",
+      }
+    : {
+        url: process.env.DATABASE_URL,
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      };
+
 const AppDataSource = new DataSource({
+  ...dbConnection,
   type: "postgres",
-  // host: process.env.POSTGRES_HOST || "localhost",
-  // port: 5432,
-  // username: process.env.POSTGRES_USER || "postgres",
-  // password: process.env.POSTGRES_PASSWORD || "postgres",
-  // database: process.env.POSTGRES_DATABASE || "success_commerce",
-  url: process.env.DATABASE_URL,
   synchronize: true,
-  // logging: true,
+  logging: process.env.NODE_ENV !== "dev",
   subscribers: [],
-  ssl: {
-    rejectUnauthorized: false,
-  },
   migrations: [__dirname + "/shared/migration/*.ts"],
   entities: [
     User,

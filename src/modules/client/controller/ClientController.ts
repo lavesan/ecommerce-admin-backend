@@ -82,4 +82,14 @@ export class ClientController {
 
     return res.json(result);
   }
+
+  async findMe(req: Request, res: Response) {
+    const service = container.resolve(ClientService);
+
+    const { id } = req.user;
+
+    const result = await service.findById(id);
+
+    return res.json(result);
+  }
 }
