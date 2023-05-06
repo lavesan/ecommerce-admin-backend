@@ -12,6 +12,7 @@ import { LoginUserError } from "@modules/user/errors/LoginUserError";
 import { comparePwd } from "@helpers/password.helper";
 import { createToken } from "@helpers/auth.helper";
 import { LoginByEmailError } from "../errors/LoginByEmailError";
+import { FindMeError } from "@modules/enterprise/errors/FindMeError";
 
 @injectable()
 export class ClientService {
@@ -55,6 +56,15 @@ export class ClientService {
 
   async findById(id: string) {
     const client = await this.clientRepository.findById(id);
+    delete client.password;
+    return client;
+  }
+
+  async findMeById(id: string) {
+    const client = await this.clientRepository.findById(id);
+
+    if (!client) throw new FindMeError.DontExist();
+
     delete client.password;
     return client;
   }

@@ -137,9 +137,6 @@ export class EnterpriseRepository implements IEnterpriseRepository {
       order: {
         created_at: "DESC",
       },
-      where: {
-        isDisabled: false,
-      },
     });
   }
 }

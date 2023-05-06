@@ -88,7 +88,7 @@ export class ClientController {
 
     const { id } = req.client;
 
-    const result = await service.findById(id);
+    const result = await service.findMeById(id);
 
     return res.json(result);
   }
