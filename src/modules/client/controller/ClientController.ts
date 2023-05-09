@@ -1,7 +1,8 @@
-import { getPageAndSize } from "@helpers/pagination.helper";
-import { Request, Response } from "express";
-import { IPaginationRequest } from "models/pagination.models";
 import { container } from "tsyringe";
+import { Request, Response } from "express";
+
+import { getPageAndSize } from "@helpers/pagination.helper";
+import { IPaginationRequest } from "models/pagination.models";
 import { CreateClientError } from "../errors/CreateClientError";
 import { UpdateClientError } from "../errors/UpdateClientError";
 import { IPaginateClientRequest } from "../models/IPaginateClientRequest";

@@ -41,7 +41,7 @@ class Address {
   shortName: string;
 
   @Column({ default: false })
-  isDefault: string;
+  isDefault: boolean;
 
   @CreateDateColumn()
   created_at: Date;

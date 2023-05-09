@@ -9,6 +9,7 @@ import { enterpriseRouter } from "./enterprise.routes";
 import { promotionRouter } from "./promotion.routes";
 import { freightRouter } from "./freight.routes";
 import { imageRouter } from "./image.routes";
+import { addressRouter } from "./address.routes";
 
 const router = Router();
 
@@ -23,5 +24,6 @@ router.use("/enterprise", enterpriseRouter);
 router.use("/promotion", promotionRouter);
 router.use("/freight", freightRouter);
 router.use("/image", imageRouter);
+router.use("/address", addressRouter);
 
 export { router };

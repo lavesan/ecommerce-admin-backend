@@ -17,12 +17,18 @@ import { IClientRepository } from "@modules/client/repositories/IClientRepositor
 
 import { EnterpriseRepository } from "@modules/enterprise/repositories/EnterpriseRepository";
 import { IEnterpriseRepository } from "@modules/enterprise/repositories/IEnterpriseRepository";
+
 import { PromotionRepository } from "@modules/promotion/repositories/PromotionRepository";
 import { IPromotionRepository } from "@modules/promotion/repositories/IPromotionRepository";
+
 import { FreightRepository } from "@modules/freight/repositories/FreightRepository";
 import { IFreightRepository } from "@modules/freight/repositories/IFreightRepositorty";
+
 import { AWSS3Repository } from "@modules/fileStorage/repositories/AWSS3Repository";
 import { IFileStorageRepository } from "@modules/fileStorage/repositories/IFileStorageRepository";
+
+import { AddressRepository } from "@modules/client/repositories/AddressRepository";
+import { IAddressRepository } from "@modules/client/repositories/IAddressRepository";
 
 container.registerSingleton<IProductRepository>(
   "ProductRepository",
@@ -64,4 +70,9 @@ container.registerSingleton<IFreightRepository>(
 container.registerSingleton<IFileStorageRepository>(
   "FileStorageRepository",
   AWSS3Repository
+);
+
+container.registerSingleton<IAddressRepository>(
+  "AddressRepository",
+  AddressRepository
 );
