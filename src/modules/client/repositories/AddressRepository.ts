@@ -15,7 +15,6 @@ export class AddressRepository implements IAddressRepository {
   async create({ clientId, ...body }: ICreateAddress): Promise<Address> {
     // Opens transaction
     return AppDataSource.transaction(async (transactionalEntityManager) => {
-      // execute queries using transactionalEntityManager
       const transactionRepository =
         transactionalEntityManager.getRepository(Address);
 

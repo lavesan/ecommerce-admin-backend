@@ -38,7 +38,10 @@ export class ClientRepository implements IClientRepository {
   }
 
   findById(id: string): Promise<Client> {
-    return this.repository.findOne({ where: { id }, relations: ["addresses"] });
+    return this.repository.findOne({
+      where: { id },
+      relations: ["addresses"],
+    });
   }
 
   findByEmail(email: string): Promise<Client> {
