@@ -4,6 +4,7 @@ import { ICreateAddress } from "../models/ICreateAddress";
 import { IAddressRepository } from "./IAddressRepository";
 import AppDataSource from "@data-source";
 import { IUpdateAddress } from "../models/IUpdateAddress";
+import { IUpdateAddressDefault } from "../models/IUpdateAddressDefault";
 
 export class AddressRepository implements IAddressRepository {
   private readonly repository: Repository<Address>;
@@ -42,9 +43,64 @@ export class AddressRepository implements IAddressRepository {
     });
   }
 
-  async update(id: string, body: Partial<IUpdateAddress>): Promise<boolean> {
-    await this.repository.save({ id, ...body });
-    return true;
+  async update(
+    id: string,
+    { clientId, ...body }: IUpdateAddress
+  ): Promise<boolean> {
+    return AppDataSource.transaction(async (transactionalEntityManager) => {
+      const transactionRepository =
+        transactionalEntityManager.getRepository(Address);
+
+      const clientAddresses = await transactionRepository.find({
+        where: { client: { id: clientId } },
+      });
+
+      if (clientAddresses.length) {
+        const defaultsUpdated = clientAddresses.map((address) => {
+          let updatedBody: Partial<Address> =
+            address.id === id
+              ? {
+                  ...body,
+                  isDefault: true,
+                }
+              : {};
+
+          return {
+            ...address,
+            ...updatedBody,
+          };
+        });
+
+        await transactionRepository.save(defaultsUpdated);
+      }
+
+      return true;
+    });
+  }
+
+  async updateDefault(
+    id: string,
+    { clientId }: IUpdateAddressDefault
+  ): Promise<boolean> {
+    return AppDataSource.transaction(async (transactionalEntityManager) => {
+      const transactionRepository =
+        transactionalEntityManager.getRepository(Address);
+
+      const clientAddresses = await transactionRepository.find({
+        where: { client: { id: clientId } },
+      });
+
+      if (clientAddresses.length) {
+        const defaultsUpdated = clientAddresses.map((address) => ({
+          ...address,
+          isDefault: address.id === id ? true : false,
+        }));
+
+        await transactionRepository.save(defaultsUpdated);
+      }
+
+      return true;
+    });
   }
 
   async delete(id: string): Promise<boolean> {

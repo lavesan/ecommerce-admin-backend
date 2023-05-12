@@ -9,6 +9,11 @@ const addressRouter = Router();
 
 addressRouter.post("/", ensureClientAuthenticated, addressController.create);
 addressRouter.put("/:id", ensureClientAuthenticated, addressController.update);
+addressRouter.patch(
+  "/:id",
+  ensureClientAuthenticated,
+  addressController.updateDefault
+);
 addressRouter.delete(
   "/:id",
   ensureClientAuthenticated,
