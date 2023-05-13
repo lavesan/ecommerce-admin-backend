@@ -3,6 +3,7 @@ export interface IUpdateClient {
   email: string;
   password: string;
   cpf: string;
+  phone: string;
   addressses?: {
     id?: string;
     cep: string;
