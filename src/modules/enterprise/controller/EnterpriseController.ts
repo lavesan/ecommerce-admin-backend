@@ -92,4 +92,12 @@ export class EnterpriseController {
 
     return res.json(result);
   }
+
+  async findAllWithProducts(req: Request, res: Response): Promise<Response> {
+    const service = container.resolve(EnterpriseService);
+
+    const result = await service.findAllWithProducts();
+
+    return res.json(result);
+  }
 }

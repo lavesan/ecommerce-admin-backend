@@ -69,12 +69,15 @@ export class PromotionController {
     return res.json(result);
   }
 
-  async findAllByWeekDay(req: Request, res: Response): Promise<Response> {
+  async findAll(req: Request, res: Response): Promise<Response> {
     const service = container.resolve(PromotionService);
 
-    const { weekDay } = req.params;
+    const { weekDay, enterpriseId } = req.query as {
+      weekDay: WeekDay;
+      enterpriseId: string;
+    };
 
-    const result = await service.findAllByWeekDay(weekDay as WeekDay);
+    const result = await service.findAll({ weekDay, enterpriseId });
 
     return res.json(result);
   }

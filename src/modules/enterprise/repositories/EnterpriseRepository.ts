@@ -139,4 +139,10 @@ export class EnterpriseRepository implements IEnterpriseRepository {
       },
     });
   }
+
+  findAllWithProducts(): Promise<Enterprise[]> {
+    return this.repository.find({
+      relations: ["categories", "categories.products"],
+    });
+  }
 }

@@ -8,14 +8,11 @@ const enterpriseController = new EnterpriseController();
 const enterpriseRouter = Router();
 
 enterpriseRouter.get("/all", enterpriseController.findAll);
+enterpriseRouter.get("/all/products", enterpriseController.findAllWithProducts);
 enterpriseRouter.get("/menu/:id", enterpriseController.findMenuById);
+enterpriseRouter.get("/:id", enterpriseController.findById);
 
 enterpriseRouter.get("/", ensureAuthenticated, enterpriseController.paginate);
-enterpriseRouter.get(
-  "/:id",
-  ensureAuthenticated,
-  enterpriseController.findById
-);
 enterpriseRouter.post("/", ensureAuthenticated, enterpriseController.create);
 enterpriseRouter.put("/:id", ensureAuthenticated, enterpriseController.update);
 enterpriseRouter.delete(

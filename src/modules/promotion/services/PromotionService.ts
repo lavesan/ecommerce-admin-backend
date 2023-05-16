@@ -1,17 +1,17 @@
-import { IPaginationRequest } from "models/pagination.models";
 import { inject, injectable } from "tsyringe";
-import { CreatePromotionError } from "../errors/CreatePromotionError";
+
+import { IPaginationRequest } from "models/pagination.models";
 import { ICreatePromotion } from "../models/ICreatePromotion";
 import { IPaginatePromotion } from "../models/IPaginatePromotion";
-import { PromotionRepository } from "../repositories/PromotionRepository";
 import { IUpdatePromotion } from "../models/IUpdatePromotion";
-import { WeekDay } from "../enums/WeekDay";
+import { IFindAllPromotionsFilter } from "../models/IFindAllPromotions";
+import { IPromotionRepository } from "../repositories/IPromotionRepository";
 
 @injectable()
 export class PromotionService {
   constructor(
     @inject("PromotionRepository")
-    private readonly promotionRepository: PromotionRepository
+    private readonly promotionRepository: IPromotionRepository
   ) {}
 
   create(body: ICreatePromotion) {
@@ -26,8 +26,8 @@ export class PromotionService {
     return this.promotionRepository.findById(id);
   }
 
-  findAllByWeekDay(weekDay: WeekDay) {
-    return this.promotionRepository.findAllByWeekDay(weekDay);
+  findAll(filter: IFindAllPromotionsFilter) {
+    return this.promotionRepository.findAll(filter);
   }
 
   paginate(pagination: IPaginationRequest, filter: IPaginatePromotion) {

@@ -39,4 +39,8 @@ export class EnterpriseService {
   findAll(filter: IPaginateEnterpriseRequest) {
     return this.enterpriseRepository.findAll(filter);
   }
+
+  findAllWithProducts() {
+    return this.enterpriseRepository.findAllWithProducts();
+  }
 }

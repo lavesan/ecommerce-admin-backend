@@ -7,8 +7,9 @@ const promotionController = new PromotionController();
 
 const promotionRouter = Router();
 
-promotionRouter.get("/weekDay/:weekDay", promotionController.findAllByWeekDay);
+promotionRouter.get("/all", promotionController.findAll);
 promotionRouter.get("/:id", promotionController.findById);
+promotionRouter.get("/:enterpriseId/:weekDay", promotionController.findById);
 
 promotionRouter.get("/", ensureAuthenticated, promotionController.paginate);
 promotionRouter.post("/", ensureAuthenticated, promotionController.create);

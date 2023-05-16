@@ -18,4 +18,5 @@ export interface IEnterpriseRepository {
     filter: IPaginateEnterpriseRequest
   ): Promise<IPaginationResponse<Enterprise>>;
   findAll(filter: IPaginateEnterpriseRequest): Promise<Enterprise[]>;
+  findAllWithProducts(): Promise<Enterprise[]>;
 }

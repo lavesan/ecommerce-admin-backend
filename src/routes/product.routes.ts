@@ -7,8 +7,9 @@ const productController = new ProductController();
 
 const productRouter = Router();
 
+productRouter.get("/:id", productController.findById);
+
 productRouter.get("/", ensureAuthenticated, productController.paginate);
-productRouter.get("/:id", ensureAuthenticated, productController.findById);
 productRouter.get(
   "/enterprise/:enterpriseId",
   ensureAuthenticated,

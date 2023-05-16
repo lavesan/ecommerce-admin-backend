@@ -5,12 +5,13 @@ import {
   IPaginationResponse,
 } from "@models/pagination.models";
 import { FindOptionsWhere, ILike, Repository } from "typeorm";
+
 import { Promotion } from "../entities/Promotion";
 import { ICreatePromotion } from "../models/ICreatePromotion";
 import { IPaginatePromotion } from "../models/IPaginatePromotion";
 import { IPromotionRepository } from "./IPromotionRepository";
 import { IUpdatePromotion } from "../models/IUpdatePromotion";
-import { WeekDay } from "../enums/WeekDay";
+import { IFindAllPromotionsFilter } from "../models/IFindAllPromotions";
 
 export class PromotionRepository implements IPromotionRepository {
   private readonly repository: Repository<Promotion>;
@@ -98,7 +99,15 @@ export class PromotionRepository implements IPromotionRepository {
     });
   }
 
-  findAllByWeekDay(weekDay: WeekDay): Promise<Promotion[]> {
-    return this.repository.find({ where: { weekDay } });
+  findAll({
+    enterpriseId,
+    weekDay,
+  }: IFindAllPromotionsFilter): Promise<Promotion[]> {
+    let where: FindOptionsWhere<Promotion> = {};
+
+    if (enterpriseId) where.enterprise = { id: enterpriseId };
+    if (weekDay) where.weekDay = weekDay;
+
+    return this.repository.find({ where });
   }
 }
