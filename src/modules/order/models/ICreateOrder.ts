@@ -4,10 +4,10 @@ export interface ICreateOrder {
   freightValue: number;
   productsValue: number;
   paymentType: PaymentType;
-  moneyExchange?: number;
   enterpriseId: string;
   freightId: string;
   clientId: string;
+  hasCents?: boolean;
   products: {
     id: string;
     quantity: number;
@@ -29,4 +29,8 @@ export interface ICreateOrder {
     city: string;
     shortName?: string;
   };
+  moneyExchange?: {
+    value: number;
+    quantity: number;
+  }[];
 }

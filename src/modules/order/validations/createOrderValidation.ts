@@ -6,7 +6,6 @@ export const createOrderValidation = yup.object({
   productsValue: yup.number().required(),
   enterpriseId: yup.string().uuid().required(),
   freightId: yup.string().uuid().required(),
-  clientId: yup.string().uuid().required(),
   paymentType: yup
     .mixed<PaymentType>()
     .oneOf([
@@ -15,11 +14,24 @@ export const createOrderValidation = yup.object({
       PaymentType.MONEY,
     ])
     .required(),
-  moneyExchange: yup.number().when("paymentType", (paymentType, schema) => {
+  hasCents: yup.boolean().when("paymentType", (paymentType, schema) => {
     if ((paymentType as unknown as PaymentType) === PaymentType.MONEY)
       return schema.required();
     return schema;
   }),
+  moneyExchange: yup
+    .array()
+    .of(
+      yup.object({
+        quantity: yup.number().required(),
+        value: yup.number().required(),
+      })
+    )
+    .when("paymentType", (paymentType, schema) => {
+      if ((paymentType as unknown as PaymentType) === PaymentType.MONEY)
+        return schema.required();
+      return schema;
+    }),
   products: yup
     .array()
     .of(

@@ -10,6 +10,7 @@ import { ICreateOrder } from "../models/ICreateOrder";
 import { IPaginateOrderRequest } from "../models/IPaginateOrderRequest";
 import { IUpdateOrder } from "../models/IUpdateOrder";
 import { IOrderRepository } from "./IOrderRepository";
+import { PaymentType } from "../enums/PaymentType";
 
 export class OrderRepository implements IOrderRepository {
   private readonly repository: Repository<Order>;
@@ -24,6 +25,8 @@ export class OrderRepository implements IOrderRepository {
     enterpriseId,
     freightId,
     clientId,
+    hasCents,
+    moneyExchange,
     ...body
   }: ICreateOrder): Promise<Order> {
     const orderProducts = products.map(({ id, additionals, ...product }) => ({
@@ -35,8 +38,19 @@ export class OrderRepository implements IOrderRepository {
       })),
     }));
 
+    let exchangeObj: Partial<Order> = {};
+
+    if (body.paymentType === PaymentType.MONEY) {
+      exchangeObj = {
+        hasCents: hasCents,
+        // @ts-ignore
+        moneyExchanges: moneyExchange,
+      };
+    }
+
     const order = this.repository.create({
       ...body,
+      ...exchangeObj,
       address,
       orderProducts,
       enterprise: { id: enterpriseId },

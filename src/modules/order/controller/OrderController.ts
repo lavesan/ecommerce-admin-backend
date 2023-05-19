@@ -8,6 +8,7 @@ import { IPaginateOrderRequest } from "../models/IPaginateOrderRequest";
 import { OrderService } from "../services/OrderService";
 import { createOrderValidation } from "../validations/createOrderValidation";
 import { updateOrderValidation } from "../validations/updateOrderValidation";
+import { ICreateOrder } from "../models/ICreateOrder";
 
 export class OrderController {
   async create(req: Request, res: Response) {
@@ -19,7 +20,14 @@ export class OrderController {
         throw new CreateOrderError.BodyIsInvalid(err);
       });
 
-    const result = await service.create(req.body);
+    const { client } = req;
+
+    const body = req.body as ICreateOrder;
+
+    const result = await service.create({
+      ...body,
+      clientId: client.id,
+    });
 
     return res.status(201).json(result);
   }

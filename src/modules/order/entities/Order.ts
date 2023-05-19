@@ -17,6 +17,7 @@ import {
 import { OrderStatus } from "../enums/OrderStatus";
 import { PaymentType } from "../enums/PaymentType";
 import { OrderProduct } from "./OrderProduct";
+import { OrderMoneyExchange } from "./OrderMoneyExchange";
 
 @Entity("order")
 class Order {
@@ -36,17 +37,14 @@ class Order {
   paymentType: PaymentType;
 
   @Column({
-    type: "integer",
-    comment: "When the client selects a MONEY payment type",
-  })
-  moneyExchange: number;
-
-  @Column({
     type: "enum",
     enum: OrderStatus,
     default: OrderStatus.TO_APPROVE,
   })
   status: OrderStatus;
+
+  @Column({ nullable: true })
+  hasCents: boolean;
 
   @CreateDateColumn()
   created_at: Date;
@@ -76,6 +74,11 @@ class Order {
 
   @ManyToOne(() => Freight, (freight) => freight.orders)
   freight: Freight;
+
+  @OneToMany(() => OrderMoneyExchange, (moneyExchange) => moneyExchange.order, {
+    cascade: true,
+  })
+  moneyExchanges: OrderMoneyExchange[];
 }
 
 export { Order };
