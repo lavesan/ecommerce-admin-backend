@@ -17,7 +17,7 @@ export const createOrderValidation = yup.object({
   hasCents: yup.boolean().when("paymentType", (paymentType, schema) => {
     if ((paymentType as unknown as PaymentType) === PaymentType.MONEY)
       return schema.required();
-    return schema;
+    return schema.nullable();
   }),
   moneyExchange: yup
     .array()
@@ -30,7 +30,7 @@ export const createOrderValidation = yup.object({
     .when("paymentType", (paymentType, schema) => {
       if ((paymentType as unknown as PaymentType) === PaymentType.MONEY)
         return schema.required();
-      return schema;
+      return schema.nullable();
     }),
   products: yup
     .array()
