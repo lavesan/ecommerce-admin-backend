@@ -40,7 +40,9 @@ export class ClientController {
         throw new CreateClientError.BodyIsInvalid(err);
       });
 
-    const result = await service.create(req.body);
+    const { client } = req;
+
+    const result = await service.create({ ...req.body, clientId: client.id });
 
     return res.status(201).json(result);
   }

@@ -7,6 +7,6 @@ export interface ICreateAddress {
   state: string;
   city: string;
   shortName: string;
-  clientId: string;
   isDefault: boolean;
+  clientId: string;
 }

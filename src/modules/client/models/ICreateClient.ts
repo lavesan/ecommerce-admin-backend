@@ -4,4 +4,5 @@ export interface ICreateClient {
   password: string;
   cpf: string;
   phone: string;
+  clientId: string;
 }

@@ -24,7 +24,7 @@ export class AddressService {
     return this.addressRepository.updateDefault(id, body);
   }
 
-  async delete(id: string) {
-    return this.addressRepository.delete(id);
+  async delete(id: string, clientId: string) {
+    return this.addressRepository.delete(id, clientId);
   }
 }

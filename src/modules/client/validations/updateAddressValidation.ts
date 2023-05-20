@@ -10,5 +10,4 @@ export const updateAddressValidation = yup.object({
   city: yup.string().notRequired(),
   shortName: yup.string().notRequired(),
   isDefault: yup.boolean().notRequired(),
-  clientId: yup.string().uuid().notRequired(),
 });

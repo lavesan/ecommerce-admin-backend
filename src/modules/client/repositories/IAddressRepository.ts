@@ -7,5 +7,5 @@ export interface IAddressRepository {
   create(body: ICreateAddress): Promise<Address>;
   update(id: string, body: IUpdateAddress): Promise<boolean>;
   updateDefault(id: string, body: IUpdateAddressDefault): Promise<boolean>;
-  delete(id: string): Promise<boolean>;
+  delete(id: string, clientId: string): Promise<boolean>;
 }

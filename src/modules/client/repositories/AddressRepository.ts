@@ -103,8 +103,8 @@ export class AddressRepository implements IAddressRepository {
     });
   }
 
-  async delete(id: string): Promise<boolean> {
-    await this.repository.softDelete(id);
+  async delete(id: string, clientId: string): Promise<boolean> {
+    await this.repository.softDelete({ id, client: { id: clientId } });
     return true;
   }
 }
