@@ -108,6 +108,6 @@ export class PromotionRepository implements IPromotionRepository {
     if (enterpriseId) where.enterprise = { id: enterpriseId };
     if (weekDay) where.weekDay = weekDay;
 
-    return this.repository.find({ where });
+    return this.repository.find({ where, relations: ["enterprise"] });
   }
 }
