@@ -18,6 +18,7 @@ import { Promotion } from "@modules/promotion/entities/Promotion";
 import { PromotionProduct } from "@modules/promotion/entities/PromotionProduct";
 import { Schedule } from "@modules/enterprise/entities/Schedule";
 import { OrderMoneyExchange } from "@modules/order/entities/OrderMoneyExchange";
+import { UserEnterprise } from "@modules/user/entities/UserEnterprise";
 
 dotenv.config();
 
@@ -61,6 +62,7 @@ const AppDataSource = new DataSource({
     PromotionProduct,
     Schedule,
     OrderMoneyExchange,
+    UserEnterprise,
   ],
 });
 

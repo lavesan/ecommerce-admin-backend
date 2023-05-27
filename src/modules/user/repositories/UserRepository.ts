@@ -20,9 +20,10 @@ export class UserRepository implements IUserRepository {
     this.repository = AppDataSource.getRepository(User);
   }
 
-  async create({ password, ...body }: ICreateUserRequest) {
+  async create({ password, enterpriseId, ...body }: ICreateUserRequest) {
     const user = this.repository.create({
       ...body,
+      enterprises: [{ id: enterpriseId }],
       password: await encryptPwd(password),
     });
 
@@ -31,11 +32,18 @@ export class UserRepository implements IUserRepository {
     return user;
   }
 
-  async update(id: string, { password, ...body }: IUpdateUserRequest) {
+  async update(
+    id: string,
+    { password, enterpriseId, ...body }: IUpdateUserRequest
+  ) {
     let user: Partial<IUpdateUserRequest> = body;
     if (password) user.password = await encryptPwd(password);
 
-    await this.repository.save({ id, ...user });
+    await this.repository.save({
+      id,
+      enterprises: [{ id: enterpriseId }],
+      ...user,
+    });
     return true;
   }
 
@@ -62,11 +70,11 @@ export class UserRepository implements IUserRepository {
     if (email) where.email = ILike(`%${email}%`);
 
     const [data, count] = await this.repository.findAndCount({
+      ...paginationData,
       order: {
         created_at: "DESC",
       },
       where,
-      ...paginationData,
     });
 
     return {

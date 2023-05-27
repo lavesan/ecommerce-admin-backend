@@ -58,7 +58,11 @@ export class EnterpriseController {
     );
     const { name, cnpj } = req.query as unknown as IPaginateEnterpriseRequest;
 
-    const result = await service.paginate(pagination, { name, cnpj });
+    const { isAdmin, id } = req.user;
+
+    const userId = !isAdmin ? id : "";
+
+    const result = await service.paginate(pagination, { name, cnpj, userId });
 
     return res.json(result);
   }

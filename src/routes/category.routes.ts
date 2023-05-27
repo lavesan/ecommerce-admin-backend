@@ -7,9 +7,25 @@ const categoryController = new CategoryController();
 
 const categoryRouter = Router();
 
-categoryRouter.get("/", ensureAuthenticated, categoryController.paginate);
-categoryRouter.get("/:id", ensureAuthenticated, categoryController.findById);
-categoryRouter.post("/", ensureAuthenticated, categoryController.create);
-categoryRouter.put("/:id", ensureAuthenticated, categoryController.update);
+categoryRouter.get(
+  "/",
+  ensureAuthenticated("dashboard"),
+  categoryController.paginate
+);
+categoryRouter.get(
+  "/:id",
+  ensureAuthenticated("dashboard"),
+  categoryController.findById
+);
+categoryRouter.post(
+  "/",
+  ensureAuthenticated("dashboard"),
+  categoryController.create
+);
+categoryRouter.put(
+  "/:id",
+  ensureAuthenticated("dashboard"),
+  categoryController.update
+);
 
 export { categoryRouter };

@@ -9,13 +9,25 @@ const productRouter = Router();
 
 productRouter.get("/:id", productController.findById);
 
-productRouter.get("/", ensureAuthenticated, productController.paginate);
+productRouter.get(
+  "/",
+  ensureAuthenticated("dashboard"),
+  productController.paginate
+);
 productRouter.get(
   "/enterprise/:enterpriseId",
-  ensureAuthenticated,
+  ensureAuthenticated("dashboard"),
   productController.findManyByEnterpriseId
 );
-productRouter.post("/", ensureAuthenticated, productController.create);
-productRouter.put("/:id", ensureAuthenticated, productController.update);
+productRouter.post(
+  "/",
+  ensureAuthenticated("dashboard"),
+  productController.create
+);
+productRouter.put(
+  "/:id",
+  ensureAuthenticated("dashboard"),
+  productController.update
+);
 
 export { productRouter };

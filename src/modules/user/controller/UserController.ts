@@ -41,9 +41,16 @@ export class UserController {
         throw new CreateUserError.BodyIsInvalid(err);
       });
 
-    const { email, isAdmin, name, password } = req.body as ICreateUserRequest;
+    const { email, isAdmin, name, password, enterpriseId } =
+      req.body as ICreateUserRequest;
 
-    const data = await service.create({ email, isAdmin, name, password });
+    const data = await service.create({
+      email,
+      isAdmin,
+      name,
+      password,
+      enterpriseId,
+    });
 
     return res.json(data);
   }
@@ -58,9 +65,16 @@ export class UserController {
       });
 
     const { id } = req.params;
-    const { email, isAdmin, name, password } = req.body as IUpdateUserRequest;
+    const { email, isAdmin, name, password, enterpriseId } =
+      req.body as IUpdateUserRequest;
 
-    const data = await service.update(id, { email, isAdmin, name, password });
+    const data = await service.update(id, {
+      email,
+      isAdmin,
+      name,
+      password,
+      enterpriseId,
+    });
 
     return res.json(data);
   }

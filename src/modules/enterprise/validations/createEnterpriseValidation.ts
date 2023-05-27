@@ -20,7 +20,6 @@ export const createEnterpriseValidation = yup.object({
   city: yup.string().required(),
   imageKey: yup.string().required(),
   bannerKey: yup.string().required(),
-  userId: yup.string().uuid().required(),
   freights: yup
     .array()
     .of(

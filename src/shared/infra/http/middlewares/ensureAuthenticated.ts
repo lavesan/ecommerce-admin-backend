@@ -11,34 +11,48 @@ interface IPayload {
   isAdmin: boolean;
 }
 
-export async function ensureAuthenticated(
-  request: Request,
-  response: Response,
-  next: NextFunction
-) {
-  const authHeader = request.headers.authorization;
+type RoleType = "dashboard" | "client";
 
-  if (!authHeader) {
-    throw new JWTTokenMissingError();
-  }
+export const ensureAuthenticated =
+  (role: RoleType, userIsAdmin?: boolean) =>
+  async (request: Request, response: Response, next: NextFunction) => {
+    const authHeader = request.headers.authorization;
 
-  const [, token] = authHeader.split(" ");
+    if (!authHeader) {
+      throw new JWTTokenMissingError();
+    }
 
-  try {
-    const { id, name, email, isAdmin } = verify(
-      token,
-      process.env.JWT_SECRET
-    ) as IPayload;
+    const [, token] = authHeader.split(" ");
 
-    request.user = {
-      id,
-      name,
-      email,
-      isAdmin,
-    };
+    const isFromDashboard = role === "dashboard";
 
-    next();
-  } catch {
-    throw new JWTInvalidTokenError();
-  }
-}
+    try {
+      const secret = isFromDashboard
+        ? process.env.JWT_SECRET
+        : process.env.CLIENT_JWT_SECRET;
+
+      const { id, name, email, isAdmin } = verify(token, secret) as IPayload;
+
+      if (userIsAdmin && !isAdmin) {
+        throw new JWTInvalidTokenError();
+      }
+
+      if (isFromDashboard)
+        request.user = {
+          id,
+          name,
+          email,
+          isAdmin,
+        };
+      else
+        request.client = {
+          id,
+          name,
+          email,
+        };
+
+      next();
+    } catch {
+      throw new JWTInvalidTokenError();
+    }
+  };

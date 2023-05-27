@@ -3,4 +3,5 @@ export interface IUpdateUserRequest {
   email: string;
   password: string;
   isAdmin: boolean;
+  enterpriseId?: string;
 }

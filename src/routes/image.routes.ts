@@ -16,15 +16,20 @@ imageRouter.get("/base64/:key", fileStorageController.findBase64ByKey);
 
 imageRouter.post(
   "/",
-  ensureAuthenticated,
+  ensureAuthenticated("dashboard"),
   upload.single("file"),
   fileStorageController.upload
 );
 imageRouter.delete(
   "/:key",
-  ensureAuthenticated,
+  ensureAuthenticated("dashboard"),
   fileStorageController.deleteByKey
 );
-imageRouter.get("/:key", fileStorageController.findByKey);
+
+imageRouter.get(
+  "/:key",
+  ensureAuthenticated("dashboard"),
+  fileStorageController.findByKey
+);
 
 export { imageRouter };

@@ -11,8 +11,20 @@ promotionRouter.get("/all", promotionController.findAll);
 promotionRouter.get("/:id", promotionController.findById);
 promotionRouter.get("/:enterpriseId/:weekDay", promotionController.findById);
 
-promotionRouter.get("/", ensureAuthenticated, promotionController.paginate);
-promotionRouter.post("/", ensureAuthenticated, promotionController.create);
-promotionRouter.put("/:id", ensureAuthenticated, promotionController.update);
+promotionRouter.get(
+  "/",
+  ensureAuthenticated("dashboard"),
+  promotionController.paginate
+);
+promotionRouter.post(
+  "/",
+  ensureAuthenticated("dashboard"),
+  promotionController.create
+);
+promotionRouter.put(
+  "/:id",
+  ensureAuthenticated("dashboard"),
+  promotionController.update
+);
 
 export { promotionRouter };

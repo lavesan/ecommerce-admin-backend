@@ -1,22 +1,30 @@
 import { Router } from "express";
 
 import { AddressController } from "@modules/client/controller/AddressController";
-import { ensureClientAuthenticated } from "@shared/infra/http/middlewares/ensureClientAuthenticated";
+import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
 
 const addressController = new AddressController();
 
 const addressRouter = Router();
 
-addressRouter.post("/", ensureClientAuthenticated, addressController.create);
-addressRouter.put("/:id", ensureClientAuthenticated, addressController.update);
+addressRouter.post(
+  "/",
+  ensureAuthenticated("client"),
+  addressController.create
+);
+addressRouter.put(
+  "/:id",
+  ensureAuthenticated("client"),
+  addressController.update
+);
 addressRouter.patch(
   "/:id",
-  ensureClientAuthenticated,
+  ensureAuthenticated("client"),
   addressController.updateDefault
 );
 addressRouter.delete(
   "/:id",
-  ensureClientAuthenticated,
+  ensureAuthenticated("client"),
   addressController.delete
 );
 

@@ -1,4 +1,4 @@
-import { WeekDay } from "aws-sdk/clients/ec2";
+import { WeekDay } from "@modules/promotion/enums/WeekDay";
 
 export interface IUpdateEnterprise {
   name: string;
@@ -16,7 +16,6 @@ export interface IUpdateEnterprise {
   city: string;
   imageKey: string;
   bannerKey: string;
-  userId: string;
   freights: {
     id?: string;
     addressKey: string;

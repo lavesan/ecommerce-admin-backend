@@ -4,7 +4,7 @@ import {
   IPaginationRequest,
   IPaginationResponse,
 } from "@models/pagination.models";
-import { FindOptionsWhere, ILike, Repository } from "typeorm";
+import { FindOptionsWhere, ILike, In, Repository } from "typeorm";
 import { Enterprise } from "../entities/Enterprise";
 import { ICreateEnterprise } from "../models/ICreateEnterprise";
 import { IPaginateEnterpriseRequest } from "../models/IPaginateEnterpriseRequest";
@@ -19,23 +19,16 @@ export class EnterpriseRepository implements IEnterpriseRepository {
     this.repository = AppDataSource.getRepository(Enterprise);
   }
 
-  async create({ userId, ...body }: ICreateEnterprise): Promise<Enterprise> {
-    const enterprise = this.repository.create({
-      ...body,
-      user: { id: userId },
-    });
+  async create(body: ICreateEnterprise): Promise<Enterprise> {
+    const enterprise = this.repository.create(body);
     await this.repository.save(enterprise);
     return enterprise;
   }
 
-  async update(
-    id: string,
-    { userId, ...body }: IUpdateEnterprise
-  ): Promise<boolean> {
+  async update(id: string, body: IUpdateEnterprise): Promise<boolean> {
     const parsedBody = {
       id,
       ...body,
-      user: { id: userId },
     };
     //@ts-ignore
     await this.repository.save(parsedBody);
@@ -103,7 +96,7 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 
   async paginate(
     pagination: IPaginationRequest,
-    { cnpj, name }: IPaginateEnterpriseRequest
+    { cnpj, name, userId }: IPaginateEnterpriseRequest
   ): Promise<IPaginationResponse<Enterprise>> {
     const paginationData = getSkipAndTake(pagination);
 
@@ -111,12 +104,14 @@ export class EnterpriseRepository implements IEnterpriseRepository {
 
     if (name) where.name = ILike(`%${name}%`);
     if (cnpj) where.cnpj = ILike(`%${cnpj}%`);
+    if (userId) where.users = { id: userId };
 
     const [data, count] = await this.repository.findAndCount({
       order: {
         created_at: "DESC",
       },
       where,
+      relations: ["users"],
       ...paginationData,
     });
 

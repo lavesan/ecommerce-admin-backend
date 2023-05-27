@@ -12,6 +12,8 @@ import {
   ManyToOne,
   UpdateDateColumn,
   DeleteDateColumn,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
 import { Schedule } from "./Schedule";
 
@@ -93,13 +95,19 @@ class Enterprise {
   @OneToMany(() => Promotion, (promotion) => promotion.enterprise)
   promotions?: Promotion[];
 
-  @ManyToOne(() => User, (user) => user.enterprises)
-  user?: User;
+  // @ManyToOne(() => User, (user) => user.enterprises)
+  // user?: User;
 
   @OneToMany(() => Schedule, (schedule) => schedule.enterprise, {
     cascade: true,
   })
   schedules?: Schedule[];
+
+  @ManyToMany(() => User, (user) => user.enterprises, {
+    onDelete: "NO ACTION",
+    onUpdate: "NO ACTION",
+  })
+  users: User[];
 }
 
 export { Enterprise };

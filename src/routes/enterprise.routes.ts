@@ -12,12 +12,24 @@ enterpriseRouter.get("/all/products", enterpriseController.findAllWithProducts);
 enterpriseRouter.get("/menu/:id", enterpriseController.findMenuById);
 enterpriseRouter.get("/:id", enterpriseController.findById);
 
-enterpriseRouter.get("/", ensureAuthenticated, enterpriseController.paginate);
-enterpriseRouter.post("/", ensureAuthenticated, enterpriseController.create);
-enterpriseRouter.put("/:id", ensureAuthenticated, enterpriseController.update);
+enterpriseRouter.get(
+  "/",
+  ensureAuthenticated("dashboard"),
+  enterpriseController.paginate
+);
+enterpriseRouter.post(
+  "/",
+  ensureAuthenticated("dashboard", true),
+  enterpriseController.create
+);
+enterpriseRouter.put(
+  "/:id",
+  ensureAuthenticated("dashboard", true),
+  enterpriseController.update
+);
 enterpriseRouter.delete(
   "/:id",
-  ensureAuthenticated,
+  ensureAuthenticated("dashboard", true),
   enterpriseController.delete
 );
 

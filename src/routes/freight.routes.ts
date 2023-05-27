@@ -7,8 +7,12 @@ const freightController = new FreightController();
 
 const freightRouter = Router();
 
-freightRouter.post("/", ensureAuthenticated, freightController.create);
-
 freightRouter.get("/all/:enterpriseId", freightController.findAll);
+
+freightRouter.post(
+  "/",
+  ensureAuthenticated("dashboard"),
+  freightController.create
+);
 
 export { freightRouter };
