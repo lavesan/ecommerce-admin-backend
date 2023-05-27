@@ -9,6 +9,7 @@ import { OrderService } from "../services/OrderService";
 import { createOrderValidation } from "../validations/createOrderValidation";
 import { updateOrderValidation } from "../validations/updateOrderValidation";
 import { ICreateOrder } from "../models/ICreateOrder";
+import { IPaginateMineOrderRequest } from "../models/IPaginateMineOrderRequest";
 
 export class OrderController {
   async create(req: Request, res: Response) {
@@ -81,6 +82,20 @@ export class OrderController {
     const { id } = req.params;
 
     const result = await service.findById(id);
+
+    return res.json(result);
+  }
+
+  async paginateMine(req: Request, res: Response) {
+    const service = container.resolve(OrderService);
+
+    const pagination = getPageAndSize(
+      req.query as unknown as IPaginationRequest
+    );
+
+    const { id } = req.client;
+
+    const result = await service.paginateMine(pagination, { clientId: id });
 
     return res.json(result);
   }

@@ -8,6 +8,11 @@ const orderController = new OrderController();
 const orderRouter = Router();
 
 orderRouter.post("/", ensureAuthenticated("client"), orderController.create);
+orderRouter.get(
+  "/mine",
+  ensureAuthenticated("client"),
+  orderController.paginateMine
+);
 
 orderRouter.get(
   "/",

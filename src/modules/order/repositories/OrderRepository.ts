@@ -11,6 +11,7 @@ import { IPaginateOrderRequest } from "../models/IPaginateOrderRequest";
 import { IUpdateOrder } from "../models/IUpdateOrder";
 import { IOrderRepository } from "./IOrderRepository";
 import { PaymentType } from "../enums/PaymentType";
+import { IPaginateMineOrderRequest } from "../models/IPaginateMineOrderRequest";
 
 export class OrderRepository implements IOrderRepository {
   private readonly repository: Repository<Order>;
@@ -110,6 +111,36 @@ export class OrderRepository implements IOrderRepository {
       ...paginationData,
       where,
       relations: ["client"],
+    });
+
+    return {
+      data,
+      count,
+      ...pagination,
+    };
+  }
+
+  async paginateMine(
+    pagination: IPaginationRequest,
+    { clientId }: IPaginateMineOrderRequest
+  ): Promise<IPaginationResponse<Order>> {
+    const paginationData = getSkipAndTake(pagination);
+
+    const [data, count] = await this.repository.findAndCount({
+      order: {
+        created_at: "DESC",
+      },
+      where: {
+        client: { id: clientId },
+      },
+      relations: [
+        "orderProducts",
+        "orderProducts.product",
+        "orderProducts.additionals",
+        "orderProducts.additionals.productAdditional",
+        "address",
+      ],
+      ...paginationData,
     });
 
     return {
