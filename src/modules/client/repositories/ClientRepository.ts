@@ -45,7 +45,10 @@ export class ClientRepository implements IClientRepository {
   }
 
   findByEmail(email: string): Promise<Client> {
-    return this.repository.findOne({ where: { email } });
+    return this.repository.findOne({
+      where: { email },
+      relations: ["addresses"],
+    });
   }
 
   async paginate(

@@ -55,7 +55,7 @@ export class EnterpriseRepository implements IEnterpriseRepository {
   findById(id: string): Promise<Enterprise> {
     return this.repository.findOne({
       where: { id },
-      relations: ["user", "freights", "schedules"],
+      relations: ["users", "freights", "schedules"],
     });
   }
 

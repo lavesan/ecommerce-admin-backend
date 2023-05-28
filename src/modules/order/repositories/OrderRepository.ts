@@ -12,6 +12,9 @@ import { IUpdateOrder } from "../models/IUpdateOrder";
 import { IOrderRepository } from "./IOrderRepository";
 import { PaymentType } from "../enums/PaymentType";
 import { IPaginateMineOrderRequest } from "../models/IPaginateMineOrderRequest";
+import { OrderStatus } from "../enums/OrderStatus";
+import { ClientService } from "@modules/client/services/ClientService";
+import { container } from "tsyringe";
 
 export class OrderRepository implements IOrderRepository {
   private readonly repository: Repository<Order>;
@@ -64,8 +67,47 @@ export class OrderRepository implements IOrderRepository {
     return createdOrder;
   }
 
-  async update(id: string, body: IUpdateOrder): Promise<boolean> {
-    await this.repository.update(id, body);
+  async update(id: string, { status }: IUpdateOrder): Promise<boolean> {
+    const order = await this.repository.findOne({
+      where: { id },
+      relations: ["client"],
+    });
+
+    const clientService = container.resolve(ClientService);
+
+    if (
+      order.client &&
+      order.status === OrderStatus.DONE &&
+      status !== OrderStatus.DONE
+    ) {
+      const orderPoints = order.orderProducts.reduce((value, prod) => {
+        return value + prod.product.givenPoints * prod.quantity;
+      }, 0);
+
+      console.log("orderPoints: ", orderPoints);
+      const finalClientPoints = order.client.points - orderPoints;
+      console.log("finalClientPoints: ", finalClientPoints);
+
+      await clientService.update(order.client.id, {
+        points: finalClientPoints < 0 ? 0 : finalClientPoints,
+      });
+    }
+
+    if (status === OrderStatus.DONE) {
+      const orderPoints = order.orderProducts.reduce((value, prod) => {
+        return value + prod.product.givenPoints * prod.quantity;
+      }, 0);
+
+      console.log("orderPoints 2: ", orderPoints);
+      const finalClientPoints = order.client.points + orderPoints;
+      console.log("finalClientPoints 2: ", finalClientPoints);
+
+      await clientService.update(order.client.id, {
+        points: finalClientPoints,
+      });
+    }
+
+    await this.repository.update(id, { status });
     return true;
   }
 

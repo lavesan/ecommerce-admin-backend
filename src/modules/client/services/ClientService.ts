@@ -46,7 +46,7 @@ export class ClientService {
     };
   }
 
-  async update(id: string, body: IUpdateClient) {
+  async update(id: string, body: Partial<IUpdateClient>) {
     const client = await this.clientRepository.findById(id);
 
     if (!client) throw new UpdateClientError.DontExist();
