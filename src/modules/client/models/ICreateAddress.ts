@@ -8,5 +8,6 @@ export interface ICreateAddress {
   city: string;
   shortName: string;
   isDefault: boolean;
-  clientId: string;
+  clientId?: string;
+  orderId?: string;
 }

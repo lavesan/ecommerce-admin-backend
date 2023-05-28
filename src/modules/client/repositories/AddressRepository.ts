@@ -13,28 +13,43 @@ export class AddressRepository implements IAddressRepository {
     this.repository = AppDataSource.getRepository(Address);
   }
 
-  async create({ clientId, ...body }: ICreateAddress): Promise<Address> {
+  async create({
+    clientId,
+    orderId,
+    ...body
+  }: ICreateAddress): Promise<Address> {
     // Opens transaction
     return AppDataSource.transaction(async (transactionalEntityManager) => {
       const transactionRepository =
         transactionalEntityManager.getRepository(Address);
 
-      const clientAddresses = await transactionRepository.find({
-        where: { client: { id: clientId } },
-      });
+      let addressRelation = {};
 
-      if (clientAddresses.length) {
-        const removeDefaults = clientAddresses.map((address) => ({
-          ...address,
-          isDefault: false,
-        }));
+      // Updates all address to isDefault: false
+      if (clientId) {
+        const clientAddresses = await transactionRepository.find({
+          where: { client: { id: clientId } },
+        });
 
-        await transactionRepository.save(removeDefaults);
+        if (clientAddresses.length) {
+          const removeDefaults = clientAddresses.map((address) => ({
+            ...address,
+            isDefault: false,
+          }));
+
+          await transactionRepository.save(removeDefaults);
+        }
+
+        addressRelation = { client: { id: clientId } };
+      }
+
+      if (orderId) {
+        addressRelation = { order: { id: orderId } };
       }
 
       const address = transactionRepository.create({
         ...body,
-        client: { id: clientId },
+        ...addressRelation,
       });
 
       await transactionRepository.save(address);

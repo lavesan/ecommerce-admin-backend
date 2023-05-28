@@ -39,7 +39,7 @@ class Order {
   @Column({
     type: "enum",
     enum: OrderStatus,
-    default: OrderStatus.TO_APPROVE,
+    default: OrderStatus.DOING,
   })
   status: OrderStatus;
 

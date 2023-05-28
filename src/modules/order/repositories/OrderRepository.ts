@@ -1,4 +1,4 @@
-import { FindOptionsWhere, In, Not, Repository } from "typeorm";
+import { FindOptionsWhere, In, Repository } from "typeorm";
 import { container } from "tsyringe";
 
 import { getSkipAndTake } from "@helpers/pagination.helper";
@@ -34,6 +34,9 @@ export class OrderRepository implements IOrderRepository {
     moneyExchange,
     ...body
   }: ICreateOrder): Promise<Order> {
+    // @ts-ignore
+    delete address.id;
+
     const orderProducts = products.map(({ id, additionals, ...product }) => ({
       ...product,
       product: { id },
@@ -65,7 +68,18 @@ export class OrderRepository implements IOrderRepository {
 
     const createdOrder = await this.repository.save(order);
 
-    return createdOrder;
+    return this.repository.findOne({
+      where: { id: createdOrder.id },
+      relations: [
+        "orderProducts",
+        "orderProducts.product",
+        "orderProducts.additionals",
+        "orderProducts.additionals.productAdditional",
+        "address",
+        "client",
+        "enterprise",
+      ],
+    });
   }
 
   async update(id: string, { status }: IUpdateOrder): Promise<boolean> {
