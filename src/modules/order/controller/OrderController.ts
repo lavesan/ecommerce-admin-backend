@@ -1,7 +1,8 @@
-import { getPageAndSize } from "@helpers/pagination.helper";
 import { Request, Response } from "express";
-import { IPaginationRequest } from "models/pagination.models";
 import { container } from "tsyringe";
+
+import { getPageAndSize } from "@helpers/pagination.helper";
+import { IPaginationRequest } from "models/pagination.models";
 import { CreateOrderError } from "../errors/CreateOrderError";
 import { UpdateOrderError } from "../errors/UpdateOrderError";
 import { IPaginateOrderRequest } from "../models/IPaginateOrderRequest";
@@ -9,7 +10,6 @@ import { OrderService } from "../services/OrderService";
 import { createOrderValidation } from "../validations/createOrderValidation";
 import { updateOrderValidation } from "../validations/updateOrderValidation";
 import { ICreateOrder } from "../models/ICreateOrder";
-import { IPaginateMineOrderRequest } from "../models/IPaginateMineOrderRequest";
 
 export class OrderController {
   async create(req: Request, res: Response) {
@@ -93,9 +93,14 @@ export class OrderController {
       req.query as unknown as IPaginationRequest
     );
 
+    const { isActive } = req.query as unknown as { isActive: string };
+
     const { id } = req.client;
 
-    const result = await service.paginateMine(pagination, { clientId: id });
+    const result = await service.paginateMine(pagination, {
+      clientId: id,
+      isActive: isActive === "true",
+    });
 
     return res.json(result);
   }

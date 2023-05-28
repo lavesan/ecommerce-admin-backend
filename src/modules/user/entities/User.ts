@@ -4,7 +4,6 @@ import {
   Column,
   CreateDateColumn,
   PrimaryGeneratedColumn,
-  OneToMany,
   Index,
   UpdateDateColumn,
   DeleteDateColumn,
@@ -38,9 +37,6 @@ class User {
 
   @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
-
-  // @OneToMany(() => Enterprise, (enterprise) => enterprise.user)
-  // enterprises: Enterprise[];
 
   @ManyToMany(() => Enterprise, (enteprise) => enteprise.users)
   @JoinTable({

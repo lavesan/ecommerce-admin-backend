@@ -1,10 +1,12 @@
+import { FindOptionsWhere, In, Not, Repository } from "typeorm";
+import { container } from "tsyringe";
+
 import { getSkipAndTake } from "@helpers/pagination.helper";
 import AppDataSource from "@data-source";
 import {
   IPaginationRequest,
   IPaginationResponse,
 } from "@models/pagination.models";
-import { FindOptionsWhere, Repository } from "typeorm";
 import { Order } from "../entities/Order";
 import { ICreateOrder } from "../models/ICreateOrder";
 import { IPaginateOrderRequest } from "../models/IPaginateOrderRequest";
@@ -14,7 +16,6 @@ import { PaymentType } from "../enums/PaymentType";
 import { IPaginateMineOrderRequest } from "../models/IPaginateMineOrderRequest";
 import { OrderStatus } from "../enums/OrderStatus";
 import { ClientService } from "@modules/client/services/ClientService";
-import { container } from "tsyringe";
 
 export class OrderRepository implements IOrderRepository {
   private readonly repository: Repository<Order>;
@@ -164,23 +165,40 @@ export class OrderRepository implements IOrderRepository {
 
   async paginateMine(
     pagination: IPaginationRequest,
-    { clientId }: IPaginateMineOrderRequest
+    { clientId, isActive }: IPaginateMineOrderRequest
   ): Promise<IPaginationResponse<Order>> {
     const paginationData = getSkipAndTake(pagination);
+
+    const doneStatus = [
+      OrderStatus.CANCELED,
+      OrderStatus.DELETED,
+      OrderStatus.DONE,
+    ];
+
+    const doingStatus = [
+      OrderStatus.DOING,
+      OrderStatus.SENDING,
+      OrderStatus.TO_APPROVE,
+    ];
+
+    const where: FindOptionsWhere<Order> = {
+      client: { id: clientId },
+      status: isActive ? In(doingStatus) : In(doneStatus),
+    };
 
     const [data, count] = await this.repository.findAndCount({
       order: {
         created_at: "DESC",
       },
-      where: {
-        client: { id: clientId },
-      },
+      where,
       relations: [
+        "address",
+        "enterprise",
+        "enterprise.freights",
         "orderProducts",
         "orderProducts.product",
         "orderProducts.additionals",
         "orderProducts.additionals.productAdditional",
-        "address",
       ],
       ...paginationData,
     });
