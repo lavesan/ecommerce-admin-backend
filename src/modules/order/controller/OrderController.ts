@@ -86,6 +86,17 @@ export class OrderController {
     return res.json(result);
   }
 
+  async findMineById(req: Request, res: Response) {
+    const service = container.resolve(OrderService);
+
+    const { id } = req.params;
+    const { id: clientId } = req.client;
+
+    const result = await service.findMineById({ clientId, orderId: id });
+
+    return res.json(result);
+  }
+
   async paginateMine(req: Request, res: Response) {
     const service = container.resolve(OrderService);
 

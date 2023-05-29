@@ -16,6 +16,7 @@ import { PaymentType } from "../enums/PaymentType";
 import { IPaginateMineOrderRequest } from "../models/IPaginateMineOrderRequest";
 import { OrderStatus } from "../enums/OrderStatus";
 import { ClientService } from "@modules/client/services/ClientService";
+import { IFindMineById } from "../models/IFindMineById";
 
 export class OrderRepository implements IOrderRepository {
   private readonly repository: Repository<Order>;
@@ -136,6 +137,21 @@ export class OrderRepository implements IOrderRepository {
         "orderProducts.additionals.productAdditional",
         "address",
         "client",
+      ],
+    });
+  }
+
+  findMineById({ orderId, clientId }: IFindMineById): Promise<Order> {
+    return this.repository.findOne({
+      where: { id: orderId, client: { id: clientId } },
+      relations: [
+        "orderProducts",
+        "orderProducts.product",
+        "orderProducts.additionals",
+        "orderProducts.additionals.productAdditional",
+        "address",
+        "client",
+        "enterprise",
       ],
     });
   }

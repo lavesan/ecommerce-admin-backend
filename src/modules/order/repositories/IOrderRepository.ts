@@ -7,6 +7,7 @@ import { ICreateOrder } from "../models/ICreateOrder";
 import { IPaginateOrderRequest } from "../models/IPaginateOrderRequest";
 import { IUpdateOrder } from "../models/IUpdateOrder";
 import { IPaginateMineOrderRequest } from "../models/IPaginateMineOrderRequest";
+import { IFindMineById } from "../models/IFindMineById";
 
 export interface IOrderRepository {
   paginate(
@@ -18,6 +19,7 @@ export interface IOrderRepository {
     filter: IPaginateMineOrderRequest
   ): Promise<IPaginationResponse<Order>>;
   findById(id: string): Promise<Order>;
+  findMineById(body: IFindMineById): Promise<Order>;
   create(body: ICreateOrder): Promise<Order>;
   update(id: string, body: IUpdateOrder): Promise<boolean>;
 }

@@ -9,9 +9,14 @@ const orderRouter = Router();
 
 orderRouter.post("/", ensureAuthenticated("client"), orderController.create);
 orderRouter.get(
-  "/mine",
+  "/mine/all",
   ensureAuthenticated("client"),
   orderController.paginateMine
+);
+orderRouter.get(
+  "/mine/:id",
+  ensureAuthenticated("client"),
+  orderController.findMineById
 );
 
 orderRouter.get(

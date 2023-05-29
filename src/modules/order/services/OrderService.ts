@@ -9,6 +9,7 @@ import { IPaginateMineOrderRequest } from "../models/IPaginateMineOrderRequest";
 import { IOrderRepository } from "../repositories/IOrderRepository";
 import { maskMoney, translatePaymentType } from "@helpers/mask.helper";
 import { MailService } from "@modules/mail/services/MailService";
+import { IFindMineById } from "../models/IFindMineById";
 
 @injectable()
 export class OrderService {
@@ -73,6 +74,10 @@ export class OrderService {
 
   findById(id: string) {
     return this.orderRepository.findById(id);
+  }
+
+  findMineById(body: IFindMineById) {
+    return this.orderRepository.findMineById(body);
   }
 
   async update(id: string, body: IUpdateOrder) {
