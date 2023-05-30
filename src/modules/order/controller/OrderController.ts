@@ -115,4 +115,19 @@ export class OrderController {
 
     return res.json(result);
   }
+
+  async conclude(req: Request, res: Response) {
+    const service = container.resolve(OrderService);
+
+    const { orderId } = req.body as unknown as { orderId: string };
+
+    const { id } = req.client;
+
+    const result = await service.conclude({
+      clientId: id,
+      orderId,
+    });
+
+    return res.json(result);
+  }
 }

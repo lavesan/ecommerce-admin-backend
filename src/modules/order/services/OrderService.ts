@@ -7,9 +7,14 @@ import { IPaginateOrderRequest } from "../models/IPaginateOrderRequest";
 import { IUpdateOrder } from "../models/IUpdateOrder";
 import { IPaginateMineOrderRequest } from "../models/IPaginateMineOrderRequest";
 import { IOrderRepository } from "../repositories/IOrderRepository";
-import { maskMoney, translatePaymentType } from "@helpers/mask.helper";
+import {
+  maskMoney,
+  maskPhone,
+  translatePaymentType,
+} from "@helpers/mask.helper";
 import { MailService } from "@modules/mail/services/MailService";
 import { IFindMineById } from "../models/IFindMineById";
+import { IConcludeOrderRequest } from "../models/IConcludeOrderRequest";
 
 @injectable()
 export class OrderService {
@@ -45,6 +50,8 @@ export class OrderService {
           process.env.ADMIN_FRONT_URL
         }${orderRoute}" target="_blank">Ver no Dashboard</a>
         <h2>${order.client.name}</h2>
+        <p>${order.client.email}</p>
+        <p>${maskPhone(order.client.phone)}</p>
         <p>Valor: ${maskMoney(order.productsValue + order.freightValue)}</p>
         <p>Tipo de pagamento: ${translatePaymentType[order.paymentType]}</p>
         <p>Produtos</p>
@@ -86,5 +93,9 @@ export class OrderService {
     if (!order) throw new UpdateOrderError.DontExist();
 
     return this.orderRepository.update(id, body);
+  }
+
+  async conclude(data: IConcludeOrderRequest) {
+    return this.orderRepository.concludeOrder(data);
   }
 }

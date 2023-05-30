@@ -8,6 +8,7 @@ import { IPaginateOrderRequest } from "../models/IPaginateOrderRequest";
 import { IUpdateOrder } from "../models/IUpdateOrder";
 import { IPaginateMineOrderRequest } from "../models/IPaginateMineOrderRequest";
 import { IFindMineById } from "../models/IFindMineById";
+import { IConcludeOrderRequest } from "../models/IConcludeOrderRequest";
 
 export interface IOrderRepository {
   paginate(
@@ -22,4 +23,5 @@ export interface IOrderRepository {
   findMineById(body: IFindMineById): Promise<Order>;
   create(body: ICreateOrder): Promise<Order>;
   update(id: string, body: IUpdateOrder): Promise<boolean>;
+  concludeOrder(data: IConcludeOrderRequest): Promise<boolean>;
 }

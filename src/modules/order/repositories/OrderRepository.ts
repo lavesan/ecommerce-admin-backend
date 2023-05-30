@@ -17,6 +17,7 @@ import { IPaginateMineOrderRequest } from "../models/IPaginateMineOrderRequest";
 import { OrderStatus } from "../enums/OrderStatus";
 import { ClientService } from "@modules/client/services/ClientService";
 import { IFindMineById } from "../models/IFindMineById";
+import { IConcludeOrderRequest } from "../models/IConcludeOrderRequest";
 
 export class OrderRepository implements IOrderRepository {
   private readonly repository: Repository<Order>;
@@ -238,5 +239,18 @@ export class OrderRepository implements IOrderRepository {
       count,
       ...pagination,
     };
+  }
+
+  async concludeOrder({
+    orderId,
+    clientId,
+  }: IConcludeOrderRequest): Promise<boolean> {
+    const order = await this.repository.findOne({ where: { id: orderId } });
+
+    if (order.status === OrderStatus.SENDING) {
+      await this.repository.update(orderId, { client: { id: clientId } });
+    }
+
+    return true;
   }
 }

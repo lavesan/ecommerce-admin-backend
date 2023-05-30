@@ -18,6 +18,11 @@ orderRouter.get(
   ensureAuthenticated("client"),
   orderController.findMineById
 );
+orderRouter.patch(
+  "/mine/conclude",
+  ensureAuthenticated("client"),
+  orderController.conclude
+);
 
 orderRouter.get(
   "/",

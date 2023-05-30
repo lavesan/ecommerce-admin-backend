@@ -14,3 +14,7 @@ export const translatePaymentType = {
   [PaymentType.DEBIT_CARD_MACHINE]: "Maquininha de cartão de débito",
   [PaymentType.MONEY]: "Dinheiro",
 };
+
+export const maskPhone = (phone: string) => {
+  return phone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+};
