@@ -19,7 +19,7 @@ orderRouter.get(
   orderController.findMineById
 );
 orderRouter.patch(
-  "/mine/conclude",
+  "/mine/conclude/:id",
   ensureAuthenticated("client"),
   orderController.conclude
 );

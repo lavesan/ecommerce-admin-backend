@@ -119,12 +119,12 @@ export class OrderController {
   async conclude(req: Request, res: Response) {
     const service = container.resolve(OrderService);
 
-    const { orderId } = req.body as unknown as { orderId: string };
+    const { id: orderId } = req.params as { id: string };
 
-    const { id } = req.client;
+    const { id: clientId } = req.client;
 
     const result = await service.conclude({
-      clientId: id,
+      clientId,
       orderId,
     });
 
