@@ -90,39 +90,7 @@ export class OrderRepository implements IOrderRepository {
       relations: ["client"],
     });
 
-    const clientService = container.resolve(ClientService);
-
-    if (
-      order.client &&
-      order.status === OrderStatus.DONE &&
-      status !== OrderStatus.DONE
-    ) {
-      const orderPoints = order.orderProducts.reduce((value, prod) => {
-        return value + prod.product.givenPoints * prod.quantity;
-      }, 0);
-
-      console.log("orderPoints: ", orderPoints);
-      const finalClientPoints = order.client.points - orderPoints;
-      console.log("finalClientPoints: ", finalClientPoints);
-
-      await clientService.update(order.client.id, {
-        points: finalClientPoints < 0 ? 0 : finalClientPoints,
-      });
-    }
-
-    if (status === OrderStatus.DONE) {
-      const orderPoints = order.orderProducts.reduce((value, prod) => {
-        return value + prod.product.givenPoints * prod.quantity;
-      }, 0);
-
-      console.log("orderPoints 2: ", orderPoints);
-      const finalClientPoints = order.client.points + orderPoints;
-      console.log("finalClientPoints 2: ", finalClientPoints);
-
-      await clientService.update(order.client.id, {
-        points: finalClientPoints,
-      });
-    }
+    await this.addPointsToClient(order, status);
 
     await this.repository.update(id, { status });
     return true;
@@ -247,10 +215,43 @@ export class OrderRepository implements IOrderRepository {
   }: IConcludeOrderRequest): Promise<boolean> {
     const order = await this.repository.findOne({ where: { id: orderId } });
 
+    if (order.status !== OrderStatus.DONE)
+      await this.addPointsToClient(order, OrderStatus.DONE);
+
     if (order.status === OrderStatus.SENDING) {
       await this.repository.update(orderId, { client: { id: clientId } });
     }
 
     return true;
+  }
+
+  private async addPointsToClient(order: Order, newStatus: OrderStatus) {
+    const clientService = container.resolve(ClientService);
+
+    if (order.status === OrderStatus.DONE) {
+      const orderPoints = order.orderProducts.reduce((value, prod) => {
+        return value + prod.product.givenPoints * prod.quantity;
+      }, 0);
+
+      console.log("orderPoints: ", orderPoints);
+      const finalClientPoints = order.client.points - orderPoints;
+      console.log("finalClientPoints: ", finalClientPoints);
+
+      await clientService.update(order.client.id, {
+        points: finalClientPoints < 0 ? 0 : finalClientPoints,
+      });
+    } else if (newStatus === OrderStatus.DONE) {
+      const orderPoints = order.orderProducts.reduce((value, prod) => {
+        return value + prod.product.givenPoints * prod.quantity;
+      }, 0);
+
+      console.log("orderPoints 2: ", orderPoints);
+      const finalClientPoints = order.client.points + orderPoints;
+      console.log("finalClientPoints 2: ", finalClientPoints);
+
+      await clientService.update(order.client.id, {
+        points: finalClientPoints,
+      });
+    }
   }
 }
