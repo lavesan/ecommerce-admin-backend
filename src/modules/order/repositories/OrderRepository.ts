@@ -87,7 +87,7 @@ export class OrderRepository implements IOrderRepository {
   async update(id: string, { status }: IUpdateOrder): Promise<boolean> {
     const order = await this.repository.findOne({
       where: { id },
-      relations: ["client"],
+      relations: ["client", "orderProducts", "orderProducts.product"],
     });
 
     await this.addPointsToClient(order, status);
@@ -213,7 +213,10 @@ export class OrderRepository implements IOrderRepository {
     orderId,
     clientId,
   }: IConcludeOrderRequest): Promise<boolean> {
-    const order = await this.repository.findOne({ where: { id: orderId } });
+    const order = await this.repository.findOne({
+      where: { id: orderId },
+      relations: ["client", "orderProducts", "orderProducts.product"],
+    });
 
     if (order.status !== OrderStatus.DONE)
       await this.addPointsToClient(order, OrderStatus.DONE);
@@ -229,6 +232,8 @@ export class OrderRepository implements IOrderRepository {
     const clientService = container.resolve(ClientService);
 
     if (order.status === OrderStatus.DONE) {
+      console.log("order: ", order.orderProducts);
+
       const orderPoints = order.orderProducts.reduce((value, prod) => {
         return value + prod.product.givenPoints * prod.quantity;
       }, 0);
