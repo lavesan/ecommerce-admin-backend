@@ -11,6 +11,7 @@ import { ICreateClient } from "../models/ICreateClient";
 import { IPaginateClientRequest } from "../models/IPaginateClientRequest";
 import { IUpdateClient } from "../models/IUpdateClient";
 import { IClientRepository } from "./IClientRepository";
+import { IResetPassword } from "../models/IResetPassword";
 
 export class ClientRepository implements IClientRepository {
   private readonly repository: Repository<Client>;
@@ -76,5 +77,13 @@ export class ClientRepository implements IClientRepository {
       count,
       ...pagination,
     };
+  }
+
+  async resetPassword({ email, password }: IResetPassword): Promise<boolean> {
+    const hashPwd = await encryptPwd(password);
+
+    await this.repository.update({ email }, { password: hashPwd });
+
+    return true;
   }
 }

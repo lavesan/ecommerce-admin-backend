@@ -1,6 +1,5 @@
 import { comparePwd } from "@helpers/password.helper";
 import { inject, injectable } from "tsyringe";
-import jwt from "jsonwebtoken";
 
 import { ILoginRequest } from "../models/ILoginRequest";
 import { ILoginResponse } from "../models/ILoginResponse";
@@ -12,6 +11,7 @@ import { IPaginationRequest } from "models/pagination.models";
 import { IPaginateUser } from "../models/IPaginateUser";
 import { IUpdateUserRequest } from "../models/IUpdateUserRequest";
 import { UpdateUserError } from "../errors/UpdateUserError";
+import { createCredentials } from "@helpers/auth.helper";
 
 @injectable()
 export class UserService {
@@ -29,20 +29,17 @@ export class UserService {
 
     if (!passwordMatch) throw new LoginUserError.EmailOrPwdWrong();
 
-    const accessToken = jwt.sign(
+    const credentials = await createCredentials(
       {
         id: user.id,
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
       },
-      process.env.JWT_SECRET
+      "dashboard"
     );
 
-    return {
-      accessToken,
-      refreshToken: "",
-    };
+    return credentials;
   }
 
   async create(body: ICreateUserRequest) {

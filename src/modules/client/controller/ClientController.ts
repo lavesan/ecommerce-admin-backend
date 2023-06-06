@@ -105,4 +105,35 @@ export class ClientController {
 
     return res.json(result);
   }
+
+  async logout(req: Request, res: Response) {
+    const service = container.resolve(ClientService);
+
+    const { email } = req.client;
+
+    const result = await service.googleLogin(email, req.client);
+
+    return res.json(result);
+  }
+
+  async forgotPassword(req: Request, res: Response) {
+    const service = container.resolve(ClientService);
+
+    const { email } = req.body;
+
+    const result = await service.forgotPassword(email);
+
+    return res.json(result);
+  }
+
+  async resetPassword(req: Request, res: Response) {
+    const service = container.resolve(ClientService);
+
+    const { password } = req.body;
+    const { email } = req.client;
+
+    const result = await service.resetPassword({ email, password });
+
+    return res.json(result);
+  }
 }

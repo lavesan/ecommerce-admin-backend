@@ -19,6 +19,7 @@ import { PromotionProduct } from "@modules/promotion/entities/PromotionProduct";
 import { Schedule } from "@modules/enterprise/entities/Schedule";
 import { OrderMoneyExchange } from "@modules/order/entities/OrderMoneyExchange";
 import { UserEnterprise } from "@modules/user/entities/UserEnterprise";
+import { RefreshAuthToken } from "@modules/auth/entities/RefreshAuthToken";
 
 dotenv.config();
 
@@ -63,6 +64,7 @@ const AppDataSource = new DataSource({
     Schedule,
     OrderMoneyExchange,
     UserEnterprise,
+    RefreshAuthToken,
   ],
 });
 

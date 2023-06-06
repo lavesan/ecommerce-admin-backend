@@ -6,6 +6,7 @@ import { Client } from "../entities/Client";
 import { ICreateClient } from "../models/ICreateClient";
 import { IPaginateClientRequest } from "../models/IPaginateClientRequest";
 import { IUpdateClient } from "../models/IUpdateClient";
+import { IResetPassword } from "../models/IResetPassword";
 
 export interface IClientRepository {
   paginate(
@@ -16,4 +17,5 @@ export interface IClientRepository {
   findByEmail(email: string): Promise<Client>;
   create(body: ICreateClient): Promise<Partial<Client>>;
   update(id: string, body: Partial<IUpdateClient>): Promise<boolean>;
+  resetPassword(data: IResetPassword): Promise<boolean>;
 }

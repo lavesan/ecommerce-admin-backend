@@ -11,7 +11,7 @@ interface IPayload {
   isAdmin: boolean;
 }
 
-type RoleType = "dashboard" | "client";
+export type RoleType = "dashboard" | "client";
 
 export const ensureAuthenticated =
   (role: RoleType, userIsAdmin?: boolean) =>
@@ -50,6 +50,8 @@ export const ensureAuthenticated =
           name,
           email,
         };
+
+      request.userRole = role;
 
       next();
     } catch {

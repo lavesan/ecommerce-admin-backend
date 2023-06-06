@@ -29,6 +29,8 @@ import { IFileStorageRepository } from "@modules/fileStorage/repositories/IFileS
 
 import { AddressRepository } from "@modules/client/repositories/AddressRepository";
 import { IAddressRepository } from "@modules/client/repositories/IAddressRepository";
+import { IRefreshAuthTokenRepository } from "@modules/auth/repositories/IRefreshAuthTokenRepository";
+import { RefreshAuthTokenRepository } from "@modules/auth/repositories/RefreshAuthTokenRepository";
 
 container.registerSingleton<IProductRepository>(
   "ProductRepository",
@@ -75,4 +77,9 @@ container.registerSingleton<IFileStorageRepository>(
 container.registerSingleton<IAddressRepository>(
   "AddressRepository",
   AddressRepository
+);
+
+container.registerSingleton<IRefreshAuthTokenRepository>(
+  "RefreshAuthTokenRepository",
+  RefreshAuthTokenRepository
 );

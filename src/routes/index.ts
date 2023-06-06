@@ -10,10 +10,11 @@ import { promotionRouter } from "./promotion.routes";
 import { freightRouter } from "./freight.routes";
 import { imageRouter } from "./image.routes";
 import { addressRouter } from "./address.routes";
+import { refreshTokenRouter } from "./refreshToken.routes";
 
 const router = Router();
 
-router.get("/healthy", (req: Request, res: Response) => res.send("Ok"));
+router.get("/health", (req: Request, res: Response) => res.send("Ok"));
 
 router.use("/user", userRouter);
 router.use("/category", categoryRouter);
@@ -25,5 +26,6 @@ router.use("/promotion", promotionRouter);
 router.use("/freight", freightRouter);
 router.use("/image", imageRouter);
 router.use("/address", addressRouter);
+router.use("/refresh-token", refreshTokenRouter);
 
 export { router };

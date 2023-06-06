@@ -1,3 +1,4 @@
+import { RefreshAuthToken } from "@modules/auth/entities/RefreshAuthToken";
 import { Enterprise } from "@modules/enterprise/entities/Enterprise";
 import {
   Entity,
@@ -9,6 +10,7 @@ import {
   DeleteDateColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from "typeorm";
 
 @Entity("user")
@@ -51,6 +53,12 @@ class User {
     },
   })
   enterprises: Enterprise[];
+
+  @OneToMany(
+    () => RefreshAuthToken,
+    (refreshAuthToken) => refreshAuthToken.user
+  )
+  refreshAuths?: RefreshAuthToken[];
 }
 
 export { User };

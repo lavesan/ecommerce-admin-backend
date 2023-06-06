@@ -1,5 +1,6 @@
 import { IPaginationRequest } from "models/pagination.models";
-import { inject, injectable } from "tsyringe";
+import { inject, injectable, container } from "tsyringe";
+import jwt from "jsonwebtoken";
 
 import { CreateClientError } from "../errors/CreateClientError";
 import { UpdateClientError } from "../errors/UpdateClientError";
@@ -10,9 +11,12 @@ import { IClientRepository } from "../repositories/IClientRepository";
 import { ILoginRequest } from "@modules/user/models/ILoginRequest";
 import { LoginUserError } from "@modules/user/errors/LoginUserError";
 import { comparePwd } from "@helpers/password.helper";
-import { createToken } from "@helpers/auth.helper";
+import { createCredentials } from "@helpers/auth.helper";
 import { LoginByEmailError } from "../errors/LoginByEmailError";
 import { FindMeError } from "@modules/enterprise/errors/FindMeError";
+import { forgotPasswordMail } from "@helpers/forgotPasswordMail.helper";
+import { MailService } from "@modules/mail/services/MailService";
+import { IResetPassword } from "../models/IResetPassword";
 
 @injectable()
 export class ClientService {
@@ -28,21 +32,18 @@ export class ClientService {
 
     const createdClient = await this.clientRepository.create(body);
 
-    const accessToken = createToken(
+    const credentials = await createCredentials(
       {
         id: createdClient.id,
         name: createdClient.name,
         email: createdClient.email,
       },
-      process.env.CLIENT_JWT_SECRET
+      "client"
     );
 
     return {
-      credentials: {
-        accessToken,
-        refreshToken: "",
-      },
       ...createdClient,
+      credentials,
     };
   }
 
@@ -84,21 +85,18 @@ export class ClientService {
 
     delete client.password;
 
-    const accessToken = createToken(
+    const credentials = await createCredentials(
       {
         id: client.id,
         name: client.name,
         email: client.email,
       },
-      process.env.CLIENT_JWT_SECRET
+      "client"
     );
 
     return {
-      credentials: {
-        accessToken,
-        refreshToken: "",
-      },
       ...client,
+      credentials,
     };
   }
 
@@ -112,21 +110,40 @@ export class ClientService {
 
     delete client.password;
 
-    const accessToken = createToken(
+    const credentials = await createCredentials(
       {
         id: client.id,
         name: client.name,
         email: client.email,
       },
-      process.env.CLIENT_JWT_SECRET
+      "client"
     );
 
     return {
-      credentials: {
-        accessToken,
-        refreshToken: "",
-      },
       ...client,
+      credentials,
     };
+  }
+
+  async forgotPassword(email: string): Promise<void> {
+    const mailService = container.resolve(MailService);
+
+    const accessToken = jwt.sign({}, process.env.RESET_PASSWORD_TOKEN, {
+      subject: email,
+      expiresIn: "30min",
+    });
+
+    const redirectLink = `${process.env.CLIENT_FRONT_URL}/resetar-senha?token=${accessToken}`;
+
+    await mailService.send({
+      from: "arco.marketplace.12@gmail.com",
+      to: email,
+      title: `Alterar senha em ${process.env.MARKETPLACE_NAME}`,
+      htmlBody: forgotPasswordMail(redirectLink),
+    });
+  }
+
+  async resetPassword(data: IResetPassword) {
+    return this.clientRepository.resetPassword(data);
   }
 }

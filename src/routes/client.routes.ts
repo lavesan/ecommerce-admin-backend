@@ -3,6 +3,7 @@ import { Router } from "express";
 import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
 import { ClientController } from "@modules/client/controller/ClientController";
 import { ensureGoogleAuthenticated } from "@shared/infra/http/middlewares/ensureGoogleAuthenticated";
+import { ensureForgotPwdAuthenticated } from "@shared/infra/http/middlewares/ensureForgoPwdAuthenticated";
 
 const clientController = new ClientController();
 
@@ -38,5 +39,13 @@ clientRouter.get(
 // Public routes
 clientRouter.post("/login", clientController.login);
 clientRouter.post("/", clientController.create);
+clientRouter.post("/forgot-password", clientController.forgotPassword);
+
+// Reset Password route
+clientRouter.patch(
+  "/reset-password",
+  ensureForgotPwdAuthenticated,
+  clientController.resetPassword
+);
 
 export { clientRouter };

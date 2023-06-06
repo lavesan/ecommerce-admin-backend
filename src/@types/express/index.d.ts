@@ -1,3 +1,5 @@
+import { RoleType } from "@shared/infra/http/middlewares/ensureAuthenticated";
+
 declare namespace Express {
   export interface Request {
     user: {
@@ -11,5 +13,6 @@ declare namespace Express {
       name: string;
       email: string;
     };
+    userRole: RoleType;
   }
 }

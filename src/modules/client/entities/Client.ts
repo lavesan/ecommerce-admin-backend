@@ -10,6 +10,7 @@ import {
   DeleteDateColumn,
 } from "typeorm";
 import { Address } from "./Address";
+import { RefreshAuthToken } from "@modules/auth/entities/RefreshAuthToken";
 
 @Entity("client")
 class Client {
@@ -51,6 +52,12 @@ class Client {
 
   @OneToMany(() => Order, (order) => order.client)
   orders: Order[];
+
+  @OneToMany(
+    () => RefreshAuthToken,
+    (refreshAuthToken) => refreshAuthToken.client
+  )
+  refreshAuths?: RefreshAuthToken[];
 }
 
 export { Client };
