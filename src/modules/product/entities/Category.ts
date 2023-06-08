@@ -22,9 +22,6 @@ class Category {
   @Column()
   description: string;
 
-  @Column()
-  imageKey: string;
-
   @Column({ default: false })
   isDisabled: boolean;
 

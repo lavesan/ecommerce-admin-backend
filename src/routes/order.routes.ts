@@ -7,6 +7,7 @@ const orderController = new OrderController();
 
 const orderRouter = Router();
 
+// Client routes
 orderRouter.post("/", ensureAuthenticated("client"), orderController.create);
 orderRouter.get(
   "/mine/all",
@@ -24,10 +25,16 @@ orderRouter.patch(
   orderController.conclude
 );
 
+// Dashboard routes
 orderRouter.get(
   "/",
   ensureAuthenticated("dashboard"),
   orderController.paginate
+);
+orderRouter.get(
+  "/active-orders",
+  ensureAuthenticated("dashboard"),
+  orderController.activeOrdersCount
 );
 orderRouter.get(
   "/:id",

@@ -228,19 +228,31 @@ export class OrderRepository implements IOrderRepository {
     return true;
   }
 
+  async activeOrdersCount(userId: string) {
+    const doingStatus = [
+      OrderStatus.DOING,
+      OrderStatus.SENDING,
+      OrderStatus.TO_APPROVE,
+    ];
+
+    const count = await this.repository.count({
+      where: { enterprise: { users: { id: userId } }, status: In(doingStatus) },
+    });
+
+    return {
+      count,
+    };
+  }
+
   private async addPointsToClient(order: Order, newStatus: OrderStatus) {
     const clientService = container.resolve(ClientService);
 
     if (order.status === OrderStatus.DONE) {
-      console.log("order: ", order.orderProducts);
-
       const orderPoints = order.orderProducts.reduce((value, prod) => {
         return value + prod.product.givenPoints * prod.quantity;
       }, 0);
 
-      console.log("orderPoints: ", orderPoints);
       const finalClientPoints = order.client.points - orderPoints;
-      console.log("finalClientPoints: ", finalClientPoints);
 
       await clientService.update(order.client.id, {
         points: finalClientPoints < 0 ? 0 : finalClientPoints,
@@ -250,9 +262,7 @@ export class OrderRepository implements IOrderRepository {
         return value + prod.product.givenPoints * prod.quantity;
       }, 0);
 
-      console.log("orderPoints 2: ", orderPoints);
       const finalClientPoints = order.client.points + orderPoints;
-      console.log("finalClientPoints 2: ", finalClientPoints);
 
       await clientService.update(order.client.id, {
         points: finalClientPoints,

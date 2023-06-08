@@ -95,7 +95,11 @@ export class OrderService {
     return this.orderRepository.update(id, body);
   }
 
-  async conclude(data: IConcludeOrderRequest) {
+  conclude(data: IConcludeOrderRequest) {
     return this.orderRepository.concludeOrder(data);
+  }
+
+  activeOrdersCount(userId: string) {
+    return this.orderRepository.activeOrdersCount(userId);
   }
 }
