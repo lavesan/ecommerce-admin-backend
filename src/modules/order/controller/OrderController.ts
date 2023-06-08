@@ -134,9 +134,9 @@ export class OrderController {
   async activeOrdersCount(req: Request, res: Response) {
     const service = container.resolve(OrderService);
 
-    const { id: userId } = req.user;
+    const { id: userId, isAdmin } = req.user;
 
-    const result = await service.activeOrdersCount(userId);
+    const result = await service.activeOrdersCount({ userId, isAdmin });
 
     return res.json(result);
   }

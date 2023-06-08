@@ -10,6 +10,7 @@ import { IPaginateMineOrderRequest } from "../models/IPaginateMineOrderRequest";
 import { IFindMineById } from "../models/IFindMineById";
 import { IConcludeOrderRequest } from "../models/IConcludeOrderRequest";
 import { IActiveOrdersCountResponse } from "../models/IActiveOrdersCountResponse";
+import { IActiveOrdersCountRequest } from "../models/IActiveOrdersCountRequest";
 
 export interface IOrderRepository {
   paginate(
@@ -25,5 +26,7 @@ export interface IOrderRepository {
   create(body: ICreateOrder): Promise<Order>;
   update(id: string, body: IUpdateOrder): Promise<boolean>;
   concludeOrder(data: IConcludeOrderRequest): Promise<boolean>;
-  activeOrdersCount(userId: string): Promise<IActiveOrdersCountResponse>;
+  activeOrdersCount(
+    data: IActiveOrdersCountRequest
+  ): Promise<IActiveOrdersCountResponse>;
 }

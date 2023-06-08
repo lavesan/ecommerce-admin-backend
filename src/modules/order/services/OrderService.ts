@@ -15,6 +15,7 @@ import {
 import { MailService } from "@modules/mail/services/MailService";
 import { IFindMineById } from "../models/IFindMineById";
 import { IConcludeOrderRequest } from "../models/IConcludeOrderRequest";
+import { IActiveOrdersCountRequest } from "../models/IActiveOrdersCountRequest";
 
 @injectable()
 export class OrderService {
@@ -99,7 +100,7 @@ export class OrderService {
     return this.orderRepository.concludeOrder(data);
   }
 
-  activeOrdersCount(userId: string) {
-    return this.orderRepository.activeOrdersCount(userId);
+  activeOrdersCount(data: IActiveOrdersCountRequest) {
+    return this.orderRepository.activeOrdersCount(data);
   }
 }

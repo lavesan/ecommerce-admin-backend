@@ -18,6 +18,7 @@ import { OrderStatus } from "../enums/OrderStatus";
 import { ClientService } from "@modules/client/services/ClientService";
 import { IFindMineById } from "../models/IFindMineById";
 import { IConcludeOrderRequest } from "../models/IConcludeOrderRequest";
+import { IActiveOrdersCountRequest } from "../models/IActiveOrdersCountRequest";
 
 export class OrderRepository implements IOrderRepository {
   private readonly repository: Repository<Order>;
@@ -148,7 +149,7 @@ export class OrderRepository implements IOrderRepository {
 
     const [data, count] = await this.repository.findAndCount({
       order: {
-        created_at: "DESC",
+        status: "ASC",
       },
       ...paginationData,
       where,
@@ -228,15 +229,19 @@ export class OrderRepository implements IOrderRepository {
     return true;
   }
 
-  async activeOrdersCount(userId: string) {
+  async activeOrdersCount({ userId, isAdmin }: IActiveOrdersCountRequest) {
     const doingStatus = [
       OrderStatus.DOING,
       OrderStatus.SENDING,
       OrderStatus.TO_APPROVE,
     ];
 
+    const where: FindOptionsWhere<Order> = isAdmin
+      ? {}
+      : { enterprise: { users: { id: userId } } };
+
     const count = await this.repository.count({
-      where: { enterprise: { users: { id: userId } }, status: In(doingStatus) },
+      where: { ...where, status: In(doingStatus) },
     });
 
     return {
