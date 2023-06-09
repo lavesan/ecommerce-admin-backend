@@ -11,6 +11,12 @@ import { IPaginateEnterpriseRequest } from "../models/IPaginateEnterpriseRequest
 import { IEnterpriseRepository } from "./IEnterpriseRepository";
 import { IUpdateEnterprise } from "../models/IUpdateEnterprise";
 import { getWeekDay } from "@helpers/date.helper";
+import { container } from "tsyringe";
+import { OrderService } from "@modules/order/services/OrderService";
+import {
+  IFormattedEnterpriseData,
+  IPaginateEnterpriseResponse,
+} from "../models/IPaginateEnterpriseResponse";
 
 export class EnterpriseRepository implements IEnterpriseRepository {
   private readonly repository: Repository<Enterprise>;
@@ -45,6 +51,7 @@ export class EnterpriseRepository implements IEnterpriseRepository {
         "categories.products.productAdditionalCategory.productAdditionals",
         "promotions",
         "freights",
+        "schedules",
       ],
     });
 
@@ -90,6 +97,7 @@ export class EnterpriseRepository implements IEnterpriseRepository {
         "promotions.promotionProducts",
         "promotions.promotionProducts.product",
         "freights",
+        "schedules",
       ],
     });
   }
@@ -97,7 +105,9 @@ export class EnterpriseRepository implements IEnterpriseRepository {
   async paginate(
     pagination: IPaginationRequest,
     { cnpj, name, userId }: IPaginateEnterpriseRequest
-  ): Promise<IPaginationResponse<Enterprise>> {
+  ): Promise<IPaginateEnterpriseResponse> {
+    const orderService = container.resolve(OrderService);
+
     const paginationData = getSkipAndTake(pagination);
 
     let where: FindOptionsWhere<Enterprise> = {};
@@ -115,8 +125,24 @@ export class EnterpriseRepository implements IEnterpriseRepository {
       ...paginationData,
     });
 
+    const formattedData: IFormattedEnterpriseData[] = await Promise.all(
+      data.map((row) => {
+        return new Promise<IFormattedEnterpriseData>(
+          async (resolve, reject) => {
+            const openOrdersCount =
+              await orderService.activeOrdersFromEnterpriseCount(row.id);
+
+            resolve({
+              ...row,
+              openOrdersCount: openOrdersCount.count,
+            });
+          }
+        );
+      })
+    );
+
     return {
-      data,
+      data: formattedData,
       count,
       ...pagination,
     };
@@ -132,6 +158,7 @@ export class EnterpriseRepository implements IEnterpriseRepository {
       order: {
         created_at: "DESC",
       },
+      relations: ["schedules"],
     });
   }
 

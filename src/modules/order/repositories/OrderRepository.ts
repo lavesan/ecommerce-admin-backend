@@ -19,6 +19,8 @@ import { ClientService } from "@modules/client/services/ClientService";
 import { IFindMineById } from "../models/IFindMineById";
 import { IConcludeOrderRequest } from "../models/IConcludeOrderRequest";
 import { IActiveOrdersCountRequest } from "../models/IActiveOrdersCountRequest";
+import { IActiveOrdersCountResponse } from "../models/IActiveOrdersCountResponse";
+import { activeStatus } from "../helpers/activeStatus.helper";
 
 export class OrderRepository implements IOrderRepository {
   private readonly repository: Repository<Order>;
@@ -230,18 +232,24 @@ export class OrderRepository implements IOrderRepository {
   }
 
   async activeOrdersCount({ userId, isAdmin }: IActiveOrdersCountRequest) {
-    const doingStatus = [
-      OrderStatus.DOING,
-      OrderStatus.SENDING,
-      OrderStatus.TO_APPROVE,
-    ];
-
     const where: FindOptionsWhere<Order> = isAdmin
       ? {}
       : { enterprise: { users: { id: userId } } };
 
     const count = await this.repository.count({
-      where: { ...where, status: In(doingStatus) },
+      where: { ...where, status: In(activeStatus) },
+    });
+
+    return {
+      count,
+    };
+  }
+
+  async activeOrdersFromEnterpriseCount(
+    enterpriseId: string
+  ): Promise<IActiveOrdersCountResponse> {
+    const count = await this.repository.count({
+      where: { status: In(activeStatus), enterprise: { id: enterpriseId } },
     });
 
     return {

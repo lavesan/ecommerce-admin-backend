@@ -103,4 +103,8 @@ export class OrderService {
   activeOrdersCount(data: IActiveOrdersCountRequest) {
     return this.orderRepository.activeOrdersCount(data);
   }
+
+  activeOrdersFromEnterpriseCount(enterpriseId: string) {
+    return this.orderRepository.activeOrdersFromEnterpriseCount(enterpriseId);
+  }
 }

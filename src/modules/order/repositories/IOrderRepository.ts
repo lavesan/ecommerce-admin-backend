@@ -29,4 +29,7 @@ export interface IOrderRepository {
   activeOrdersCount(
     data: IActiveOrdersCountRequest
   ): Promise<IActiveOrdersCountResponse>;
+  activeOrdersFromEnterpriseCount(
+    enterpriseId: string
+  ): Promise<IActiveOrdersCountResponse>;
 }
