@@ -30,6 +30,9 @@ class Order {
   @Column()
   productsValue: number;
 
+  @Column({ nullable: true })
+  promotionsDiscount: number;
+
   @Column({
     type: "enum",
     enum: PaymentType,

@@ -7,15 +7,6 @@ export class AddOrderPaymentType1681471433711 implements MigrationInterface {
       queryRunner.addColumn(
         "order",
         new TableColumn({
-          name: "moneyExchange",
-          type: "integer",
-          isNullable: true,
-          comment: "When the client selects a MONEY payment type",
-        })
-      ),
-      queryRunner.addColumn(
-        "order",
-        new TableColumn({
           name: "paymentType",
           type: "enum",
           isNullable: false,
@@ -23,6 +14,8 @@ export class AddOrderPaymentType1681471433711 implements MigrationInterface {
             PaymentType.MONEY,
             PaymentType.CREDIT_CARD_MACHINE,
             PaymentType.DEBIT_CARD_MACHINE,
+            PaymentType.CREDIT_CARD,
+            PaymentType.DEBIT_CARD,
           ],
         })
       ),
@@ -31,7 +24,6 @@ export class AddOrderPaymentType1681471433711 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await Promise.all([
-      queryRunner.dropColumn("order", "moneyExchange"),
       queryRunner.dropColumn("order", "paymentType"),
     ]);
   }

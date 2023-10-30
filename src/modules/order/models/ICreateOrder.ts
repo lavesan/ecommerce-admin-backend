@@ -3,6 +3,7 @@ import { PaymentType } from "../enums/PaymentType";
 export interface ICreateOrder {
   freightValue: number;
   productsValue: number;
+  promotionsDiscount?: number;
   paymentType: PaymentType;
   enterpriseId: string;
   freightId: string;

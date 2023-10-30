@@ -4,6 +4,7 @@ import { PaymentType } from "../enums/PaymentType";
 export const createOrderValidation = yup.object({
   freightValue: yup.number().required(),
   productsValue: yup.number().required(),
+  promotionsDiscount: yup.number().required(),
   enterpriseId: yup.string().uuid().required(),
   freightId: yup.string().uuid().required(),
   paymentType: yup
@@ -12,6 +13,8 @@ export const createOrderValidation = yup.object({
       PaymentType.CREDIT_CARD_MACHINE,
       PaymentType.DEBIT_CARD_MACHINE,
       PaymentType.MONEY,
+      PaymentType.CREDIT_CARD,
+      PaymentType.DEBIT_CARD,
     ])
     .required(),
   hasCents: yup.boolean().when("paymentType", (paymentType, schema) => {
