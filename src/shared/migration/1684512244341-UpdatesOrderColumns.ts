@@ -48,7 +48,6 @@ export class UpdatesOrderColumns1684512244341 implements MigrationInterface {
           ],
         })
       ),
-      queryRunner.dropColumn("order", "moneyExchange"),
       queryRunner.addColumn(
         "order",
         new TableColumn({
