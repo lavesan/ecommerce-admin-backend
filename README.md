@@ -1,26 +1,162 @@
-# Digitro backend
+# E-commerce Admin Backend
 
-Projeto que se conecta com o mongodb para fazer um CRUD com um schema de Agent
+Administrative backend for an e-commerce system with multi-company support (whitelabel).
 
-## Pré-requisitos
+## 🚀 Features
 
-- [Node 16+ - Recomendo utilizar um gestor de versões](https://nodejs.dev/pt/download/package-manager)
+### Main Modules
+
+- **Authentication**
+
+  - JWT Login
+  - Google Authentication
+  - Session Management
+  - Password Recovery
+
+- **Users**
+
+  - User CRUD
+  - Profile and Permission Management
+  - Data Validation
+
+- **Customers**
+
+  - Customer Registration and Management
+  - Purchase History
+  - Contact and Address Information
+
+- **Products**
+
+  - Product Registration
+  - Categorization
+  - Stock Management
+  - Pricing and Promotions
+
+- **Orders**
+
+  - Order Creation and Tracking
+  - Order Status
+  - Transaction History
+
+- **Promotions**
+
+  - Coupon Creation
+  - Special Discounts
+  - Promotion Rules
+
+- **Shipping**
+
+  - Shipping Calculation
+  - Carrier Integration
+  - Delivery Rules
+
+- **Company**
+
+  - Company Settings
+  - Registration Data
+  - Customization
+
+- **File Storage**
+
+  - Image Upload
+  - AWS S3 Integration
+  - Media Management
+
+- **Email**
+  - Transactional Email Sending
+  - Customizable Templates
+  - Automatic Notifications
+
+## 🛠️ Technologies
+
+- Node.js 16+
+- TypeScript
+- Express.js
+- TypeORM
+- PostgreSQL
+- AWS S3
+- JWT
 - Docker
-  - [Windows](https://www.docker.com/products/docker-desktop/)
-  - [Linux Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
-  - [Mac](https://docs.docker.com/desktop/install/mac-install/)
 
-## Iniciando o projeto
+## 📋 Prerequisites
 
-1. Crie um arquivo `.env` com as variáveis de ambiente necessárias como no `.env.example`;
-2. Execute `docker-compose up` para instalar as bibliotecas e iniciar o mongodb, mongo express e a aplicação.
+- Node.js 16+
+- Docker and Docker Compose
+- PostgreSQL
+- AWS S3 (for file storage)
 
-Você pode acessar o **mongo express** no [http://localhost:8081](http://localhost:8081) e gerenciar o banco de dados
+## 🔧 Installation
 
-## Token de autenticação
+1. Clone the repository
 
-Para utilizar a autenticação nos endpoints, pode criar um token [aqui](https://jwt.io/) colocando a chave secreta do `JWT_SECRET` do seu .env juntamente com uma propriedade `domain` no payload
+```bash
+git clone [repository-url]
+```
 
-## Endpoints
+2. Install dependencies
 
-A documentação dos endpoints está [aqui](https://gitlab.com/d4063/Desafios/-/blob/master/backend/openapi.yml)
+```bash
+yarn install
+```
+
+3. Configure environment variables
+
+```bash
+cp .env.example .env
+```
+
+Edit the `.env` file with your configurations
+
+4. Run database migrations
+
+```bash
+yarn migration:run
+```
+
+5. Start the server
+
+```bash
+yarn dev
+```
+
+## 🐳 Docker
+
+The project includes Docker configuration for development:
+
+```bash
+docker-compose up
+```
+
+## 📦 Available Scripts
+
+- `yarn dev`: Starts the server in development mode
+- `yarn test`: Runs tests
+- `yarn build`: Compiles the project for production
+- `yarn start`: Starts the server in production
+- `yarn migration:create`: Creates a new migration
+- `yarn migration:run`: Runs pending migrations
+- `yarn migration:down`: Reverts the last migration
+
+## 🔐 Authentication
+
+The API uses JWT for authentication. To access protected endpoints, include the token in the header:
+
+```
+Authorization: Bearer your-jwt-token
+```
+
+## 📝 API Documentation
+
+Complete API documentation is available at [API-DOCUMENTATION-URL]
+
+## 🤝 Contributing
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
