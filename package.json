@@ -6,7 +6,6 @@
   "engines": {
     "node": "16.x"
   },
-  "packageManager": "npm@8.19.4",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --poll --transpile-only --ignore-watch node_modules --respawn ./src/server.ts",
     "test": "jest",
